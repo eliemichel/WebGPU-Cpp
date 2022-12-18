@@ -23,7 +23,7 @@ The C++ wrapper is automatically generated from the official [webgpu.h](https://
 Quick Start
 -----------
 
-**NB** *To get started with WebGPU in general, see our [Learn WebGPU for C++](https://github.com/eliemichel/LearnWebGPU) documentation!*
+**NB** *To get started with WebGPU in general, see our [Learn WebGPU for C++](https://eliemichel.github.io/LearnWebGPU) documentation!*
 
 ### Setup
 
@@ -232,12 +232,12 @@ You must then declare the body of this method at the end of the file, between `#
 This generator was inspired by [PpluX' wgpu.hpp](https://github.com/pplux/wgpu.hpp, and it can actually generate the very same headers:
 
 ```bash
-python generator.py -t wgpu-pplux.template.hpp -o wgpu-pplux.hpp
+python generate.py -t wgpu-pplux.template.hpp -o wgpu-pplux.hpp --pplux
 ```
 
 ### See also
 
-To get started with WebGPU, see our [Learn WebGPU for C++](https://github.com/eliemichel/LearnWebGPU) documentation!
+To get started with WebGPU, see our [Learn WebGPU for C++](https://eliemichel.github.io/LearnWebGPU) documentation!
 
 This work was inspired by [PpluX' wgpu.hpp](https://github.com/pplux/wgpu.hpp).
 
