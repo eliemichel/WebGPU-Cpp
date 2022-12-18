@@ -1,0 +1,268 @@
+WebGPU-C++
+==========
+
+Table of Contents
+-----------------
+
+ - [What is this?](#what-is-this)
+ - [Quick Start](#quick-start)
+   * [Setup](#setup)
+   * [Usage](#usage)
+ - [Going Further](#going-further)
+   * [Custom generation](#custom-generation)
+   * [See also](#see-also)
+ - [License](#license)
+
+What is this?
+-------------
+
+This is a **single-file** shallow wrapper for using the WebGPU native API in a more **C++ idiomatic** way. It comes with **zero overhead** and is mostly syntactic sugar to make the original C API less verbose. All C++ types are naturally compatible with original C-style types, the memory layout remains untouched.
+
+The C++ wrapper is automatically generated from the official [webgpu.h](https://raw.githubusercontent.com/webgpu-native/webgpu-headers/main/webgpu.h), with the possibility to inject custom code and blacklist symbols that your implementation of `webgpu.h` does not handle yet (see [Going Further](#going-further)).
+
+Quick Start
+-----------
+
+**NB** *To get started with WebGPU in general, see our [Learn WebGPU for C++](https://github.com/eliemichel/LearnWebGPU) documentation!*
+
+### Setup
+
+ 1. Copy the file [webgpu.hpp](webgpu.hpp) file to your C++17 project.
+
+ 2. Replace `#include <webgpu.h>` by `#include "webgpu.hpp"` in your source files:
+
+```C++
+#include "webgpu.hpp"
+```
+
+ 3. In **exaclty one** of your source files, add `#define WEBGPU_CPP_IMPLEMENTATION` before including webgpu.cpp:
+
+```C++
+#define WEBGPU_CPP_IMPLEMENTATION
+#include "webgpu.hpp"
+```
+
+### Usage
+
+**NB** *By default, the wrapper is built for the last version of the [wgpu-native](https://github.com/gfx-rs/wgpu-native) implementation of `webgpu.h`. If you use the [Dawn](https://dawn.googlesource.com/dawn) implementation, you may need to read [advanced instructions](#going-further).*
+
+#### Namespace
+
+Instead of prefixing every struct name with `WGPU` and every function name with `wgpu` (the C way), all symbols are put in a `wgpu` namespace (the C++ way):
+
+```C
+// C style
+WGPUInstanceDescriptor desc = {};
+desc.nextInChain = nullptr;
+WGPUInstance instance = wgpuCreateInstance(&desc);
+```
+
+becomes with namespaces:
+
+```C++
+// C++ style
+wgpu::InstanceDescriptor desc = {};
+wgpu::Instance instance = wgpu::createInstance(&desc);
+```
+
+And of course you can start your source file with `using namespace wgpu;` to avoid spelling out `wgpu::` everywhere.
+
+#### Default descriptor values
+
+Sometimes we just need to build a descriptor by default. More generally, we rarely need to have all the fields of the descriptor deviate from the default, so this wrapper sets a default value for some fields.
+
+**TODO** Actually it is not yet possible to customize the default value. Only the `nextInChain` value is automatically set to `nullptr` by default.
+
+#### Object notation
+
+Beyond namespace, most functions are also previewed by the name of their first argument, e.g.:
+
+```C
+// C style
+WGPUBuffer wgpuDeviceCreateBuffer(WGPUDevice device, WGPUBufferDescriptor const * descriptor);
+               ^^^^^^             ^^^^^^^^^^^^^^^^^
+size_t wgpuAdapterEnumerateFeatures(WGPUAdapter adapter, WGPUFeatureName * features);
+           ^^^^^^^                  ^^^^^^^^^^^^^^^^^^^
+void wgpuBufferDestroy(WGPUBuffer buffer);
+         ^^^^^^        ^^^^^^^^^^^^^^^^^
+```
+
+These functions are conceptually *methods* of the object constituted by their first argument, so in this wrapper they are exposed as such:
+
+```C++
+// C++ style
+namespace wgpu {
+	struct Device {
+		// [...]
+		createBuffer(const BufferDescriptor& descriptor);
+	};
+
+	struct Adapter {
+		// [...]
+		enumerateFeatures(FeatureName * features);
+	};
+
+	struct Device {
+		// [...]
+		destroy();
+	};
+} // namespace wgpu
+```
+
+Note also that descriptors are passed by reference rather than by pointer.
+
+#### Capturing closures
+
+Many asynchronous operations use callbacks. In order to provide some context to the callback's body, there is always a `void *userdata` argument passed around. This can be alleviated in C++ by using capturing closures.
+
+**NB** *This only alleviates the notations, but technically mechanism very similar to the user data pointer is automatically implemented when creating a capturing lambda.*
+
+```C++
+// C style
+struct Context {
+	WGPUBuffer buffer;
+};
+auto onBufferMapped = [](WGPUBufferMapAsyncStatus status, void* pUserData) {
+	Context* context = reinterpret_cast<Context*>(pUserData);
+	std::cout << "Buffer mapped with status " << status << std::endl;
+	unsigned char* bufferData = (unsigned char*)wgpuBufferGetMappedRange(context->buffer, 0, 16);
+	std::cout << "bufferData[0] = " << (int)bufferData[0] << std::endl;
+	wgpuBufferUnmap(context->buffer);
+};
+Context context;
+wgpuBufferMapAsync(buffer, WGPUMapMode_Read, 0, 16, onBufferMapped, (void*)&context);
+```
+
+becomes
+
+```C++
+// C++ style
+buffer.mapAsync(buffer, [&context](wgpu::BufferMapAsyncStatus status) {
+	std::cout << "Buffer mapped with status " << status << std::endl;
+	unsigned char* bufferData = (unsigned char*)context.buffer.getMappedRange(0, 16);
+	std::cout << "bufferData[0] = " << (int)bufferData[0] << std::endl;
+	context.buffer.unmap();
+});
+```
+
+#### Scoped enumerations
+
+Because enums are *unscoped* by default, the WebGPU API is forced to prefix all values that an enum can take with the name of the enum, leading to quite long names:
+
+```C
+typedef enum WGPURequestAdapterStatus {
+    WGPURequestAdapterStatus_Success = 0x00000000,
+    WGPURequestAdapterStatus_Unavailable = 0x00000001,
+    WGPURequestAdapterStatus_Error = 0x00000002,
+    WGPURequestAdapterStatus_Unknown = 0x00000003,
+    WGPURequestAdapterStatus_Force32 = 0x7FFFFFFF
+} WGPURequestAdapterStatus;
+```
+
+It is possible in C++ to define *scoped* enums, which are strongly typed and can only be accessed through the name, for instance this scoped enum:
+
+```C++
+enum class RequestAdapterStatus {
+    Success = 0x00000000,
+    Unavailable = 0x00000001,
+    Error = 0x00000002,
+    Unknown = 0x00000003,
+    Force32 = 0x7FFFFFFF
+};
+```
+
+This can be used as follows:
+
+```C++
+wgpu::RequestAdapterStatus::Success;
+```
+
+**NB** *The actual implementation use a little trickery so that enum names are scoped, but implicitly converted to and from the original WebGPU enum values.*
+
+Going further
+-------------
+
+### Custom generation
+
+The file `webgpu.hpp` is generated by running the `generate.py` script (with at least Python 3.10). The best way to get an up to date doc is through it's help message:
+
+```
+$ python generate.py --help
+usage: generate.py [-h] [-t TEMPLATE] [-o OUTPUT] [-u HEADER_URL] [--pplux] [--no-scoped-enums] [--no-fake-scoped-enums] [--use-non-member-procedures]
+
+Generate the webgpu-cpp binding from official webgpu-native headers. You should not have to change any of the default arguments for a regular use. This
+generates a webgpu.hpp file that you can include in your project. Exactly one of your source files must #define WEBGPU_CPP_IMPLEMENTATION before including
+this header. TODO: Default values for descriptors TODO: Add some const qualifiers?
+
+options:
+  -h, --help            show this help message and exit
+  -t TEMPLATE, --template TEMPLATE
+                        Template used for generating the output binding file
+  -o OUTPUT, --output OUTPUT
+                        Path where to output the generated webgpu.hpp
+  -u HEADER_URL, --header-url HEADER_URL
+                        URL of the official webgpu.h from the webgpu-native project. If the URL does not start with http(s)://, it is considered as a local
+                        file
+  --pplux               Generate a binding compatible with https://github.com/pplux/wgpu.hpp (requires the use of pplux.template.h as the template)
+  --no-scoped-enums     Do not replace WebGPU enums with C++ scoped enums
+  --no-fake-scoped-enums
+                        Use scoped aliases to original enum values so that no casting is needed
+  --use-non-member-procedures
+                        Include WebGPU methods that are not members of any WebGPU object
+```
+
+The default options download the last version of `webgpu.h` from the [webgpu-native/webgpu-headers repository](https://github.com/webgpu-native/webgpu-headers), but it is recommended to check that it matches your own version of this file (provided by your implementation, e.g., wgpu-native or Dawn).
+
+The template file uses a quite simple format: variables to be replaced by a snippet of code is put inside double brackets, e.g., `{{foo}}`. You can look at [webgpu.template.hpp](webgpu.template.hpp) for a list of available such variables.
+
+There are two special pairs of tags which are not variables:
+
+#### Blacklist
+
+Between `{{begin-blacklist}}` and `{{end-blacklist}}`, you can list WebGPU procedures that you would like the binding to ignore. This must be used when your version of `webgpu.h` declares some symbols that are not actually implemented by your binaries of WebGPU.
+
+#### Member injection
+
+Between `{{begin-blacklist}}` and `{{end-blacklist}}`, you can specify extra methods to inject in the auto-generated handle types. Within this scope, define a subscope with `HANDLE(Foo)` and `END` tags to add arbitrary members in type `Foo`.
+
+You must then declare the body of this method at the end of the file, between `#ifdef WEBGPU_CPP_IMPLEMENTATION` and `#endif // WEBGPU_CPP_IMPLEMENTATION`
+
+#### PpluX
+
+This generator was inspired by [PpluX' wgpu.hpp](https://github.com/pplux/wgpu.hpp, and it can actually generate the very same headers:
+
+```bash
+python generator.py -t wgpu-pplux.template.hpp -o wgpu-pplux.hpp
+```
+
+### See also
+
+To get started with WebGPU, see our [Learn WebGPU for C++](https://github.com/eliemichel/LearnWebGPU) documentation!
+
+This work was inspired by [PpluX' wgpu.hpp](https://github.com/pplux/wgpu.hpp).
+
+License
+-------
+
+```
+MIT License
+Copyright (c) 2022 Elie Michel
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
