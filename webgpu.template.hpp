@@ -52,7 +52,7 @@ public: \
 	typedef Type S; /* S == Self */ \
     typedef WGPU ## Type W; /* W == WGPU Type */ \
 	Type(const W& w) : m_raw(w) {} \
-	operator W() { return m_raw; } \
+	operator W&() { return m_raw; } \
 	operator bool() const { return m_raw != nullptr; } \
 	friend auto operator<<(std::ostream &stream, const S& self) -> std::ostream & { \
 		return stream << "<wgpu::" << #Type << " " << self.m_raw << ">"; \
