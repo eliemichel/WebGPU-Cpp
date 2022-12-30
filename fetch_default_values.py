@@ -117,7 +117,7 @@ def parseDefinition(api, body):
 
 def parseDictionary(api, it):
     end_dict_re = re.compile(r"^};$")
-    field_re = re.compile(r"^\s*(\w+) (\w+) = (\w+);$")
+    field_re = re.compile(r"""^\s*(\w+) (\w+) = ("?\w+"?);$""")
     required_field_re = re.compile(r"^\s*required (\w+) (\w+);$")
 
     logging.debug(f"Starting dict {api.name}")
