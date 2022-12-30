@@ -1,11 +1,11 @@
 {
-  "dictionaries": [
-    {
+  "dictionaries": {
+    "GPUObjectDescriptorBase": {
       "name": "GPUObjectDescriptorBase",
       "parent": null,
       "fields": []
     },
-    {
+    "GPURequestAdapterOptions": {
       "name": "GPURequestAdapterOptions",
       "parent": null,
       "fields": [
@@ -17,12 +17,12 @@
         }
       ]
     },
-    {
+    "GPUDeviceDescriptor": {
       "name": "GPUDeviceDescriptor",
       "parent": "GPUObjectDescriptorBase",
       "fields": []
     },
-    {
+    "GPUBufferDescriptor": {
       "name": "GPUBufferDescriptor",
       "parent": "GPUObjectDescriptorBase",
       "fields": [
@@ -46,7 +46,7 @@
         }
       ]
     },
-    {
+    "GPUTextureDescriptor": {
       "name": "GPUTextureDescriptor",
       "parent": "GPUObjectDescriptorBase",
       "fields": [
@@ -69,6 +69,12 @@
           "required": false
         },
         {
+          "name": "dimension",
+          "type": "GPUTextureDimension",
+          "default": "\"2d\"",
+          "required": false
+        },
+        {
           "name": "format",
           "type": "GPUTextureFormat",
           "default": null,
@@ -82,10 +88,16 @@
         }
       ]
     },
-    {
+    "GPUTextureViewDescriptor": {
       "name": "GPUTextureViewDescriptor",
       "parent": "GPUObjectDescriptorBase",
       "fields": [
+        {
+          "name": "aspect",
+          "type": "GPUTextureAspect",
+          "default": "\"all\"",
+          "required": false
+        },
         {
           "name": "baseMipLevel",
           "type": "GPUIntegerCoordinate",
@@ -100,7 +112,7 @@
         }
       ]
     },
-    {
+    "GPUExternalTextureDescriptor": {
       "name": "GPUExternalTextureDescriptor",
       "parent": "GPUObjectDescriptorBase",
       "fields": [
@@ -109,13 +121,37 @@
           "type": "HTMLVideoElement",
           "default": null,
           "required": true
+        },
+        {
+          "name": "colorSpace",
+          "type": "PredefinedColorSpace",
+          "default": "\"srgb\"",
+          "required": false
         }
       ]
     },
-    {
+    "GPUSamplerDescriptor": {
       "name": "GPUSamplerDescriptor",
       "parent": "GPUObjectDescriptorBase",
       "fields": [
+        {
+          "name": "magFilter",
+          "type": "GPUFilterMode",
+          "default": "\"nearest\"",
+          "required": false
+        },
+        {
+          "name": "minFilter",
+          "type": "GPUFilterMode",
+          "default": "\"nearest\"",
+          "required": false
+        },
+        {
+          "name": "mipmapFilter",
+          "type": "GPUMipmapFilterMode",
+          "default": "\"nearest\"",
+          "required": false
+        },
         {
           "name": "lodMinClamp",
           "type": "float",
@@ -130,12 +166,12 @@
         }
       ]
     },
-    {
+    "GPUBindGroupLayoutDescriptor": {
       "name": "GPUBindGroupLayoutDescriptor",
       "parent": "GPUObjectDescriptorBase",
       "fields": []
     },
-    {
+    "GPUBindGroupLayoutEntry": {
       "name": "GPUBindGroupLayoutEntry",
       "parent": null,
       "fields": [
@@ -153,10 +189,16 @@
         }
       ]
     },
-    {
+    "GPUBufferBindingLayout": {
       "name": "GPUBufferBindingLayout",
       "parent": null,
       "fields": [
+        {
+          "name": "type",
+          "type": "GPUBufferBindingType",
+          "default": "\"uniform\"",
+          "required": false
+        },
         {
           "name": "hasDynamicOffset",
           "type": "boolean",
@@ -171,15 +213,34 @@
         }
       ]
     },
-    {
+    "GPUSamplerBindingLayout": {
       "name": "GPUSamplerBindingLayout",
       "parent": null,
-      "fields": []
+      "fields": [
+        {
+          "name": "type",
+          "type": "GPUSamplerBindingType",
+          "default": "\"filtering\"",
+          "required": false
+        }
+      ]
     },
-    {
+    "GPUTextureBindingLayout": {
       "name": "GPUTextureBindingLayout",
       "parent": null,
       "fields": [
+        {
+          "name": "sampleType",
+          "type": "GPUTextureSampleType",
+          "default": "\"float\"",
+          "required": false
+        },
+        {
+          "name": "viewDimension",
+          "type": "GPUTextureViewDimension",
+          "default": "\"2d\"",
+          "required": false
+        },
         {
           "name": "multisampled",
           "type": "boolean",
@@ -188,7 +249,7 @@
         }
       ]
     },
-    {
+    "GPUStorageTextureBindingLayout": {
       "name": "GPUStorageTextureBindingLayout",
       "parent": null,
       "fields": [
@@ -197,15 +258,21 @@
           "type": "GPUTextureFormat",
           "default": null,
           "required": true
+        },
+        {
+          "name": "viewDimension",
+          "type": "GPUTextureViewDimension",
+          "default": "\"2d\"",
+          "required": false
         }
       ]
     },
-    {
+    "GPUExternalTextureBindingLayout": {
       "name": "GPUExternalTextureBindingLayout",
       "parent": null,
       "fields": []
     },
-    {
+    "GPUBindGroupDescriptor": {
       "name": "GPUBindGroupDescriptor",
       "parent": "GPUObjectDescriptorBase",
       "fields": [
@@ -217,7 +284,7 @@
         }
       ]
     },
-    {
+    "GPUBindGroupEntry": {
       "name": "GPUBindGroupEntry",
       "parent": null,
       "fields": [
@@ -235,7 +302,7 @@
         }
       ]
     },
-    {
+    "GPUBufferBinding": {
       "name": "GPUBufferBinding",
       "parent": null,
       "fields": [
@@ -253,12 +320,12 @@
         }
       ]
     },
-    {
+    "GPUPipelineLayoutDescriptor": {
       "name": "GPUPipelineLayoutDescriptor",
       "parent": "GPUObjectDescriptorBase",
       "fields": []
     },
-    {
+    "GPUShaderModuleDescriptor": {
       "name": "GPUShaderModuleDescriptor",
       "parent": "GPUObjectDescriptorBase",
       "fields": [
@@ -270,12 +337,12 @@
         }
       ]
     },
-    {
+    "GPUShaderModuleCompilationHint": {
       "name": "GPUShaderModuleCompilationHint",
       "parent": null,
       "fields": []
     },
-    {
+    "GPUPipelineErrorInit": {
       "name": "GPUPipelineErrorInit",
       "parent": null,
       "fields": [
@@ -287,12 +354,12 @@
         }
       ]
     },
-    {
+    "GPUPipelineDescriptorBase": {
       "name": "GPUPipelineDescriptorBase",
       "parent": "GPUObjectDescriptorBase",
       "fields": []
     },
-    {
+    "GPUProgrammableStage": {
       "name": "GPUProgrammableStage",
       "parent": null,
       "fields": [
@@ -310,7 +377,7 @@
         }
       ]
     },
-    {
+    "GPUComputePipelineDescriptor": {
       "name": "GPUComputePipelineDescriptor",
       "parent": "GPUPipelineDescriptorBase",
       "fields": [
@@ -322,7 +389,7 @@
         }
       ]
     },
-    {
+    "GPURenderPipelineDescriptor": {
       "name": "GPURenderPipelineDescriptor",
       "parent": "GPUPipelineDescriptorBase",
       "fields": [
@@ -334,10 +401,22 @@
         }
       ]
     },
-    {
+    "GPUPrimitiveState": {
       "name": "GPUPrimitiveState",
       "parent": null,
       "fields": [
+        {
+          "name": "frontFace",
+          "type": "GPUFrontFace",
+          "default": "\"ccw\"",
+          "required": false
+        },
+        {
+          "name": "cullMode",
+          "type": "GPUCullMode",
+          "default": "\"none\"",
+          "required": false
+        },
         {
           "name": "unclippedDepth",
           "type": "boolean",
@@ -346,7 +425,7 @@
         }
       ]
     },
-    {
+    "GPUMultisampleState": {
       "name": "GPUMultisampleState",
       "parent": null,
       "fields": [
@@ -370,12 +449,12 @@
         }
       ]
     },
-    {
+    "GPUFragmentState": {
       "name": "GPUFragmentState",
       "parent": "GPUProgrammableStage",
       "fields": []
     },
-    {
+    "GPUColorTargetState": {
       "name": "GPUColorTargetState",
       "parent": null,
       "fields": [
@@ -387,7 +466,7 @@
         }
       ]
     },
-    {
+    "GPUBlendState": {
       "name": "GPUBlendState",
       "parent": null,
       "fields": [
@@ -405,12 +484,31 @@
         }
       ]
     },
-    {
+    "GPUBlendComponent": {
       "name": "GPUBlendComponent",
       "parent": null,
-      "fields": []
+      "fields": [
+        {
+          "name": "operation",
+          "type": "GPUBlendOperation",
+          "default": "\"add\"",
+          "required": false
+        },
+        {
+          "name": "srcFactor",
+          "type": "GPUBlendFactor",
+          "default": "\"one\"",
+          "required": false
+        },
+        {
+          "name": "dstFactor",
+          "type": "GPUBlendFactor",
+          "default": "\"zero\"",
+          "required": false
+        }
+      ]
     },
-    {
+    "GPUDepthStencilState": {
       "name": "GPUDepthStencilState",
       "parent": null,
       "fields": [
@@ -424,6 +522,12 @@
           "name": "depthWriteEnabled",
           "type": "boolean",
           "default": "false",
+          "required": false
+        },
+        {
+          "name": "depthCompare",
+          "type": "GPUCompareFunction",
+          "default": "\"always\"",
           "required": false
         },
         {
@@ -458,17 +562,42 @@
         }
       ]
     },
-    {
+    "GPUStencilFaceState": {
       "name": "GPUStencilFaceState",
       "parent": null,
-      "fields": []
+      "fields": [
+        {
+          "name": "compare",
+          "type": "GPUCompareFunction",
+          "default": "\"always\"",
+          "required": false
+        },
+        {
+          "name": "failOp",
+          "type": "GPUStencilOperation",
+          "default": "\"keep\"",
+          "required": false
+        },
+        {
+          "name": "depthFailOp",
+          "type": "GPUStencilOperation",
+          "default": "\"keep\"",
+          "required": false
+        },
+        {
+          "name": "passOp",
+          "type": "GPUStencilOperation",
+          "default": "\"keep\"",
+          "required": false
+        }
+      ]
     },
-    {
+    "GPUVertexState": {
       "name": "GPUVertexState",
       "parent": "GPUProgrammableStage",
       "fields": []
     },
-    {
+    "GPUVertexBufferLayout": {
       "name": "GPUVertexBufferLayout",
       "parent": null,
       "fields": [
@@ -477,10 +606,16 @@
           "type": "GPUSize64",
           "default": null,
           "required": true
+        },
+        {
+          "name": "stepMode",
+          "type": "GPUVertexStepMode",
+          "default": "\"vertex\"",
+          "required": false
         }
       ]
     },
-    {
+    "GPUVertexAttribute": {
       "name": "GPUVertexAttribute",
       "parent": null,
       "fields": [
@@ -504,7 +639,7 @@
         }
       ]
     },
-    {
+    "GPUImageDataLayout": {
       "name": "GPUImageDataLayout",
       "parent": null,
       "fields": [
@@ -516,7 +651,7 @@
         }
       ]
     },
-    {
+    "GPUImageCopyBuffer": {
       "name": "GPUImageCopyBuffer",
       "parent": "GPUImageDataLayout",
       "fields": [
@@ -528,7 +663,7 @@
         }
       ]
     },
-    {
+    "GPUImageCopyTexture": {
       "name": "GPUImageCopyTexture",
       "parent": null,
       "fields": [
@@ -543,13 +678,25 @@
           "type": "GPUIntegerCoordinate",
           "default": "0",
           "required": false
+        },
+        {
+          "name": "aspect",
+          "type": "GPUTextureAspect",
+          "default": "\"all\"",
+          "required": false
         }
       ]
     },
-    {
+    "GPUImageCopyTextureTagged": {
       "name": "GPUImageCopyTextureTagged",
       "parent": "GPUImageCopyTexture",
       "fields": [
+        {
+          "name": "colorSpace",
+          "type": "PredefinedColorSpace",
+          "default": "\"srgb\"",
+          "required": false
+        },
         {
           "name": "premultipliedAlpha",
           "type": "boolean",
@@ -558,7 +705,7 @@
         }
       ]
     },
-    {
+    "GPUImageCopyExternalImage": {
       "name": "GPUImageCopyExternalImage",
       "parent": null,
       "fields": [
@@ -570,17 +717,17 @@
         }
       ]
     },
-    {
+    "GPUCommandBufferDescriptor": {
       "name": "GPUCommandBufferDescriptor",
       "parent": "GPUObjectDescriptorBase",
       "fields": []
     },
-    {
+    "GPUCommandEncoderDescriptor": {
       "name": "GPUCommandEncoderDescriptor",
       "parent": "GPUObjectDescriptorBase",
       "fields": []
     },
-    {
+    "GPUComputePassTimestampWrite": {
       "name": "GPUComputePassTimestampWrite",
       "parent": null,
       "fields": [
@@ -604,12 +751,12 @@
         }
       ]
     },
-    {
+    "GPUComputePassDescriptor": {
       "name": "GPUComputePassDescriptor",
       "parent": "GPUObjectDescriptorBase",
       "fields": []
     },
-    {
+    "GPURenderPassTimestampWrite": {
       "name": "GPURenderPassTimestampWrite",
       "parent": null,
       "fields": [
@@ -633,7 +780,7 @@
         }
       ]
     },
-    {
+    "GPURenderPassDescriptor": {
       "name": "GPURenderPassDescriptor",
       "parent": "GPUObjectDescriptorBase",
       "fields": [
@@ -645,7 +792,7 @@
         }
       ]
     },
-    {
+    "GPURenderPassColorAttachment": {
       "name": "GPURenderPassColorAttachment",
       "parent": null,
       "fields": [
@@ -669,7 +816,7 @@
         }
       ]
     },
-    {
+    "GPURenderPassDepthStencilAttachment": {
       "name": "GPURenderPassDepthStencilAttachment",
       "parent": null,
       "fields": [
@@ -705,7 +852,7 @@
         }
       ]
     },
-    {
+    "GPURenderPassLayout": {
       "name": "GPURenderPassLayout",
       "parent": "GPUObjectDescriptorBase",
       "fields": [
@@ -717,12 +864,12 @@
         }
       ]
     },
-    {
+    "GPURenderBundleDescriptor": {
       "name": "GPURenderBundleDescriptor",
       "parent": "GPUObjectDescriptorBase",
       "fields": []
     },
-    {
+    "GPURenderBundleEncoderDescriptor": {
       "name": "GPURenderBundleEncoderDescriptor",
       "parent": "GPURenderPassLayout",
       "fields": [
@@ -740,12 +887,12 @@
         }
       ]
     },
-    {
+    "GPUQueueDescriptor": {
       "name": "GPUQueueDescriptor",
       "parent": "GPUObjectDescriptorBase",
       "fields": []
     },
-    {
+    "GPUQuerySetDescriptor": {
       "name": "GPUQuerySetDescriptor",
       "parent": "GPUObjectDescriptorBase",
       "fields": [
@@ -763,7 +910,7 @@
         }
       ]
     },
-    {
+    "GPUCanvasConfiguration": {
       "name": "GPUCanvasConfiguration",
       "parent": null,
       "fields": [
@@ -778,10 +925,22 @@
           "type": "GPUTextureFormat",
           "default": null,
           "required": true
+        },
+        {
+          "name": "colorSpace",
+          "type": "PredefinedColorSpace",
+          "default": "\"srgb\"",
+          "required": false
+        },
+        {
+          "name": "alphaMode",
+          "type": "GPUCanvasAlphaMode",
+          "default": "\"opaque\"",
+          "required": false
         }
       ]
     },
-    {
+    "GPUUncapturedErrorEventInit": {
       "name": "GPUUncapturedErrorEventInit",
       "parent": "EventInit",
       "fields": [
@@ -793,7 +952,7 @@
         }
       ]
     },
-    {
+    "GPUColorDict": {
       "name": "GPUColorDict",
       "parent": null,
       "fields": [
@@ -823,7 +982,7 @@
         }
       ]
     },
-    {
+    "GPUOrigin2DDict": {
       "name": "GPUOrigin2DDict",
       "parent": null,
       "fields": [
@@ -841,7 +1000,7 @@
         }
       ]
     },
-    {
+    "GPUOrigin3DDict": {
       "name": "GPUOrigin3DDict",
       "parent": null,
       "fields": [
@@ -865,896 +1024,7 @@
         }
       ]
     },
-    {
-      "name": "GPUExtent3DDict",
-      "parent": null,
-      "fields": [
-        {
-          "name": "width",
-          "type": "GPUIntegerCoordinate",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "height",
-          "type": "GPUIntegerCoordinate",
-          "default": "1",
-          "required": false
-        },
-        {
-          "name": "depthOrArrayLayers",
-          "type": "GPUIntegerCoordinate",
-          "default": "1",
-          "required": false
-        }
-      ]
-    },
-    {
-      "name": "GPUObjectDescriptorBase",
-      "parent": null,
-      "fields": []
-    },
-    {
-      "name": "GPURequestAdapterOptions",
-      "parent": null,
-      "fields": [
-        {
-          "name": "forceFallbackAdapter",
-          "type": "boolean",
-          "default": "false",
-          "required": false
-        }
-      ]
-    },
-    {
-      "name": "GPUDeviceDescriptor",
-      "parent": "GPUObjectDescriptorBase",
-      "fields": []
-    },
-    {
-      "name": "GPUBufferDescriptor",
-      "parent": "GPUObjectDescriptorBase",
-      "fields": [
-        {
-          "name": "size",
-          "type": "GPUSize64",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "usage",
-          "type": "GPUBufferUsageFlags",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "mappedAtCreation",
-          "type": "boolean",
-          "default": "false",
-          "required": false
-        }
-      ]
-    },
-    {
-      "name": "GPUTextureDescriptor",
-      "parent": "GPUObjectDescriptorBase",
-      "fields": [
-        {
-          "name": "size",
-          "type": "GPUExtent3D",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "mipLevelCount",
-          "type": "GPUIntegerCoordinate",
-          "default": "1",
-          "required": false
-        },
-        {
-          "name": "sampleCount",
-          "type": "GPUSize32",
-          "default": "1",
-          "required": false
-        },
-        {
-          "name": "format",
-          "type": "GPUTextureFormat",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "usage",
-          "type": "GPUTextureUsageFlags",
-          "default": null,
-          "required": true
-        }
-      ]
-    },
-    {
-      "name": "GPUTextureViewDescriptor",
-      "parent": "GPUObjectDescriptorBase",
-      "fields": [
-        {
-          "name": "baseMipLevel",
-          "type": "GPUIntegerCoordinate",
-          "default": "0",
-          "required": false
-        },
-        {
-          "name": "baseArrayLayer",
-          "type": "GPUIntegerCoordinate",
-          "default": "0",
-          "required": false
-        }
-      ]
-    },
-    {
-      "name": "GPUExternalTextureDescriptor",
-      "parent": "GPUObjectDescriptorBase",
-      "fields": [
-        {
-          "name": "source",
-          "type": "HTMLVideoElement",
-          "default": null,
-          "required": true
-        }
-      ]
-    },
-    {
-      "name": "GPUSamplerDescriptor",
-      "parent": "GPUObjectDescriptorBase",
-      "fields": [
-        {
-          "name": "lodMinClamp",
-          "type": "float",
-          "default": "0",
-          "required": false
-        },
-        {
-          "name": "lodMaxClamp",
-          "type": "float",
-          "default": "32",
-          "required": false
-        }
-      ]
-    },
-    {
-      "name": "GPUBindGroupLayoutDescriptor",
-      "parent": "GPUObjectDescriptorBase",
-      "fields": []
-    },
-    {
-      "name": "GPUBindGroupLayoutEntry",
-      "parent": null,
-      "fields": [
-        {
-          "name": "binding",
-          "type": "GPUIndex32",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "visibility",
-          "type": "GPUShaderStageFlags",
-          "default": null,
-          "required": true
-        }
-      ]
-    },
-    {
-      "name": "GPUBufferBindingLayout",
-      "parent": null,
-      "fields": [
-        {
-          "name": "hasDynamicOffset",
-          "type": "boolean",
-          "default": "false",
-          "required": false
-        },
-        {
-          "name": "minBindingSize",
-          "type": "GPUSize64",
-          "default": "0",
-          "required": false
-        }
-      ]
-    },
-    {
-      "name": "GPUSamplerBindingLayout",
-      "parent": null,
-      "fields": []
-    },
-    {
-      "name": "GPUTextureBindingLayout",
-      "parent": null,
-      "fields": [
-        {
-          "name": "multisampled",
-          "type": "boolean",
-          "default": "false",
-          "required": false
-        }
-      ]
-    },
-    {
-      "name": "GPUStorageTextureBindingLayout",
-      "parent": null,
-      "fields": [
-        {
-          "name": "format",
-          "type": "GPUTextureFormat",
-          "default": null,
-          "required": true
-        }
-      ]
-    },
-    {
-      "name": "GPUExternalTextureBindingLayout",
-      "parent": null,
-      "fields": []
-    },
-    {
-      "name": "GPUBindGroupDescriptor",
-      "parent": "GPUObjectDescriptorBase",
-      "fields": [
-        {
-          "name": "layout",
-          "type": "GPUBindGroupLayout",
-          "default": null,
-          "required": true
-        }
-      ]
-    },
-    {
-      "name": "GPUBindGroupEntry",
-      "parent": null,
-      "fields": [
-        {
-          "name": "binding",
-          "type": "GPUIndex32",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "resource",
-          "type": "GPUBindingResource",
-          "default": null,
-          "required": true
-        }
-      ]
-    },
-    {
-      "name": "GPUBufferBinding",
-      "parent": null,
-      "fields": [
-        {
-          "name": "buffer",
-          "type": "GPUBuffer",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "offset",
-          "type": "GPUSize64",
-          "default": "0",
-          "required": false
-        }
-      ]
-    },
-    {
-      "name": "GPUPipelineLayoutDescriptor",
-      "parent": "GPUObjectDescriptorBase",
-      "fields": []
-    },
-    {
-      "name": "GPUShaderModuleDescriptor",
-      "parent": "GPUObjectDescriptorBase",
-      "fields": [
-        {
-          "name": "code",
-          "type": "USVString",
-          "default": null,
-          "required": true
-        }
-      ]
-    },
-    {
-      "name": "GPUShaderModuleCompilationHint",
-      "parent": null,
-      "fields": []
-    },
-    {
-      "name": "GPUPipelineErrorInit",
-      "parent": null,
-      "fields": [
-        {
-          "name": "reason",
-          "type": "GPUPipelineErrorReason",
-          "default": null,
-          "required": true
-        }
-      ]
-    },
-    {
-      "name": "GPUPipelineDescriptorBase",
-      "parent": "GPUObjectDescriptorBase",
-      "fields": []
-    },
-    {
-      "name": "GPUProgrammableStage",
-      "parent": null,
-      "fields": [
-        {
-          "name": "module",
-          "type": "GPUShaderModule",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "entryPoint",
-          "type": "USVString",
-          "default": null,
-          "required": true
-        }
-      ]
-    },
-    {
-      "name": "GPUComputePipelineDescriptor",
-      "parent": "GPUPipelineDescriptorBase",
-      "fields": [
-        {
-          "name": "compute",
-          "type": "GPUProgrammableStage",
-          "default": null,
-          "required": true
-        }
-      ]
-    },
-    {
-      "name": "GPURenderPipelineDescriptor",
-      "parent": "GPUPipelineDescriptorBase",
-      "fields": [
-        {
-          "name": "vertex",
-          "type": "GPUVertexState",
-          "default": null,
-          "required": true
-        }
-      ]
-    },
-    {
-      "name": "GPUPrimitiveState",
-      "parent": null,
-      "fields": [
-        {
-          "name": "unclippedDepth",
-          "type": "boolean",
-          "default": "false",
-          "required": false
-        }
-      ]
-    },
-    {
-      "name": "GPUMultisampleState",
-      "parent": null,
-      "fields": [
-        {
-          "name": "count",
-          "type": "GPUSize32",
-          "default": "1",
-          "required": false
-        },
-        {
-          "name": "mask",
-          "type": "GPUSampleMask",
-          "default": "0xFFFFFFFF",
-          "required": false
-        },
-        {
-          "name": "alphaToCoverageEnabled",
-          "type": "boolean",
-          "default": "false",
-          "required": false
-        }
-      ]
-    },
-    {
-      "name": "GPUFragmentState",
-      "parent": "GPUProgrammableStage",
-      "fields": []
-    },
-    {
-      "name": "GPUColorTargetState",
-      "parent": null,
-      "fields": [
-        {
-          "name": "format",
-          "type": "GPUTextureFormat",
-          "default": null,
-          "required": true
-        }
-      ]
-    },
-    {
-      "name": "GPUBlendState",
-      "parent": null,
-      "fields": [
-        {
-          "name": "color",
-          "type": "GPUBlendComponent",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "alpha",
-          "type": "GPUBlendComponent",
-          "default": null,
-          "required": true
-        }
-      ]
-    },
-    {
-      "name": "GPUBlendComponent",
-      "parent": null,
-      "fields": []
-    },
-    {
-      "name": "GPUDepthStencilState",
-      "parent": null,
-      "fields": [
-        {
-          "name": "format",
-          "type": "GPUTextureFormat",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "depthWriteEnabled",
-          "type": "boolean",
-          "default": "false",
-          "required": false
-        },
-        {
-          "name": "stencilReadMask",
-          "type": "GPUStencilValue",
-          "default": "0xFFFFFFFF",
-          "required": false
-        },
-        {
-          "name": "stencilWriteMask",
-          "type": "GPUStencilValue",
-          "default": "0xFFFFFFFF",
-          "required": false
-        },
-        {
-          "name": "depthBias",
-          "type": "GPUDepthBias",
-          "default": "0",
-          "required": false
-        },
-        {
-          "name": "depthBiasSlopeScale",
-          "type": "float",
-          "default": "0",
-          "required": false
-        },
-        {
-          "name": "depthBiasClamp",
-          "type": "float",
-          "default": "0",
-          "required": false
-        }
-      ]
-    },
-    {
-      "name": "GPUStencilFaceState",
-      "parent": null,
-      "fields": []
-    },
-    {
-      "name": "GPUVertexState",
-      "parent": "GPUProgrammableStage",
-      "fields": []
-    },
-    {
-      "name": "GPUVertexBufferLayout",
-      "parent": null,
-      "fields": [
-        {
-          "name": "arrayStride",
-          "type": "GPUSize64",
-          "default": null,
-          "required": true
-        }
-      ]
-    },
-    {
-      "name": "GPUVertexAttribute",
-      "parent": null,
-      "fields": [
-        {
-          "name": "format",
-          "type": "GPUVertexFormat",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "offset",
-          "type": "GPUSize64",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "shaderLocation",
-          "type": "GPUIndex32",
-          "default": null,
-          "required": true
-        }
-      ]
-    },
-    {
-      "name": "GPUImageDataLayout",
-      "parent": null,
-      "fields": [
-        {
-          "name": "offset",
-          "type": "GPUSize64",
-          "default": "0",
-          "required": false
-        }
-      ]
-    },
-    {
-      "name": "GPUImageCopyBuffer",
-      "parent": "GPUImageDataLayout",
-      "fields": [
-        {
-          "name": "buffer",
-          "type": "GPUBuffer",
-          "default": null,
-          "required": true
-        }
-      ]
-    },
-    {
-      "name": "GPUImageCopyTexture",
-      "parent": null,
-      "fields": [
-        {
-          "name": "texture",
-          "type": "GPUTexture",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "mipLevel",
-          "type": "GPUIntegerCoordinate",
-          "default": "0",
-          "required": false
-        }
-      ]
-    },
-    {
-      "name": "GPUImageCopyTextureTagged",
-      "parent": "GPUImageCopyTexture",
-      "fields": [
-        {
-          "name": "premultipliedAlpha",
-          "type": "boolean",
-          "default": "false",
-          "required": false
-        }
-      ]
-    },
-    {
-      "name": "GPUImageCopyExternalImage",
-      "parent": null,
-      "fields": [
-        {
-          "name": "flipY",
-          "type": "boolean",
-          "default": "false",
-          "required": false
-        }
-      ]
-    },
-    {
-      "name": "GPUCommandBufferDescriptor",
-      "parent": "GPUObjectDescriptorBase",
-      "fields": []
-    },
-    {
-      "name": "GPUCommandEncoderDescriptor",
-      "parent": "GPUObjectDescriptorBase",
-      "fields": []
-    },
-    {
-      "name": "GPUComputePassTimestampWrite",
-      "parent": null,
-      "fields": [
-        {
-          "name": "querySet",
-          "type": "GPUQuerySet",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "queryIndex",
-          "type": "GPUSize32",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "location",
-          "type": "GPUComputePassTimestampLocation",
-          "default": null,
-          "required": true
-        }
-      ]
-    },
-    {
-      "name": "GPUComputePassDescriptor",
-      "parent": "GPUObjectDescriptorBase",
-      "fields": []
-    },
-    {
-      "name": "GPURenderPassTimestampWrite",
-      "parent": null,
-      "fields": [
-        {
-          "name": "querySet",
-          "type": "GPUQuerySet",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "queryIndex",
-          "type": "GPUSize32",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "location",
-          "type": "GPURenderPassTimestampLocation",
-          "default": null,
-          "required": true
-        }
-      ]
-    },
-    {
-      "name": "GPURenderPassDescriptor",
-      "parent": "GPUObjectDescriptorBase",
-      "fields": [
-        {
-          "name": "maxDrawCount",
-          "type": "GPUSize64",
-          "default": "50000000",
-          "required": false
-        }
-      ]
-    },
-    {
-      "name": "GPURenderPassColorAttachment",
-      "parent": null,
-      "fields": [
-        {
-          "name": "view",
-          "type": "GPUTextureView",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "loadOp",
-          "type": "GPULoadOp",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "storeOp",
-          "type": "GPUStoreOp",
-          "default": null,
-          "required": true
-        }
-      ]
-    },
-    {
-      "name": "GPURenderPassDepthStencilAttachment",
-      "parent": null,
-      "fields": [
-        {
-          "name": "view",
-          "type": "GPUTextureView",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "depthClearValue",
-          "type": "float",
-          "default": "0",
-          "required": false
-        },
-        {
-          "name": "depthReadOnly",
-          "type": "boolean",
-          "default": "false",
-          "required": false
-        },
-        {
-          "name": "stencilClearValue",
-          "type": "GPUStencilValue",
-          "default": "0",
-          "required": false
-        },
-        {
-          "name": "stencilReadOnly",
-          "type": "boolean",
-          "default": "false",
-          "required": false
-        }
-      ]
-    },
-    {
-      "name": "GPURenderPassLayout",
-      "parent": "GPUObjectDescriptorBase",
-      "fields": [
-        {
-          "name": "sampleCount",
-          "type": "GPUSize32",
-          "default": "1",
-          "required": false
-        }
-      ]
-    },
-    {
-      "name": "GPURenderBundleDescriptor",
-      "parent": "GPUObjectDescriptorBase",
-      "fields": []
-    },
-    {
-      "name": "GPURenderBundleEncoderDescriptor",
-      "parent": "GPURenderPassLayout",
-      "fields": [
-        {
-          "name": "depthReadOnly",
-          "type": "boolean",
-          "default": "false",
-          "required": false
-        },
-        {
-          "name": "stencilReadOnly",
-          "type": "boolean",
-          "default": "false",
-          "required": false
-        }
-      ]
-    },
-    {
-      "name": "GPUQueueDescriptor",
-      "parent": "GPUObjectDescriptorBase",
-      "fields": []
-    },
-    {
-      "name": "GPUQuerySetDescriptor",
-      "parent": "GPUObjectDescriptorBase",
-      "fields": [
-        {
-          "name": "type",
-          "type": "GPUQueryType",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "count",
-          "type": "GPUSize32",
-          "default": null,
-          "required": true
-        }
-      ]
-    },
-    {
-      "name": "GPUCanvasConfiguration",
-      "parent": null,
-      "fields": [
-        {
-          "name": "device",
-          "type": "GPUDevice",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "format",
-          "type": "GPUTextureFormat",
-          "default": null,
-          "required": true
-        }
-      ]
-    },
-    {
-      "name": "GPUUncapturedErrorEventInit",
-      "parent": "EventInit",
-      "fields": [
-        {
-          "name": "error",
-          "type": "GPUError",
-          "default": null,
-          "required": true
-        }
-      ]
-    },
-    {
-      "name": "GPUColorDict",
-      "parent": null,
-      "fields": [
-        {
-          "name": "r",
-          "type": "double",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "g",
-          "type": "double",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "b",
-          "type": "double",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "a",
-          "type": "double",
-          "default": null,
-          "required": true
-        }
-      ]
-    },
-    {
-      "name": "GPUOrigin2DDict",
-      "parent": null,
-      "fields": [
-        {
-          "name": "x",
-          "type": "GPUIntegerCoordinate",
-          "default": "0",
-          "required": false
-        },
-        {
-          "name": "y",
-          "type": "GPUIntegerCoordinate",
-          "default": "0",
-          "required": false
-        }
-      ]
-    },
-    {
-      "name": "GPUOrigin3DDict",
-      "parent": null,
-      "fields": [
-        {
-          "name": "x",
-          "type": "GPUIntegerCoordinate",
-          "default": "0",
-          "required": false
-        },
-        {
-          "name": "y",
-          "type": "GPUIntegerCoordinate",
-          "default": "0",
-          "required": false
-        },
-        {
-          "name": "z",
-          "type": "GPUIntegerCoordinate",
-          "default": "0",
-          "required": false
-        }
-      ]
-    },
-    {
+    "GPUExtent3DDict": {
       "name": "GPUExtent3DDict",
       "parent": null,
       "fields": [
@@ -1778,5 +1048,5 @@
         }
       ]
     }
-  ]
+  }
 }

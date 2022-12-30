@@ -50,7 +50,7 @@ namespace wgpu {
 class Type { \
 public: \
 	typedef Type S; /* S == Self */ \
-    typedef WGPU ## Type W; /* W == WGPU Type */ \
+	typedef WGPU ## Type W; /* W == WGPU Type */ \
 	Type(const W& w) : m_raw(w) {} \
 	operator W&() { return m_raw; } \
 	operator bool() const { return m_raw != nullptr; } \
@@ -65,8 +65,18 @@ public:
 struct Type : public WGPU ## Type { \
 public: \
 	typedef Type S; /* S == Self */ \
-    typedef WGPU ## Type W; /* W == WGPU Type */ \
+	typedef WGPU ## Type W; /* W == WGPU Type */ \
 	Type() : W() { nextInChain = nullptr; } \
+	friend auto operator<<(std::ostream &stream, const S&) -> std::ostream & { \
+		return stream << "<wgpu::" << #Type << ">"; \
+	} \
+public:
+
+#define STRUCT(Type) \
+struct Type : public WGPU ## Type { \
+public: \
+	typedef Type S; /* S == Self */ \
+	typedef WGPU ## Type W; /* W == WGPU Type */ \
 	friend auto operator<<(std::ostream &stream, const S&) -> std::ostream & { \
 		return stream << "<wgpu::" << #Type << ">"; \
 	} \
@@ -75,25 +85,25 @@ public:
 #define ENUM(Type) \
 class Type { \
 public: \
-    typedef Type S; /* S == Self */ \
-    typedef WGPU ## Type W; /* W == WGPU Type */ \
-    Type(const W& w) : m_raw(w) {} \
-    operator W() { return m_raw; } \
+	typedef Type S; /* S == Self */ \
+	typedef WGPU ## Type W; /* W == WGPU Type */ \
+	Type(const W& w) : m_raw(w) {} \
+	operator W() { return m_raw; } \
 private: \
-    W m_raw; \
+	W m_raw; \
 public:
 
 #define ENUM_ENTRY(Name, Value) \
-    static constexpr W Name = (W)Value;
+	static constexpr W Name = (W)Value;
 
 #define END };
 
 {{begin-inject}}
 HANDLE(Instance)
-    Adapter requestAdapter(const RequestAdapterOptions& options);
+	Adapter requestAdapter(const RequestAdapterOptions& options);
 END
 HANDLE(Adapter)
-    Device requestDevice(const DeviceDescriptor& descriptor);
+	Device requestDevice(const DeviceDescriptor& descriptor);
 END
 {{end-inject}}
 
@@ -144,7 +154,7 @@ wgpuShaderModuleSetLabel
 {{procedures}}
 
 Instance createInstance(const InstanceDescriptor& descriptor) {
-    return wgpuCreateInstance(&descriptor);
+	return wgpuCreateInstance(&descriptor);
 }
 
 #ifdef WEBGPU_CPP_IMPLEMENTATION
@@ -154,41 +164,41 @@ Instance createInstance(const InstanceDescriptor& descriptor) {
 
 // Extra implementations
 Adapter Instance::requestAdapter(const RequestAdapterOptions& options) {
-    Adapter adapter = nullptr;
-    bool requestEnded = false;
-    
-    auto onAdapterRequestEnded = [&adapter, &requestEnded](RequestAdapterStatus status, Adapter _adapter, char const * message) {
-        if (status == RequestAdapterStatus::Success) {
-            adapter = _adapter;
-        } else {
-            std::cout << "Could not get WebGPU adapter: " << message << std::endl;
-        }
-        requestEnded = true;
-    };
+	Adapter adapter = nullptr;
+	bool requestEnded = false;
+	
+	auto onAdapterRequestEnded = [&adapter, &requestEnded](RequestAdapterStatus status, Adapter _adapter, char const * message) {
+		if (status == RequestAdapterStatus::Success) {
+			adapter = _adapter;
+		} else {
+			std::cout << "Could not get WebGPU adapter: " << message << std::endl;
+		}
+		requestEnded = true;
+	};
 
-    requestAdapter(options, onAdapterRequestEnded);
+	requestAdapter(options, onAdapterRequestEnded);
 
-    assert(requestEnded);
-    return adapter;
+	assert(requestEnded);
+	return adapter;
 }
 
 Device Adapter::requestDevice(const DeviceDescriptor& descriptor) {
-    WGPUDevice device = nullptr;
-    bool requestEnded = false;
+	WGPUDevice device = nullptr;
+	bool requestEnded = false;
 
-    auto onDeviceRequestEnded = [&device, &requestEnded](RequestDeviceStatus status, Device _device, char const * message) {
-        if (status == RequestDeviceStatus::Success) {
-            device = _device;
-        } else {
-            std::cout << "Could not get WebGPU adapter: " << message << std::endl;
-        }
-        requestEnded = true;
-    };
+	auto onDeviceRequestEnded = [&device, &requestEnded](RequestDeviceStatus status, Device _device, char const * message) {
+		if (status == RequestDeviceStatus::Success) {
+			device = _device;
+		} else {
+			std::cout << "Could not get WebGPU adapter: " << message << std::endl;
+		}
+		requestEnded = true;
+	};
 
-    requestDevice(descriptor, onDeviceRequestEnded);
+	requestDevice(descriptor, onDeviceRequestEnded);
 
-    assert(requestEnded);
-    return device;
+	assert(requestEnded);
+	return device;
 }
 
 #endif // WEBGPU_CPP_IMPLEMENTATION

@@ -19,10 +19,4 @@ This copies the context but ensures that the callback is still valid. Another dr
 
 ---
 
-Auto-init chained struct STypes:
-
-```C++
-WGPUShaderModuleWGSLDescriptor shaderCodeDesc{};
-shaderCodeDesc.chain.next = nullptr;
-shaderCodeDesc.chain.sType = SType::ShaderModuleWGSLDescriptor;
-```
+Add some const qualifiers?

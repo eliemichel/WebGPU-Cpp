@@ -65,7 +65,7 @@ class DictionaryApi:
 
 @dataclass
 class WebGpuApi:
-    dictionaries: list[DictionaryApi] = field(default_factory=list)
+    dictionaries: dict[str,DictionaryApi] = field(default_factory=dict)
 
 #------------------------------------------------
 # Steps
@@ -91,11 +91,45 @@ def exportApi(api, filename):
 
 def exportDefaults(api, filename):
     logging.info(f"Exporting default values to {filename}...")
+
+    # Some nested structures from the JavaScript APIs are unfolded in
+    # the C header (or the other way around) so we remap the default
+    # values to their parent structure.
+    remap_to_parent = {
+        # "JavaScript dictionary": "C Structure",
+        "GPUBufferBinding": "WGPUBindGroupEntry",
+        "GPURenderPassLayout": "WGPURenderBundleEncoderDescriptor",
+        "GPUOrigin3DDict": "WGPUOrigin3D",
+        "GPUExtent3DDict": "WGPUExtent3D",
+
+        # ("JavaScript dictionary", "JavaScript property"): ("C Structure", "C field"),
+        ("GPUPrimitiveState", "unclippedDepth"): ("WGPUPrimitiveDepthClipControl", "unclippedDepth"),
+    }
+
+    # Some structure are JavaScript-specific and have not been ported in
+    # the native C header.
+    ignored = [
+        "GPUExternalTextureDescriptor",
+        "GPUImageDataLayout",
+        "GPUImageCopyTextureTagged",
+        "GPUImageCopyExternalImage",
+        "GPUCanvasConfiguration",
+        "GPUOrigin2DDict",
+    ]
+
     with open(filename, 'w', encoding="utf-8") as f:
-        for d in api.dictionaries:
+        for d in api.dictionaries.values():
+            if d.name in ignored:
+                continue
+            fixed_name = remap_to_parent.get(d.name, f"W{d.name}")
+            wrote_any = False
             for field in d.fields:
                 if field.default is not None:
-                    f.write(f"W{d.name}::{field.name} = {field.default};\n")
+                    dict_name, field_name = remap_to_parent.get((d.name, field.name), (fixed_name, field.name))
+                    f.write(f"{dict_name}::{field_name} = {field.default};\n")
+                    wrote_any = True
+            if wrote_any:
+                f.write(f"\n")
 
 #------------------------------------------------
 # Parser
@@ -109,7 +143,7 @@ def parseDefinition(api, body):
         if (match := start_dict_re.search(x)):
             dict_name = match.group(1)
             parent_name = match.group(3)
-            api.dictionaries.append(
+            api.dictionaries[dict_name] = (
                 parseDictionary(DictionaryApi(dict_name, parent_name), it)
             )
 

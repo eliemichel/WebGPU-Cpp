@@ -1,82 +1,81 @@
 WGPURequestAdapterOptions::forceFallbackAdapter = false;
+
 WGPUBufferDescriptor::mappedAtCreation = false;
+
 WGPUTextureDescriptor::mipLevelCount = 1;
 WGPUTextureDescriptor::sampleCount = 1;
+WGPUTextureDescriptor::dimension = "2d";
+
+WGPUTextureViewDescriptor::aspect = "all";
 WGPUTextureViewDescriptor::baseMipLevel = 0;
 WGPUTextureViewDescriptor::baseArrayLayer = 0;
+
+WGPUSamplerDescriptor::magFilter = "nearest";
+WGPUSamplerDescriptor::minFilter = "nearest";
+WGPUSamplerDescriptor::mipmapFilter = "nearest";
 WGPUSamplerDescriptor::lodMinClamp = 0;
 WGPUSamplerDescriptor::lodMaxClamp = 32;
+
+WGPUBufferBindingLayout::type = "uniform";
 WGPUBufferBindingLayout::hasDynamicOffset = false;
 WGPUBufferBindingLayout::minBindingSize = 0;
+
+WGPUSamplerBindingLayout::type = "filtering";
+
+WGPUTextureBindingLayout::sampleType = "float";
+WGPUTextureBindingLayout::viewDimension = "2d";
 WGPUTextureBindingLayout::multisampled = false;
-WGPUBufferBinding::offset = 0;
-WGPUPrimitiveState::unclippedDepth = false;
+
+WGPUStorageTextureBindingLayout::viewDimension = "2d";
+
+WGPUBindGroupEntry::offset = 0;
+
+WGPUPrimitiveState::frontFace = "ccw";
+WGPUPrimitiveState::cullMode = "none";
+WGPUPrimitiveDepthClipControl::unclippedDepth = false;
+
 WGPUMultisampleState::count = 1;
 WGPUMultisampleState::mask = 0xFFFFFFFF;
 WGPUMultisampleState::alphaToCoverageEnabled = false;
+
+WGPUBlendComponent::operation = "add";
+WGPUBlendComponent::srcFactor = "one";
+WGPUBlendComponent::dstFactor = "zero";
+
 WGPUDepthStencilState::depthWriteEnabled = false;
+WGPUDepthStencilState::depthCompare = "always";
 WGPUDepthStencilState::stencilReadMask = 0xFFFFFFFF;
 WGPUDepthStencilState::stencilWriteMask = 0xFFFFFFFF;
 WGPUDepthStencilState::depthBias = 0;
 WGPUDepthStencilState::depthBiasSlopeScale = 0;
 WGPUDepthStencilState::depthBiasClamp = 0;
-WGPUImageDataLayout::offset = 0;
+
+WGPUStencilFaceState::compare = "always";
+WGPUStencilFaceState::failOp = "keep";
+WGPUStencilFaceState::depthFailOp = "keep";
+WGPUStencilFaceState::passOp = "keep";
+
+WGPUVertexBufferLayout::stepMode = "vertex";
+
 WGPUImageCopyTexture::mipLevel = 0;
-WGPUImageCopyTextureTagged::premultipliedAlpha = false;
-WGPUImageCopyExternalImage::flipY = false;
+WGPUImageCopyTexture::aspect = "all";
+
 WGPURenderPassDescriptor::maxDrawCount = 50000000;
+
 WGPURenderPassDepthStencilAttachment::depthClearValue = 0;
 WGPURenderPassDepthStencilAttachment::depthReadOnly = false;
 WGPURenderPassDepthStencilAttachment::stencilClearValue = 0;
 WGPURenderPassDepthStencilAttachment::stencilReadOnly = false;
-WGPURenderPassLayout::sampleCount = 1;
+
+WGPURenderBundleEncoderDescriptor::sampleCount = 1;
+
 WGPURenderBundleEncoderDescriptor::depthReadOnly = false;
 WGPURenderBundleEncoderDescriptor::stencilReadOnly = false;
-WGPUOrigin2DDict::x = 0;
-WGPUOrigin2DDict::y = 0;
-WGPUOrigin3DDict::x = 0;
-WGPUOrigin3DDict::y = 0;
-WGPUOrigin3DDict::z = 0;
-WGPUExtent3DDict::height = 1;
-WGPUExtent3DDict::depthOrArrayLayers = 1;
-WGPURequestAdapterOptions::forceFallbackAdapter = false;
-WGPUBufferDescriptor::mappedAtCreation = false;
-WGPUTextureDescriptor::mipLevelCount = 1;
-WGPUTextureDescriptor::sampleCount = 1;
-WGPUTextureViewDescriptor::baseMipLevel = 0;
-WGPUTextureViewDescriptor::baseArrayLayer = 0;
-WGPUSamplerDescriptor::lodMinClamp = 0;
-WGPUSamplerDescriptor::lodMaxClamp = 32;
-WGPUBufferBindingLayout::hasDynamicOffset = false;
-WGPUBufferBindingLayout::minBindingSize = 0;
-WGPUTextureBindingLayout::multisampled = false;
-WGPUBufferBinding::offset = 0;
-WGPUPrimitiveState::unclippedDepth = false;
-WGPUMultisampleState::count = 1;
-WGPUMultisampleState::mask = 0xFFFFFFFF;
-WGPUMultisampleState::alphaToCoverageEnabled = false;
-WGPUDepthStencilState::depthWriteEnabled = false;
-WGPUDepthStencilState::stencilReadMask = 0xFFFFFFFF;
-WGPUDepthStencilState::stencilWriteMask = 0xFFFFFFFF;
-WGPUDepthStencilState::depthBias = 0;
-WGPUDepthStencilState::depthBiasSlopeScale = 0;
-WGPUDepthStencilState::depthBiasClamp = 0;
-WGPUImageDataLayout::offset = 0;
-WGPUImageCopyTexture::mipLevel = 0;
-WGPUImageCopyTextureTagged::premultipliedAlpha = false;
-WGPUImageCopyExternalImage::flipY = false;
-WGPURenderPassDescriptor::maxDrawCount = 50000000;
-WGPURenderPassDepthStencilAttachment::depthClearValue = 0;
-WGPURenderPassDepthStencilAttachment::depthReadOnly = false;
-WGPURenderPassDepthStencilAttachment::stencilClearValue = 0;
-WGPURenderPassDepthStencilAttachment::stencilReadOnly = false;
-WGPURenderPassLayout::sampleCount = 1;
-WGPURenderBundleEncoderDescriptor::depthReadOnly = false;
-WGPURenderBundleEncoderDescriptor::stencilReadOnly = false;
-WGPUOrigin2DDict::x = 0;
-WGPUOrigin2DDict::y = 0;
-WGPUOrigin3DDict::x = 0;
-WGPUOrigin3DDict::y = 0;
-WGPUOrigin3DDict::z = 0;
-WGPUExtent3DDict::height = 1;
-WGPUExtent3DDict::depthOrArrayLayers = 1;
+
+WGPUOrigin3D::x = 0;
+WGPUOrigin3D::y = 0;
+WGPUOrigin3D::z = 0;
+
+WGPUExtent3D::height = 1;
+WGPUExtent3D::depthOrArrayLayers = 1;
+

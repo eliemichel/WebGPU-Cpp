@@ -41,7 +41,6 @@ This generates a webgpu.hpp file that you can include in your project.
 Exactly one of your source files must #define WEBGPU_CPP_IMPLEMENTATION
 before including this header.
 
-TODO: Default values for descriptors
 TODO: Add some const qualifiers?
 """)
 
@@ -56,6 +55,10 @@ parser.add_argument("-o", "--output", type=str,
 parser.add_argument("-u", "--header-url", type=str,
                     default="https://raw.githubusercontent.com/webgpu-native/webgpu-headers/main/webgpu.h",
                     help="URL of the official webgpu.h from the webgpu-native project. If the URL does not start with http(s)://, it is considered as a local file")
+
+parser.add_argument("-d", "--defaults", action='append',
+                    default=["defaults.txt", "extra-defaults.txt"],
+                    help="File listing default values for descriptor fields. This argument can be provided multiple times, the last ones override the previous values.")
 
 parser.add_argument("--pplux", action='store_true',
                     help="Generate a binding compatible with https://github.com/pplux/wgpu.hpp (requires the use of pplux.template.h as the template)")
@@ -77,6 +80,7 @@ def main(args):
     template, meta = loadTemplate(args.template)
     header = downloadHeader(args.header_url)
     api = parseHeader(header)
+    loadDefaults(args, api)
 
     if args.pplux:
         binding = producePpluxBinding(api)
@@ -91,8 +95,9 @@ def main(args):
 @dataclass
 class PropertyApi:
     name: str
+    type: str
     counter: str|None = None  # list properties have an associated counter property
-    default_value: str = "" # TODO
+    default_value: str|None = None
 
 @dataclass
 class HandleApi:
@@ -235,8 +240,8 @@ def parseEnum(name, it):
 
 def parseClass(name, it):
     api = ClassApi(name=name)
-    end_of_struct_re = re.compile(".*}")
-    property_re = re.compile("(\w+);")
+    end_of_struct_re = re.compile(r".*}")
+    property_re = re.compile(r"^\s*(.+) (\w+);$")
 
     if name in STypes:
         api.parent = STypes[name]
@@ -245,29 +250,29 @@ def parseClass(name, it):
     x = next(it)
     while not end_of_struct_re.search(x):
         if (match := property_re.search(x)):
-            prop = match.group(1);
-            if prop == "nextInChain":
+            prop = PropertyApi(name=match.group(2), type=match.group(1))
+            if prop.name == "nextInChain":
                 api.is_descriptor = True
-            if prop == "chain" and api.parent is not None:
+            if prop.name == "chain" and api.parent is not None:
                 pass
-            elif prop[-5:] == "Count":
+            elif prop.name[-5:] == "Count":
                 count_properties.append(prop)
             else:
-                api.properties.append(PropertyApi(name=prop))
+                api.properties.append(prop)
         x = next(it)
 
     for counter in count_properties:
         # entri|ies -> entr|yCount
         # colorFormat|s -> colorFormat|sCount
-        prefix = counter[:-6]
+        prefix = counter.name[:-6]
         found = False
         for r in api.properties:
             if r.name.startswith(prefix):
-                r.counter = counter
+                r.counter = counter.name
                 found = True
                 break
         if not found:
-            api.properties.append(PropertyApi(name=prop))
+            api.properties.append(counter)
 
     return api
 
@@ -350,11 +355,31 @@ def produceBinding(api, meta):
 
         return sig_cpp, arg_c, arg_cpp, skip_next
 
+    class_names = [f"WGPU{c.name}" for c in api.classes]
     for cls_api in api.classes:
-        if cls_api.is_descriptor:
-            binding["descriptors"].append(f"DESCRIPTOR({cls_api.name})\nEND\n")
-        else:
-            binding["structs"].append(f"typedef WGPU{cls_api.name} {cls_api.name};")
+        prop_names = [f"{p.name}" for p in cls_api.properties]
+        macro = "DESCRIPTOR" if cls_api.is_descriptor else "STRUCT"
+        binding["descriptors"].append(f"{macro}({cls_api.name})\n\tvoid setDefault();\nEND\n")
+
+        prop_defaults = [
+            f"\t{prop.name} = {prop.default_value};\n"
+            for prop in cls_api.properties
+            if prop.default_value is not None
+        ] + [
+            f"\t{prop.name}.setDefault();\n"
+            for prop in cls_api.properties
+            if prop.type in class_names
+        ]
+        if "chain" in prop_names:
+            prop_defaults.append(
+                f"\tchain.sType = SType::{cls_api.name};\n"
+            )
+        binding["handles_impl"].append(
+            f"// Methods of {cls_api.name}\n"
+            + f"void {cls_api.name}::setDefault() " + "{\n"
+            + "".join(prop_defaults)
+            + "}\n"
+        )
 
     for handle in api.handles:
         binding["handles_decl"].append(f"class {handle.name};")
@@ -479,13 +504,13 @@ def produceBinding(api, meta):
             if args.use_fake_scoped_enums:
                 enum = (
                     f"ENUM({enum.name})\n"
-                    + "".join([ f"\tENUM_ENTRY({'_' if e.key[0] in '0123456789' else ''}{e.key}, {e.value})\n" for e in enum.entries ])
+                    + "".join([ f"\tENUM_ENTRY({format_enum_value(e.key)}, {e.value})\n" for e in enum.entries ])
                     + "END"
                 )
             else:
                 enum = (
                     f"enum class {enum.name}: int {{\n"
-                    + "".join([ f"\t{'_' if e.key[0] in '0123456789' else ''}{e.key} = {e.value},\n" for e in enum.entries ])
+                    + "".join([ f"\t{format_enum_value(e.key)} = {e.value},\n" for e in enum.entries ])
                     + "};"
                 )
         else:
@@ -501,6 +526,59 @@ def produceBinding(api, meta):
         binding[k] = "\n".join(v)
 
     return binding
+
+# -----------------------------------------------------------------------------
+# Default values
+
+def loadDefaults(args, api):
+    for default_file in args.defaults:
+        loadDefaultFile(api, default_file)
+    postProcessDefaults(api)
+
+def loadDefaultFile(api, filename):
+    resolved = resolveFilepath(filename)
+    logging.info(f"Loading default values from {resolved}...")
+
+    entry_re = re.compile(r"^WGPU(\w+)::(\w+) = (.+);$")
+
+    name_to_class_idx = { c.name: i for i, c in enumerate(api.classes) }
+
+    with open(resolved, encoding="utf-8") as f:
+        for lineno, line in enumerate(f):
+            if (match := entry_re.search(line)):
+                class_name = match.group(1)
+                prop_name = match.group(2)
+                default_value = match.group(3)
+                if class_name not in name_to_class_idx:
+                    logging.warning(f"Unknown class {class_name} (in file {resolved}, line {lineno + 1})")
+                    continue
+                c = api.classes[name_to_class_idx[class_name]]
+                name_to_prop_idx = { p.name: i for i, p in enumerate(c.properties) }
+                if prop_name not in name_to_prop_idx:
+                    logging.warning(f"Unknown property {class_name}::{prop_name} (in file {resolved}, line {lineno + 1})")
+                    continue
+                prop = c.properties[name_to_prop_idx[prop_name]]
+                prop.default_value = default_value
+
+def postProcessDefaults(api):
+    """Transform string into enum values in default values"""
+    name_to_enum = {
+        f"WGPU{e.name}": e for e in api.enumerations
+    }
+    for c in api.classes:
+        for prop in c.properties:
+            if prop.default_value is None:
+                continue
+            enum = name_to_enum.get(prop.type)
+            if enum is not None:
+                name_to_entry = {
+                    e.key.lower(): e for e in enum.entries
+                }
+                entry = name_to_entry.get(prop.default_value.strip('"'))
+                if entry is None:
+                    logging.warning(f"Unknown value {prop.default_value} for enum {prop.type}")
+                else:
+                    prop.default_value = f"{enum.name}::{format_enum_value(entry.key)}"
 
 # -----------------------------------------------------------------------------
 # Utility functions
@@ -595,6 +673,12 @@ def resolveFilepath(path):
             return p
     logging.error(f"Invalid template path: {path}")
     raise ValueError("Invalid template path")
+
+def format_enum_value(value):
+    if value[0] in '0123456789':
+        return '_' + value
+    else:
+        return value
 
 # -----------------------------------------------------------------------------
 # Extension reproducing PpluX binding
