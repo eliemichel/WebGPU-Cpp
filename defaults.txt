@@ -10,6 +10,9 @@ WGPUTextureViewDescriptor::aspect = "all";
 WGPUTextureViewDescriptor::baseMipLevel = 0;
 WGPUTextureViewDescriptor::baseArrayLayer = 0;
 
+WGPUSamplerDescriptor::addressModeU = "clamp-to-edge";
+WGPUSamplerDescriptor::addressModeV = "clamp-to-edge";
+WGPUSamplerDescriptor::addressModeW = "clamp-to-edge";
 WGPUSamplerDescriptor::magFilter = "nearest";
 WGPUSamplerDescriptor::minFilter = "nearest";
 WGPUSamplerDescriptor::mipmapFilter = "nearest";
@@ -26,10 +29,12 @@ WGPUTextureBindingLayout::sampleType = "float";
 WGPUTextureBindingLayout::viewDimension = "2d";
 WGPUTextureBindingLayout::multisampled = false;
 
+WGPUStorageTextureBindingLayout::access = "write-only";
 WGPUStorageTextureBindingLayout::viewDimension = "2d";
 
 WGPUBindGroupEntry::offset = 0;
 
+WGPUPrimitiveState::topology = "triangle-list";
 WGPUPrimitiveState::frontFace = "ccw";
 WGPUPrimitiveState::cullMode = "none";
 WGPUPrimitiveDepthClipControl::unclippedDepth = false;

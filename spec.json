@@ -135,6 +135,24 @@
       "parent": "GPUObjectDescriptorBase",
       "fields": [
         {
+          "name": "addressModeU",
+          "type": "GPUAddressMode",
+          "default": "\"clamp-to-edge\"",
+          "required": false
+        },
+        {
+          "name": "addressModeV",
+          "type": "GPUAddressMode",
+          "default": "\"clamp-to-edge\"",
+          "required": false
+        },
+        {
+          "name": "addressModeW",
+          "type": "GPUAddressMode",
+          "default": "\"clamp-to-edge\"",
+          "required": false
+        },
+        {
           "name": "magFilter",
           "type": "GPUFilterMode",
           "default": "\"nearest\"",
@@ -253,6 +271,12 @@
       "name": "GPUStorageTextureBindingLayout",
       "parent": null,
       "fields": [
+        {
+          "name": "access",
+          "type": "GPUStorageTextureAccess",
+          "default": "\"write-only\"",
+          "required": false
+        },
         {
           "name": "format",
           "type": "GPUTextureFormat",
@@ -405,6 +429,12 @@
       "name": "GPUPrimitiveState",
       "parent": null,
       "fields": [
+        {
+          "name": "topology",
+          "type": "GPUPrimitiveTopology",
+          "default": "\"triangle-list\"",
+          "required": false
+        },
         {
           "name": "frontFace",
           "type": "GPUFrontFace",

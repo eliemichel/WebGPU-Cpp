@@ -366,7 +366,7 @@ def produceBinding(api, meta):
             for prop in cls_api.properties
             if prop.default_value is not None
         ] + [
-            f"\t{prop.name}.setDefault();\n"
+            f"\t(({prop.type[4:]}*)&{prop.name})->setDefault();\n"
             for prop in cls_api.properties
             if prop.type in class_names
         ]
@@ -567,18 +567,21 @@ def postProcessDefaults(api):
     }
     for c in api.classes:
         for prop in c.properties:
-            if prop.default_value is None:
-                continue
             enum = name_to_enum.get(prop.type)
             if enum is not None:
                 name_to_entry = {
-                    e.key.lower(): e for e in enum.entries
+                    re.sub(r"([a-z])([A-Z])", r"\1-\2", e.key).lower(): e for e in enum.entries
                 }
-                entry = name_to_entry.get(prop.default_value.strip('"'))
-                if entry is None:
-                    logging.warning(f"Unknown value {prop.default_value} for enum {prop.type}")
+                if prop.default_value is None:
+                    entry = name_to_entry.get("undefined")
+                    if entry is not None:
+                        prop.default_value = f"{enum.name}::{format_enum_value(entry.key)}"
                 else:
-                    prop.default_value = f"{enum.name}::{format_enum_value(entry.key)}"
+                    entry = name_to_entry.get(prop.default_value.strip('"'))
+                    if entry is None:
+                        logging.warning(f"Unknown value {prop.default_value} for enum {prop.type}")
+                    else:
+                        prop.default_value = f"{enum.name}::{format_enum_value(entry.key)}"
 
 # -----------------------------------------------------------------------------
 # Utility functions
