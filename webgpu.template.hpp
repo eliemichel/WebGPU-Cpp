@@ -112,6 +112,15 @@ END
 HANDLE(Adapter)
 	Device requestDevice(const DeviceDescriptor& descriptor);
 END
+STRUCT(Color)
+	Color(double r, double g, double b, double a) : WGPUColor{ r, g, b, a } {}
+END
+STRUCT(Extent3D)
+	Extent3D(uint32_t width, uint32_t height, uint32_t depthOrArrayLayers) : WGPUExtent3D{ width, height, depthOrArrayLayers } {}
+END
+STRUCT(Origin3D)
+	Origin3D(uint32_t x, uint32_t y, uint32_t z) : WGPUOrigin3D{ x, y, z } {}
+END
 {{end-inject}}
 
 {{begin-blacklist}}

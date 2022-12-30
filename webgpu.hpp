@@ -614,9 +614,6 @@ ENUM(TextureUsageFlags)
 END
 
 // Structs
-
-
-// Descriptors
 STRUCT(ChainedStruct)
 	void setDefault();
 END
@@ -625,39 +622,12 @@ STRUCT(ChainedStructOut)
 	void setDefault();
 END
 
-DESCRIPTOR(AdapterProperties)
-	void setDefault();
-END
-
-DESCRIPTOR(BindGroupEntry)
-	void setDefault();
-END
-
 STRUCT(BlendComponent)
 	void setDefault();
 END
 
-DESCRIPTOR(BufferBindingLayout)
-	void setDefault();
-END
-
-DESCRIPTOR(BufferDescriptor)
-	void setDefault();
-END
-
 STRUCT(Color)
-	void setDefault();
-END
-
-DESCRIPTOR(CommandBufferDescriptor)
-	void setDefault();
-END
-
-DESCRIPTOR(CommandEncoderDescriptor)
-	void setDefault();
-END
-
-DESCRIPTOR(CompilationMessage)
+	Color(double r, double g, double b, double a) : WGPUColor{ r, g, b, a } {}
 	void setDefault();
 END
 
@@ -665,15 +635,8 @@ STRUCT(ComputePassTimestampWrite)
 	void setDefault();
 END
 
-DESCRIPTOR(ConstantEntry)
-	void setDefault();
-END
-
 STRUCT(Extent3D)
-	void setDefault();
-END
-
-DESCRIPTOR(InstanceDescriptor)
+	Extent3D(uint32_t width, uint32_t height, uint32_t depthOrArrayLayers) : WGPUExtent3D{ width, height, depthOrArrayLayers } {}
 	void setDefault();
 END
 
@@ -681,39 +644,12 @@ STRUCT(Limits)
 	void setDefault();
 END
 
-DESCRIPTOR(MultisampleState)
-	void setDefault();
-END
-
 STRUCT(Origin3D)
-	void setDefault();
-END
-
-DESCRIPTOR(PipelineLayoutDescriptor)
+	Origin3D(uint32_t x, uint32_t y, uint32_t z) : WGPUOrigin3D{ x, y, z } {}
 	void setDefault();
 END
 
 STRUCT(PrimitiveDepthClipControl)
-	void setDefault();
-END
-
-DESCRIPTOR(PrimitiveState)
-	void setDefault();
-END
-
-DESCRIPTOR(QuerySetDescriptor)
-	void setDefault();
-END
-
-DESCRIPTOR(QueueDescriptor)
-	void setDefault();
-END
-
-DESCRIPTOR(RenderBundleDescriptor)
-	void setDefault();
-END
-
-DESCRIPTOR(RenderBundleEncoderDescriptor)
 	void setDefault();
 END
 
@@ -722,22 +658,6 @@ STRUCT(RenderPassDepthStencilAttachment)
 END
 
 STRUCT(RenderPassTimestampWrite)
-	void setDefault();
-END
-
-DESCRIPTOR(RequestAdapterOptions)
-	void setDefault();
-END
-
-DESCRIPTOR(SamplerBindingLayout)
-	void setDefault();
-END
-
-DESCRIPTOR(SamplerDescriptor)
-	void setDefault();
-END
-
-DESCRIPTOR(ShaderModuleCompilationHint)
 	void setDefault();
 END
 
@@ -750,14 +670,6 @@ STRUCT(ShaderModuleWGSLDescriptor)
 END
 
 STRUCT(StencilFaceState)
-	void setDefault();
-END
-
-DESCRIPTOR(StorageTextureBindingLayout)
-	void setDefault();
-END
-
-DESCRIPTOR(SurfaceDescriptor)
 	void setDefault();
 END
 
@@ -789,6 +701,112 @@ STRUCT(SurfaceDescriptorFromXlibWindow)
 	void setDefault();
 END
 
+STRUCT(VertexAttribute)
+	void setDefault();
+END
+
+STRUCT(BlendState)
+	void setDefault();
+END
+
+STRUCT(RenderPassColorAttachment)
+	void setDefault();
+END
+
+STRUCT(VertexBufferLayout)
+	void setDefault();
+END
+
+
+// Descriptors
+DESCRIPTOR(AdapterProperties)
+	void setDefault();
+END
+
+DESCRIPTOR(BindGroupEntry)
+	void setDefault();
+END
+
+DESCRIPTOR(BufferBindingLayout)
+	void setDefault();
+END
+
+DESCRIPTOR(BufferDescriptor)
+	void setDefault();
+END
+
+DESCRIPTOR(CommandBufferDescriptor)
+	void setDefault();
+END
+
+DESCRIPTOR(CommandEncoderDescriptor)
+	void setDefault();
+END
+
+DESCRIPTOR(CompilationMessage)
+	void setDefault();
+END
+
+DESCRIPTOR(ConstantEntry)
+	void setDefault();
+END
+
+DESCRIPTOR(InstanceDescriptor)
+	void setDefault();
+END
+
+DESCRIPTOR(MultisampleState)
+	void setDefault();
+END
+
+DESCRIPTOR(PipelineLayoutDescriptor)
+	void setDefault();
+END
+
+DESCRIPTOR(PrimitiveState)
+	void setDefault();
+END
+
+DESCRIPTOR(QuerySetDescriptor)
+	void setDefault();
+END
+
+DESCRIPTOR(QueueDescriptor)
+	void setDefault();
+END
+
+DESCRIPTOR(RenderBundleDescriptor)
+	void setDefault();
+END
+
+DESCRIPTOR(RenderBundleEncoderDescriptor)
+	void setDefault();
+END
+
+DESCRIPTOR(RequestAdapterOptions)
+	void setDefault();
+END
+
+DESCRIPTOR(SamplerBindingLayout)
+	void setDefault();
+END
+
+DESCRIPTOR(SamplerDescriptor)
+	void setDefault();
+END
+
+DESCRIPTOR(ShaderModuleCompilationHint)
+	void setDefault();
+END
+
+DESCRIPTOR(StorageTextureBindingLayout)
+	void setDefault();
+END
+
+DESCRIPTOR(SurfaceDescriptor)
+	void setDefault();
+END
+
 DESCRIPTOR(SwapChainDescriptor)
 	void setDefault();
 END
@@ -805,19 +823,11 @@ DESCRIPTOR(TextureViewDescriptor)
 	void setDefault();
 END
 
-STRUCT(VertexAttribute)
-	void setDefault();
-END
-
 DESCRIPTOR(BindGroupDescriptor)
 	void setDefault();
 END
 
 DESCRIPTOR(BindGroupLayoutEntry)
-	void setDefault();
-END
-
-STRUCT(BlendState)
 	void setDefault();
 END
 
@@ -845,10 +855,6 @@ DESCRIPTOR(ProgrammableStageDescriptor)
 	void setDefault();
 END
 
-STRUCT(RenderPassColorAttachment)
-	void setDefault();
-END
-
 DESCRIPTOR(RequiredLimits)
 	void setDefault();
 END
@@ -862,10 +868,6 @@ DESCRIPTOR(SupportedLimits)
 END
 
 DESCRIPTOR(TextureDescriptor)
-	void setDefault();
-END
-
-STRUCT(VertexBufferLayout)
 	void setDefault();
 END
 

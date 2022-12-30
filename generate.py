@@ -30,6 +30,7 @@
 import argparse
 import re
 from dataclasses import dataclass, field
+from collections import defaultdict
 from os.path import dirname, isfile, join
 import logging
 
@@ -360,7 +361,16 @@ def produceBinding(api, meta):
     for cls_api in api.classes:
         prop_names = [f"{p.name}" for p in cls_api.properties]
         macro = "DESCRIPTOR" if cls_api.is_descriptor else "STRUCT"
-        binding["descriptors"].append(f"{macro}({cls_api.name})\n\tvoid setDefault();\nEND\n")
+        namespace = "descriptors" if cls_api.is_descriptor else "structs"
+
+        injected_decls = meta["injected-decls"].get(cls_api.name, [])
+
+        binding[namespace].append(
+            f"{macro}({cls_api.name})\n"
+            + "".join(injected_decls)
+            + "\tvoid setDefault();\n"
+            + "END\n"
+        )
 
         prop_defaults = [
             f"\t{prop.name} = {prop.default_value};\n"
@@ -665,23 +675,21 @@ def loadTemplate(path):
 def parseTemplateInjection(text):
     it = iter(text.split("\n"))
     
-    injected_data = {}
+    injected_data = defaultdict(list)
 
-    begin_re = re.compile(r"^HANDLE\((\w+)\)")
+    begin_re = re.compile(r"^(HANDLE|DESCRIPTOR|STRUCT)\((\w+)\)")
     end_re = re.compile(r"^END")
     current_category = None
 
     while (line := next(it, None)) is not None:
         if (match := begin_re.search(line)):
-            current_category = match.group(1)
+            current_category = match.group(2)
 
         elif (match := end_re.search(line)):
             current_category = None
 
         elif current_category is not None:
-            x = injected_data.get(current_category, [])
-            x.append(line + "\n")
-            injected_data[current_category] = x
+            injected_data[current_category].append(line + "\n")
 
     return injected_data
 
