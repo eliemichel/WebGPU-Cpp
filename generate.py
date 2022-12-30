@@ -402,7 +402,7 @@ def produceBinding(api, meta):
         for proc in api.procedures:
             if proc.parent == handle.name:
                 if "wgpu" + handle.name + proc.name + "\n" in meta["blacklist"]:
-                    logging.info(f"Skipping wgpu{handle.name}{proc.name} (blacklisted)...")
+                    logging.debug(f"Skipping wgpu{handle.name}{proc.name} (blacklisted)...")
                     continue
                 method_name = proc.name[0].lower() + proc.name[1:]
 
