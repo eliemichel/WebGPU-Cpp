@@ -1,0 +1,4 @@
+WGPUBindGroupLayoutEntry::buffer.type = "undefined";
+WGPUBindGroupLayoutEntry::sampler.type = "undefined";
+WGPUBindGroupLayoutEntry::storageTexture.access = "undefined";
+WGPUBindGroupLayoutEntry::texture.sampleType = "undefined";

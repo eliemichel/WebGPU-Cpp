@@ -46,6 +46,9 @@
  */
 namespace wgpu {
 
+struct DefaultFlag {};
+constexpr DefaultFlag Default;
+
 #define HANDLE(Type) \
 class Type { \
 public: \
@@ -67,6 +70,7 @@ public: \
 	typedef Type S; /* S == Self */ \
 	typedef WGPU ## Type W; /* W == WGPU Type */ \
 	Type() : W() { nextInChain = nullptr; } \
+	Type(const DefaultFlag &) : W() { setDefault(); } \
 	operator W&() { return *this; } \
 	friend auto operator<<(std::ostream &stream, const S&) -> std::ostream & { \
 		return stream << "<wgpu::" << #Type << ">"; \
@@ -78,6 +82,8 @@ struct Type : public WGPU ## Type { \
 public: \
 	typedef Type S; /* S == Self */ \
 	typedef WGPU ## Type W; /* W == WGPU Type */ \
+	Type() : W() {} \
+	Type(const DefaultFlag &) : W() { setDefault(); } \
 	friend auto operator<<(std::ostream &stream, const S&) -> std::ostream & { \
 		return stream << "<wgpu::" << #Type << ">"; \
 	} \

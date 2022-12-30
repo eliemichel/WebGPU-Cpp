@@ -46,6 +46,9 @@
  */
 namespace wgpu {
 
+struct DefaultFlag {};
+constexpr DefaultFlag Default;
+
 #define HANDLE(Type) \
 class Type { \
 public: \
@@ -67,6 +70,7 @@ public: \
 	typedef Type S; /* S == Self */ \
 	typedef WGPU ## Type W; /* W == WGPU Type */ \
 	Type() : W() { nextInChain = nullptr; } \
+	Type(const DefaultFlag &) : W() { setDefault(); } \
 	operator W&() { return *this; } \
 	friend auto operator<<(std::ostream &stream, const S&) -> std::ostream & { \
 		return stream << "<wgpu::" << #Type << ">"; \
@@ -78,6 +82,8 @@ struct Type : public WGPU ## Type { \
 public: \
 	typedef Type S; /* S == Self */ \
 	typedef WGPU ## Type W; /* W == WGPU Type */ \
+	Type() : W() {} \
+	Type(const DefaultFlag &) : W() { setDefault(); } \
 	friend auto operator<<(std::ostream &stream, const S&) -> std::ostream & { \
 		return stream << "<wgpu::" << #Type << ">"; \
 	} \
@@ -1126,7 +1132,6 @@ void AdapterProperties::setDefault() {
 
 // Methods of BindGroupEntry
 void BindGroupEntry::setDefault() {
-	offset = 0;
 }
 
 // Methods of BlendComponent
@@ -1139,13 +1144,10 @@ void BlendComponent::setDefault() {
 // Methods of BufferBindingLayout
 void BufferBindingLayout::setDefault() {
 	type = BufferBindingType::Uniform;
-	hasDynamicOffset = false;
-	minBindingSize = 0;
 }
 
 // Methods of BufferDescriptor
 void BufferDescriptor::setDefault() {
-	mappedAtCreation = false;
 }
 
 // Methods of Color
@@ -1174,8 +1176,6 @@ void ConstantEntry::setDefault() {
 
 // Methods of Extent3D
 void Extent3D::setDefault() {
-	height = 1;
-	depthOrArrayLayers = 1;
 }
 
 // Methods of InstanceDescriptor
@@ -1188,16 +1188,10 @@ void Limits::setDefault() {
 
 // Methods of MultisampleState
 void MultisampleState::setDefault() {
-	count = 1;
-	mask = 0xFFFFFFFF;
-	alphaToCoverageEnabled = false;
 }
 
 // Methods of Origin3D
 void Origin3D::setDefault() {
-	x = 0;
-	y = 0;
-	z = 0;
 }
 
 // Methods of PipelineLayoutDescriptor
@@ -1206,7 +1200,6 @@ void PipelineLayoutDescriptor::setDefault() {
 
 // Methods of PrimitiveDepthClipControl
 void PrimitiveDepthClipControl::setDefault() {
-	unclippedDepth = false;
 	((ChainedStruct*)&chain)->setDefault();
 	chain.sType = SType::PrimitiveDepthClipControl;
 }
@@ -1234,21 +1227,14 @@ void RenderBundleDescriptor::setDefault() {
 // Methods of RenderBundleEncoderDescriptor
 void RenderBundleEncoderDescriptor::setDefault() {
 	depthStencilFormat = TextureFormat::Undefined;
-	depthReadOnly = false;
-	stencilReadOnly = false;
-	sampleCount = 1;
 }
 
 // Methods of RenderPassDepthStencilAttachment
 void RenderPassDepthStencilAttachment::setDefault() {
 	depthLoadOp = LoadOp::Undefined;
 	depthStoreOp = StoreOp::Undefined;
-	depthClearValue = 0;
-	depthReadOnly = false;
 	stencilLoadOp = LoadOp::Undefined;
 	stencilStoreOp = StoreOp::Undefined;
-	stencilClearValue = 0;
-	stencilReadOnly = false;
 }
 
 // Methods of RenderPassTimestampWrite
@@ -1258,7 +1244,6 @@ void RenderPassTimestampWrite::setDefault() {
 // Methods of RequestAdapterOptions
 void RequestAdapterOptions::setDefault() {
 	powerPreference = PowerPreference::Undefined;
-	forceFallbackAdapter = false;
 }
 
 // Methods of SamplerBindingLayout
@@ -1274,8 +1259,6 @@ void SamplerDescriptor::setDefault() {
 	magFilter = FilterMode::Nearest;
 	minFilter = FilterMode::Nearest;
 	mipmapFilter = MipmapFilterMode::Nearest;
-	lodMinClamp = 0;
-	lodMaxClamp = 32;
 	compare = CompareFunction::Undefined;
 }
 
@@ -1365,7 +1348,6 @@ void SwapChainDescriptor::setDefault() {
 void TextureBindingLayout::setDefault() {
 	sampleType = TextureSampleType::Float;
 	viewDimension = TextureViewDimension::_2D;
-	multisampled = false;
 }
 
 // Methods of TextureDataLayout
@@ -1376,8 +1358,6 @@ void TextureDataLayout::setDefault() {
 void TextureViewDescriptor::setDefault() {
 	format = TextureFormat::Undefined;
 	dimension = TextureViewDimension::Undefined;
-	baseMipLevel = 0;
-	baseArrayLayer = 0;
 	aspect = TextureAspect::All;
 }
 
@@ -1396,6 +1376,10 @@ void BindGroupLayoutEntry::setDefault() {
 	((SamplerBindingLayout*)&sampler)->setDefault();
 	((TextureBindingLayout*)&texture)->setDefault();
 	((StorageTextureBindingLayout*)&storageTexture)->setDefault();
+	buffer.type = BufferBindingType::Undefined;
+	sampler.type = SamplerBindingType::Undefined;
+	storageTexture.access = StorageTextureAccess::Undefined;
+	texture.sampleType = TextureSampleType::Undefined;
 }
 
 // Methods of BlendState
@@ -1415,13 +1399,7 @@ void ComputePassDescriptor::setDefault() {
 // Methods of DepthStencilState
 void DepthStencilState::setDefault() {
 	format = TextureFormat::Undefined;
-	depthWriteEnabled = false;
 	depthCompare = CompareFunction::Always;
-	stencilReadMask = 0xFFFFFFFF;
-	stencilWriteMask = 0xFFFFFFFF;
-	depthBias = 0;
-	depthBiasSlopeScale = 0;
-	depthBiasClamp = 0;
 	((StencilFaceState*)&stencilFront)->setDefault();
 	((StencilFaceState*)&stencilBack)->setDefault();
 }
@@ -1433,7 +1411,6 @@ void ImageCopyBuffer::setDefault() {
 
 // Methods of ImageCopyTexture
 void ImageCopyTexture::setDefault() {
-	mipLevel = 0;
 	aspect = TextureAspect::All;
 	((Origin3D*)&origin)->setDefault();
 }
@@ -1467,8 +1444,6 @@ void SupportedLimits::setDefault() {
 void TextureDescriptor::setDefault() {
 	dimension = TextureDimension::_2D;
 	format = TextureFormat::Undefined;
-	mipLevelCount = 1;
-	sampleCount = 1;
 	((Extent3D*)&size)->setDefault();
 }
 

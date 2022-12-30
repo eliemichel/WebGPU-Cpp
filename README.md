@@ -89,6 +89,9 @@ BindGroupLayoutEntry bindGroupLayoutEntry;
 // This recursively set defaults for bindGroupLayoutEntry.buffer,
 // bindGroupLayoutEntry.sampler, etc.
 bindGroupLayoutEntry.setDefault();
+
+// Even more compact:
+BindGroupLayoutEntry bindGroupLayoutEntry = Default;
 ```
 
 #### Object notation

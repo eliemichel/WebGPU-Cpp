@@ -110,8 +110,9 @@ class ClassApi:
     """WebGPU structs whose fields are directly manipulated"""
     name: str
     parent: str|None = None
-    properties: list = field(default_factory=list)
+    properties: list[PropertyApi] = field(default_factory=list)
     is_descriptor: bool = False
+    default_overrides: list[(str,str)] = field(default_factory=list)
 
 @dataclass
 class ProcedureArgumentApi:
@@ -369,6 +370,9 @@ def produceBinding(api, meta):
             f"\t(({prop.type[4:]}*)&{prop.name})->setDefault();\n"
             for prop in cls_api.properties
             if prop.type in class_names
+        ] + [
+            f"\t{subprop} = {default_value};\n"
+            for subprop, default_value in cls_api.default_overrides
         ]
         if "chain" in prop_names:
             prop_defaults.append(
@@ -539,7 +543,8 @@ def loadDefaultFile(api, filename):
     resolved = resolveFilepath(filename)
     logging.info(f"Loading default values from {resolved}...")
 
-    entry_re = re.compile(r"^WGPU(\w+)::(\w+) = (.+);$")
+    entry_re = re.compile(r"^WGPU(\w+)::([\w\.]+) = (.+);$")
+    comment_re = re.compile(r"^\s*(//.*)?$")
 
     name_to_class_idx = { c.name: i for i, c in enumerate(api.classes) }
 
@@ -549,39 +554,69 @@ def loadDefaultFile(api, filename):
                 class_name = match.group(1)
                 prop_name = match.group(2)
                 default_value = match.group(3)
+
                 if class_name not in name_to_class_idx:
                     logging.warning(f"Unknown class {class_name} (in file {resolved}, line {lineno + 1})")
                     continue
+
                 c = api.classes[name_to_class_idx[class_name]]
+
+                # Special case of sub-struct override
+                if "." in prop_name:
+                    c.default_overrides.append((prop_name, default_value))
+                    continue
+
                 name_to_prop_idx = { p.name: i for i, p in enumerate(c.properties) }
                 if prop_name not in name_to_prop_idx:
                     logging.warning(f"Unknown property {class_name}::{prop_name} (in file {resolved}, line {lineno + 1})")
                     continue
+
                 prop = c.properties[name_to_prop_idx[prop_name]]
                 prop.default_value = default_value
+            elif (match := comment_re.search(line)):
+                pass
+            else:
+                logging.warning(f"Syntax error '{line.strip()}' (in file {resolved}, line {lineno + 1})")
 
 def postProcessDefaults(api):
     """Transform string into enum values in default values"""
-    name_to_enum = {
-        f"WGPU{e.name}": e for e in api.enumerations
-    }
+    name_to_enum = { f"WGPU{e.name}": e for e in api.enumerations }
+    name_to_class = { f"WGPU{c.name}": c for c in api.classes }
+
+    def fixDefaultValue(prop_type, default_value):
+        enum = name_to_enum.get(prop_type)
+        if enum is None:
+            return
+        name_to_entry = {
+            re.sub(r"([a-z])([A-Z])", r"\1-\2", e.key).lower(): e for e in enum.entries
+        }
+        if default_value is None:
+            entry = name_to_entry.get("undefined")
+            if entry is not None:
+                return f"{enum.name}::{format_enum_value(entry.key)}"
+        else:
+            entry = name_to_entry.get(default_value.strip('"'))
+            if entry is None:
+                logging.warning(f"Unknown value {default_value} for enum {prop_type}")
+                return None
+            else:
+                return f"{enum.name}::{format_enum_value(entry.key)}"
+
+    def getType(path, cls_api):
+        name_to_prop = { p.name: p for p in cls_api.properties }
+        prop = name_to_prop[path[0]]
+        if len(path) == 1:
+            return prop.type
+        else:
+            sub_cls_api = name_to_class[prop.type]
+            return getType(path[1:], sub_cls_api)
+
     for c in api.classes:
         for prop in c.properties:
-            enum = name_to_enum.get(prop.type)
-            if enum is not None:
-                name_to_entry = {
-                    re.sub(r"([a-z])([A-Z])", r"\1-\2", e.key).lower(): e for e in enum.entries
-                }
-                if prop.default_value is None:
-                    entry = name_to_entry.get("undefined")
-                    if entry is not None:
-                        prop.default_value = f"{enum.name}::{format_enum_value(entry.key)}"
-                else:
-                    entry = name_to_entry.get(prop.default_value.strip('"'))
-                    if entry is None:
-                        logging.warning(f"Unknown value {prop.default_value} for enum {prop.type}")
-                    else:
-                        prop.default_value = f"{enum.name}::{format_enum_value(entry.key)}"
+            prop.default_value = fixDefaultValue(prop.type, prop.default_value)
+        for i, (subprop, default_value) in enumerate(c.default_overrides):
+            prop_type = getType(subprop.split('.'), c)
+            c.default_overrides[i] = (subprop, fixDefaultValue(prop_type, default_value))
 
 # -----------------------------------------------------------------------------
 # Utility functions
