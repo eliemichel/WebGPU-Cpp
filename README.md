@@ -1,6 +1,3 @@
-WebGPU-C++
-==========
-
 <div align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/eliemichel/LearnWebGPU/main/images/webgpu-dark.svg">
@@ -10,6 +7,9 @@ WebGPU-C++
 
   <a href="https://github.com/eliemichel/LearnWebGPU">LearnWebGPU</a> &nbsp;|&nbsp; <a href="https://github.com/eliemichel/WebGPU-Cpp">WebGPU-C++</a> &nbsp;|&nbsp; <a href="https://github.com/eliemichel/glfw3webgpu">glfw3webgpu</a>
 </div>
+
+WebGPU-C++
+==========
 
 Table of Contents
 -----------------
