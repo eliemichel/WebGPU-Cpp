@@ -596,7 +596,7 @@ def postProcessDefaults(api):
     def fixDefaultValue(prop_type, default_value):
         enum = name_to_enum.get(prop_type)
         if enum is None:
-            return
+            return default_value
         name_to_entry = {
             re.sub(r"([a-z])([A-Z])", r"\1-\2", e.key).lower(): e for e in enum.entries
         }
