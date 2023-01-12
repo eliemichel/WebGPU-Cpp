@@ -265,7 +265,7 @@ You must then declare the body of this method at the end of the file, between `#
 
 #### PpluX
 
-This generator was inspired by [PpluX' wgpu.hpp](https://github.com/pplux/wgpu.hpp, and it can actually generate the very same headers:
+This generator was inspired by [PpluX' wgpu.hpp](https://github.com/pplux/wgpu.hpp), and it can actually generate the very same headers:
 
 ```bash
 python generate.py -t wgpu-pplux.template.hpp -o wgpu-pplux.hpp --pplux
