@@ -964,6 +964,8 @@ END
 
 HANDLE(Buffer)
 	void destroy();
+	void const * getConstMappedRange(size_t offset, size_t size);
+	void * getMappedRange(size_t offset, size_t size);
 	void mapAsync(MapModeFlags mode, size_t offset, size_t size, BufferMapCallback&& callback);
 	void unmap();
 END
@@ -1590,6 +1592,12 @@ void Adapter::requestDevice(const DeviceDescriptor& descriptor, RequestDeviceCal
 // Methods of Buffer
 void Buffer::destroy() {
 	return wgpuBufferDestroy(m_raw);
+}
+void const * Buffer::getConstMappedRange(size_t offset, size_t size) {
+	return wgpuBufferGetConstMappedRange(m_raw, offset, size);
+}
+void * Buffer::getMappedRange(size_t offset, size_t size) {
+	return wgpuBufferGetMappedRange(m_raw, offset, size);
 }
 void Buffer::mapAsync(MapModeFlags mode, size_t offset, size_t size, BufferMapCallback&& callback) {
 	static auto cCallback = [](WGPUBufferMapAsyncStatus status, void * userdata) -> void {
