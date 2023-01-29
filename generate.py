@@ -416,26 +416,32 @@ def produceBinding(api, meta):
                     arguments.append(sig)
                     argument_names.append(name)
 
+                return_type = proc.return_type
+
                 # Wrap callback into std::function&&
-                extra_body = ""
                 if "userdata" == proc.arguments[-1].name:
                     cb = callbacks[proc.arguments[-2].type[4:]]
                     cb_name = proc.arguments[-2].name
                     cb_arg_names = map(lambda a: format_arg(a)[2], cb.arguments[:-1])
-                    extra_body += (
-                          f"\tstatic auto cCallback = []({cb.raw_arguments}) -> void {{\n"
+                    body = (
+                          f"\tauto handle = std::make_unique<{cb.name}Callback>(callback);\n"
+                        + f"\tstatic auto cCallback = []({cb.raw_arguments}) -> void {{\n"
                         + f"\t\t{cb.name}Callback& callback = *reinterpret_cast<{cb.name}Callback*>(userdata);\n"
                         + f"\t\tcallback({', '.join(cb_arg_names)});\n"
                         + "\t};\n"
+                        + "\t{wrapped_call};\n"
+                        + "\treturn std::move(handle);\n"
                     )
-                    argument_names.append(f"reinterpret_cast<void*>(&{cb_name})")
+                    argument_names.append(f"reinterpret_cast<void*>(handle.get())")
+                    return_type = f"std::unique_ptr<{cb.name}Callback>"
+                else:
+                    body = "\treturn {wrapped_call};\n"
 
                 argument_names_str = ', '.join(["m_raw"] + argument_names)
 
                 begin_cast = ""
                 end_cast = ""
 
-                return_type = proc.return_type
                 if return_type.startswith("WGPU"):
                     return_type = return_type[4:]
                 if args.use_scoped_enums:
@@ -445,10 +451,10 @@ def produceBinding(api, meta):
                 
                 name_and_args = f"{method_name}({', '.join(arguments)})"
                 decls.append(f"\t{return_type} {name_and_args};\n")
+                wrapped_call = f"{begin_cast}wgpu{handle.name}{proc.name}({argument_names_str}){end_cast}"
                 implems.append(
                     f"{return_type} {handle.name}::{name_and_args} {{\n"
-                    + extra_body
-                    + f"\treturn {begin_cast}wgpu{handle.name}{proc.name}({argument_names_str}){end_cast};\n"
+                    + body.replace("{wrapped_call}", wrapped_call)
                     + "}\n"
                 )
 
@@ -477,12 +483,13 @@ def produceBinding(api, meta):
                                 alt_argument_names = argument_names[:i-1] + new_arg_names + argument_names[i+2:]
                                 alt_argument_names_str = ', '.join(["m_raw"] + alt_argument_names)
 
+                                wrapped_call = f"wgpu{handle.name}{proc.name}({alt_argument_names_str})"
+
                                 name_and_args = f"{method_name}({', '.join(alt_arguments)})"
                                 decls.append(f"\t{return_type} {name_and_args};\n")
                                 implems.append(
                                     f"{return_type} {handle.name}::{name_and_args} {{\n"
-                                    + extra_body
-                                    + f"\treturn wgpu{handle.name}{proc.name}({alt_argument_names_str});\n"
+                                    + body.replace("{wrapped_call}", wrapped_call)
                                     + "}\n"
                                 )
 

@@ -40,6 +40,7 @@
 #include <vector>
 #include <functional>
 #include <cassert>
+#include <memory>
 
 /**
  * A namespace providing a more C++ idiomatic API to WebGPU.
@@ -131,6 +132,7 @@ END
 wgpuBindGroupSetLabel
 wgpuBindGroupLayoutSetLabel
 wgpuBufferSetLabel
+wgpuBufferGetConstMappedRange
 wgpuCommandBufferSetLabel
 wgpuCommandEncoderResolveQuerySet
 wgpuCommandEncoderSetLabel

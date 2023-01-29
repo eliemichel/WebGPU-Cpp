@@ -40,6 +40,7 @@
 #include <vector>
 #include <functional>
 #include <cassert>
+#include <memory>
 
 /**
  * A namespace providing a more C++ idiomatic API to WebGPU.
@@ -952,7 +953,7 @@ HANDLE(Adapter)
 	bool getLimits(SupportedLimits * limits);
 	void getProperties(AdapterProperties * properties);
 	bool hasFeature(FeatureName feature);
-	void requestDevice(const DeviceDescriptor& descriptor, RequestDeviceCallback&& callback);
+	std::unique_ptr<RequestDeviceCallback> requestDevice(const DeviceDescriptor& descriptor, RequestDeviceCallback&& callback);
 	Device requestDevice(const DeviceDescriptor& descriptor);
 END
 
@@ -964,9 +965,8 @@ END
 
 HANDLE(Buffer)
 	void destroy();
-	void const * getConstMappedRange(size_t offset, size_t size);
 	void * getMappedRange(size_t offset, size_t size);
-	void mapAsync(MapModeFlags mode, size_t offset, size_t size, BufferMapCallback&& callback);
+	std::unique_ptr<BufferMapCallback> mapAsync(MapModeFlags mode, size_t offset, size_t size, BufferMapCallback&& callback);
 	void unmap();
 END
 
@@ -1022,13 +1022,13 @@ HANDLE(Device)
 	bool getLimits(SupportedLimits * limits);
 	Queue getQueue();
 	bool hasFeature(FeatureName feature);
-	void setDeviceLostCallback(DeviceLostCallback&& callback);
-	void setUncapturedErrorCallback(ErrorCallback&& callback);
+	std::unique_ptr<DeviceLostCallback> setDeviceLostCallback(DeviceLostCallback&& callback);
+	std::unique_ptr<ErrorCallback> setUncapturedErrorCallback(ErrorCallback&& callback);
 END
 
 HANDLE(Instance)
 	Surface createSurface(const SurfaceDescriptor& descriptor);
-	void requestAdapter(const RequestAdapterOptions& options, RequestAdapterCallback&& callback);
+	std::unique_ptr<RequestAdapterCallback> requestAdapter(const RequestAdapterOptions& options, RequestAdapterCallback&& callback);
 	Adapter requestAdapter(const RequestAdapterOptions& options);
 END
 
@@ -1574,12 +1574,14 @@ void Adapter::getProperties(AdapterProperties * properties) {
 bool Adapter::hasFeature(FeatureName feature) {
 	return wgpuAdapterHasFeature(m_raw, static_cast<WGPUFeatureName>(feature));
 }
-void Adapter::requestDevice(const DeviceDescriptor& descriptor, RequestDeviceCallback&& callback) {
+std::unique_ptr<RequestDeviceCallback> Adapter::requestDevice(const DeviceDescriptor& descriptor, RequestDeviceCallback&& callback) {
+	auto handle = std::make_unique<RequestDeviceCallback>(callback);
 	static auto cCallback = [](WGPURequestDeviceStatus status, WGPUDevice device, char const * message, void * userdata) -> void {
 		RequestDeviceCallback& callback = *reinterpret_cast<RequestDeviceCallback*>(userdata);
 		callback(static_cast<RequestDeviceStatus>(status), device, message);
 	};
-	return wgpuAdapterRequestDevice(m_raw, &descriptor, cCallback, reinterpret_cast<void*>(&callback));
+	wgpuAdapterRequestDevice(m_raw, &descriptor, cCallback, reinterpret_cast<void*>(handle.get()));
+	return std::move(handle);
 }
 
 
@@ -1593,18 +1595,17 @@ void Adapter::requestDevice(const DeviceDescriptor& descriptor, RequestDeviceCal
 void Buffer::destroy() {
 	return wgpuBufferDestroy(m_raw);
 }
-void const * Buffer::getConstMappedRange(size_t offset, size_t size) {
-	return wgpuBufferGetConstMappedRange(m_raw, offset, size);
-}
 void * Buffer::getMappedRange(size_t offset, size_t size) {
 	return wgpuBufferGetMappedRange(m_raw, offset, size);
 }
-void Buffer::mapAsync(MapModeFlags mode, size_t offset, size_t size, BufferMapCallback&& callback) {
+std::unique_ptr<BufferMapCallback> Buffer::mapAsync(MapModeFlags mode, size_t offset, size_t size, BufferMapCallback&& callback) {
+	auto handle = std::make_unique<BufferMapCallback>(callback);
 	static auto cCallback = [](WGPUBufferMapAsyncStatus status, void * userdata) -> void {
 		BufferMapCallback& callback = *reinterpret_cast<BufferMapCallback*>(userdata);
 		callback(static_cast<BufferMapAsyncStatus>(status));
 	};
-	return wgpuBufferMapAsync(m_raw, static_cast<WGPUMapModeFlags>(mode), offset, size, cCallback, reinterpret_cast<void*>(&callback));
+	wgpuBufferMapAsync(m_raw, static_cast<WGPUMapModeFlags>(mode), offset, size, cCallback, reinterpret_cast<void*>(handle.get()));
+	return std::move(handle);
 }
 void Buffer::unmap() {
 	return wgpuBufferUnmap(m_raw);
@@ -1741,19 +1742,23 @@ Queue Device::getQueue() {
 bool Device::hasFeature(FeatureName feature) {
 	return wgpuDeviceHasFeature(m_raw, static_cast<WGPUFeatureName>(feature));
 }
-void Device::setDeviceLostCallback(DeviceLostCallback&& callback) {
+std::unique_ptr<DeviceLostCallback> Device::setDeviceLostCallback(DeviceLostCallback&& callback) {
+	auto handle = std::make_unique<DeviceLostCallback>(callback);
 	static auto cCallback = [](WGPUDeviceLostReason reason, char const * message, void * userdata) -> void {
 		DeviceLostCallback& callback = *reinterpret_cast<DeviceLostCallback*>(userdata);
 		callback(static_cast<DeviceLostReason>(reason), message);
 	};
-	return wgpuDeviceSetDeviceLostCallback(m_raw, cCallback, reinterpret_cast<void*>(&callback));
+	wgpuDeviceSetDeviceLostCallback(m_raw, cCallback, reinterpret_cast<void*>(handle.get()));
+	return std::move(handle);
 }
-void Device::setUncapturedErrorCallback(ErrorCallback&& callback) {
+std::unique_ptr<ErrorCallback> Device::setUncapturedErrorCallback(ErrorCallback&& callback) {
+	auto handle = std::make_unique<ErrorCallback>(callback);
 	static auto cCallback = [](WGPUErrorType type, char const * message, void * userdata) -> void {
 		ErrorCallback& callback = *reinterpret_cast<ErrorCallback*>(userdata);
 		callback(static_cast<ErrorType>(type), message);
 	};
-	return wgpuDeviceSetUncapturedErrorCallback(m_raw, cCallback, reinterpret_cast<void*>(&callback));
+	wgpuDeviceSetUncapturedErrorCallback(m_raw, cCallback, reinterpret_cast<void*>(handle.get()));
+	return std::move(handle);
 }
 
 
@@ -1761,12 +1766,14 @@ void Device::setUncapturedErrorCallback(ErrorCallback&& callback) {
 Surface Instance::createSurface(const SurfaceDescriptor& descriptor) {
 	return wgpuInstanceCreateSurface(m_raw, &descriptor);
 }
-void Instance::requestAdapter(const RequestAdapterOptions& options, RequestAdapterCallback&& callback) {
+std::unique_ptr<RequestAdapterCallback> Instance::requestAdapter(const RequestAdapterOptions& options, RequestAdapterCallback&& callback) {
+	auto handle = std::make_unique<RequestAdapterCallback>(callback);
 	static auto cCallback = [](WGPURequestAdapterStatus status, WGPUAdapter adapter, char const * message, void * userdata) -> void {
 		RequestAdapterCallback& callback = *reinterpret_cast<RequestAdapterCallback*>(userdata);
 		callback(static_cast<RequestAdapterStatus>(status), adapter, message);
 	};
-	return wgpuInstanceRequestAdapter(m_raw, &options, cCallback, reinterpret_cast<void*>(&callback));
+	wgpuInstanceRequestAdapter(m_raw, &options, cCallback, reinterpret_cast<void*>(handle.get()));
+	return std::move(handle);
 }
 
 
