@@ -1120,6 +1120,7 @@ END
 
 // Non-member procedures
 
+
 Instance createInstance(const InstanceDescriptor& descriptor);
 
 #ifdef WEBGPU_CPP_IMPLEMENTATION

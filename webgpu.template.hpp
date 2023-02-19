@@ -188,11 +188,13 @@ wgpuTextureViewSetLabel
 // Non-member procedures
 {{procedures}}
 
+Instance createInstance(const InstanceDescriptor& descriptor);
+
+#ifdef WEBGPU_CPP_IMPLEMENTATION
+
 Instance createInstance(const InstanceDescriptor& descriptor) {
 	return wgpuCreateInstance(&descriptor);
 }
-
-#ifdef WEBGPU_CPP_IMPLEMENTATION
 
 // Handles members implementation
 {{handles_impl}}
