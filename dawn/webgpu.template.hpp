@@ -57,6 +57,7 @@ public: \
 	typedef WGPU ## Type W; /* W == WGPU Type */ \
 	Type(const W& w) : m_raw(w) {} \
 	operator W&() { return m_raw; } \
+	operator const W&() const { return m_raw; } \
 	operator bool() const { return m_raw != nullptr; } \
 	friend auto operator<<(std::ostream &stream, const S& self) -> std::ostream & { \
 		return stream << "<wgpu::" << #Type << " " << self.m_raw << ">"; \
@@ -100,6 +101,7 @@ public: \
 	typedef WGPU ## Type W; /* W == WGPU Type */ \
 	Type(const W& w) : m_raw(w) {} \
 	operator W() { return m_raw; } \
+	operator W() const { return m_raw; } \
 private: \
 	W m_raw; \
 public:
