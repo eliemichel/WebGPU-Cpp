@@ -34,7 +34,7 @@
 
 #pragma once
 
-#include <webgpu.h>
+#include <webgpu/webgpu.h>
 
 #include <iostream>
 #include <vector>
@@ -74,7 +74,6 @@ public: \
 	Type(const W &other) : W(other) { nextInChain = nullptr; } \
 	Type(const DefaultFlag &) : W() { setDefault(); } \
 	Type& operator=(const DefaultFlag &) { setDefault(); return *this; } \
-	operator W&() { return *this; } \
 	friend auto operator<<(std::ostream &stream, const S&) -> std::ostream & { \
 		return stream << "<wgpu::" << #Type << ">"; \
 	} \

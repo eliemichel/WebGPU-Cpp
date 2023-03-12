@@ -430,7 +430,7 @@ def produceBinding(api, meta):
                         + f"\t\tcallback({', '.join(cb_arg_names)});\n"
                         + "\t};\n"
                         + "\t{wrapped_call};\n"
-                        + "\treturn std::move(handle);\n"
+                        + "\treturn handle;\n"
                     )
                     argument_names.append(f"reinterpret_cast<void*>(handle.get())")
                     return_type = f"std::unique_ptr<{cb.name}Callback>"

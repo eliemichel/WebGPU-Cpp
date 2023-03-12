@@ -49,17 +49,17 @@ Quick Start
 
  1. Copy the file [webgpu.hpp](webgpu.hpp) file to your C++17 project.
 
- 2. Replace `#include <webgpu.h>` by `#include "webgpu.hpp"` in your source files:
+ 2. Replace `#include <webgpu/webgpu.h>` by `#include "webgpu/webgpu.hpp"` in your source files:
 
 ```C++
-#include "webgpu.hpp"
+#include "webgpu/webgpu.hpp"
 ```
 
  3. In **exaclty one** of your source files, add `#define WEBGPU_CPP_IMPLEMENTATION` before including webgpu.cpp:
 
 ```C++
 #define WEBGPU_CPP_IMPLEMENTATION
-#include "webgpu.hpp"
+#include "webgpu/webgpu.hpp"
 ```
 
 ### Usage
@@ -259,7 +259,7 @@ Between `{{begin-blacklist}}` and `{{end-blacklist}}`, you can list WebGPU proce
 
 #### Member injection
 
-Between `{{begin-blacklist}}` and `{{end-blacklist}}`, you can specify extra methods to inject in the auto-generated handle types. Within this scope, define a subscope with `HANDLE(Foo)` and `END` tags to add arbitrary members in type `Foo`.
+Between `{{begin-inject}}` and `{{end-inject}}`, you can specify extra methods to inject in the auto-generated handle types. Within this scope, define a subscope with `HANDLE(Foo)` and `END` tags to add arbitrary members in type `Foo`.
 
 You must then declare the body of this method at the end of the file, between `#ifdef WEBGPU_CPP_IMPLEMENTATION` and `#endif // WEBGPU_CPP_IMPLEMENTATION`
 
@@ -294,6 +294,17 @@ options:
                         output JSON file containing the scraped API
   -d OUTPUT_DEFAULTS, --output-defaults OUTPUT_DEFAULTS
                         output file containing the default values
+```
+
+### Update all generated examples
+
+The examples provided in this repository were generated as follows:
+
+```
+python generate.py -u wgpu-native/webgpu.h -t wgpu-native/webgpu.template.hpp -o wgpu-native/webgpu.hpp -d defaults.txt -d extra-defaults.txt
+python generate.py -u dawn/webgpu.h -t dawn/webgpu.template.hpp -o dawn/webgpu.hpp -d defaults.txt -d extra-defaults.txt
+python generate.py -u emscripten/webgpu.h -t emscripten/webgpu.template.hpp -o emscripten/webgpu.hpp -d defaults.txt -d extra-defaults.txt
+python generate.py -t pplux/wgpu-pplux.template.hpp -o pplux/wgpu-pplux.hpp --pplux
 ```
 
 ### See also
