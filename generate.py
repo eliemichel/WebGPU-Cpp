@@ -338,7 +338,7 @@ def produceBinding(api, meta):
             base_type = arg_type[:-8]
             arg_type = f"const {base_type}&"
             arg_c = f"&{arg_c}"
-            arg_cpp = f"*reinterpret_cast<{base_type}>({arg.name})"
+            arg_cpp = f"*reinterpret_cast<{base_type} const *>({arg.name})"
         elif arg_type in callbacks:
             arg_type = f"{arg_type}&&"
             arg_c = "cCallback"

@@ -100,7 +100,6 @@ public: \
 	typedef Type S; /* S == Self */ \
 	typedef WGPU ## Type W; /* W == WGPU Type */ \
 	Type(const W& w) : m_raw(w) {} \
-	operator W() { return m_raw; } \
 	operator W() const { return m_raw; } \
 private: \
 	W m_raw; \
@@ -130,42 +129,6 @@ END
 {{end-inject}}
 
 {{begin-blacklist}}
-wgpuBindGroupSetLabel
-wgpuBindGroupLayoutSetLabel
-wgpuBufferSetLabel
-wgpuBufferGetConstMappedRange
-wgpuCommandBufferSetLabel
-wgpuCommandEncoderResolveQuerySet
-wgpuCommandEncoderSetLabel
-wgpuCommandEncoderWriteTimestamp
-wgpuComputePassEncoderBeginPipelineStatisticsQuery
-wgpuComputePassEncoderEndPipelineStatisticsQuery
-wgpuComputePassEncoderSetLabel
-wgpuComputePipelineSetLabel
-wgpuDeviceCreateComputePipelineAsync
-wgpuDeviceCreateQuerySet
-wgpuDeviceCreateRenderPipelineAsync
-wgpuDevicePopErrorScope
-wgpuDevicePushErrorScope
-wgpuDeviceSetLabel
-wgpuInstanceProcessEvents
-wgpuPipelineLayoutSetLabel
-wgpuQuerySetDestroy
-wgpuQuerySetSetLabel
-wgpuQueueOnSubmittedWorkDone
-wgpuQueueSetLabel
-wgpuRenderBundleEncoderSetLabel
-wgpuRenderPassEncoderBeginOcclusionQuery
-wgpuRenderPassEncoderBeginPipelineStatisticsQuery
-wgpuRenderPassEncoderEndOcclusionQuery
-wgpuRenderPassEncoderEndPipelineStatisticsQuery
-wgpuRenderPassEncoderSetLabel
-wgpuRenderPipelineSetLabel
-wgpuSamplerSetLabel
-wgpuShaderModuleGetCompilationInfo
-wgpuShaderModuleSetLabel
-wgpuTextureSetLabel
-wgpuTextureViewSetLabel
 {{end-blacklist}}
 
 // Enumerations
