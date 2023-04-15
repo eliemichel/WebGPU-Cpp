@@ -221,10 +221,11 @@ ENUM(ComputePassTimestampLocation)
 END
 ENUM(CreatePipelineAsyncStatus)
 	ENUM_ENTRY(Success, 0x00000000)
-	ENUM_ENTRY(Error, 0x00000001)
-	ENUM_ENTRY(DeviceLost, 0x00000002)
-	ENUM_ENTRY(DeviceDestroyed, 0x00000003)
-	ENUM_ENTRY(Unknown, 0x00000004)
+	ENUM_ENTRY(ValidationError, 0x00000001)
+	ENUM_ENTRY(InternalError, 0x00000002)
+	ENUM_ENTRY(DeviceLost, 0x00000003)
+	ENUM_ENTRY(DeviceDestroyed, 0x00000004)
+	ENUM_ENTRY(Unknown, 0x00000005)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(CullMode)
@@ -272,12 +273,14 @@ ENUM(FeatureName)
 	ENUM_ENTRY(IndirectFirstInstance, 0x00000008)
 	ENUM_ENTRY(ShaderF16, 0x00000009)
 	ENUM_ENTRY(RG11B10UfloatRenderable, 0x0000000A)
+	ENUM_ENTRY(BGRA8UnormStorage, 0x0000000B)
 	ENUM_ENTRY(DawnShaderFloat16, 0x000003E9)
 	ENUM_ENTRY(DawnInternalUsages, 0x000003EA)
 	ENUM_ENTRY(DawnMultiPlanarFormats, 0x000003EB)
 	ENUM_ENTRY(DawnNative, 0x000003EC)
 	ENUM_ENTRY(ChromiumExperimentalDp4a, 0x000003ED)
 	ENUM_ENTRY(TimestampQueryInsidePasses, 0x000003EE)
+	ENUM_ENTRY(ImplicitDeviceSynchronization, 0x000003EF)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(FilterMode)
@@ -391,6 +394,8 @@ ENUM(SType)
 	ENUM_ENTRY(DawnCacheDeviceDescriptor, 0x000003ED)
 	ENUM_ENTRY(DawnAdapterPropertiesPowerPreference, 0x000003EE)
 	ENUM_ENTRY(DawnBufferDescriptorErrorInfoFromWireClient, 0x000003EF)
+	ENUM_ENTRY(DawnTogglesDescriptor, 0x000003F0)
+	ENUM_ENTRY(DawnShaderModuleSPIRVOptionsDescriptor, 0x000003F1)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(SamplerBindingType)
@@ -700,7 +705,15 @@ STRUCT(DawnInstanceDescriptor)
 	void setDefault();
 END
 
+STRUCT(DawnShaderModuleSPIRVOptionsDescriptor)
+	void setDefault();
+END
+
 STRUCT(DawnTextureInternalUsageDescriptor)
+	void setDefault();
+END
+
+STRUCT(DawnTogglesDescriptor)
 	void setDefault();
 END
 
@@ -1054,6 +1067,7 @@ using ProcDeviceSetUncapturedErrorCallback = std::function<void(Device device, E
 HANDLE(Adapter)
 	Device createDevice(const DeviceDescriptor& descriptor);
 	size_t enumerateFeatures(FeatureName * features);
+	Instance getInstance();
 	bool getLimits(SupportedLimits * limits);
 	void getProperties(AdapterProperties * properties);
 	bool hasFeature(FeatureName feature);
@@ -1179,12 +1193,15 @@ HANDLE(Device)
 	std::unique_ptr<LoggingCallback> setLoggingCallback(LoggingCallback&& callback);
 	std::unique_ptr<ErrorCallback> setUncapturedErrorCallback(ErrorCallback&& callback);
 	void tick();
+	void validateTextureDescriptor(const TextureDescriptor& descriptor);
 	void reference();
 	void release();
 END
 
 HANDLE(ExternalTexture)
 	void destroy();
+	void expire();
+	void refresh();
 	void setLabel(char const * label);
 	void reference();
 	void release();
@@ -1192,6 +1209,7 @@ END
 
 HANDLE(Instance)
 	Surface createSurface(const SurfaceDescriptor& descriptor);
+	void processEvents();
 	std::unique_ptr<RequestAdapterCallback> requestAdapter(const RequestAdapterOptions& options, RequestAdapterCallback&& callback);
 	void reference();
 	void release();
@@ -1309,7 +1327,6 @@ HANDLE(Surface)
 END
 
 HANDLE(SwapChain)
-	void configure(TextureFormat format, TextureUsageFlags allowedUsage, uint32_t width, uint32_t height);
 	TextureView getCurrentTextureView();
 	void present();
 	void reference();
@@ -1446,10 +1463,22 @@ void DawnInstanceDescriptor::setDefault() {
 	chain.sType = SType::DawnInstanceDescriptor;
 }
 
+// Methods of DawnShaderModuleSPIRVOptionsDescriptor
+void DawnShaderModuleSPIRVOptionsDescriptor::setDefault() {
+	((ChainedStruct*)&chain)->setDefault();
+	chain.sType = SType::DawnShaderModuleSPIRVOptionsDescriptor;
+}
+
 // Methods of DawnTextureInternalUsageDescriptor
 void DawnTextureInternalUsageDescriptor::setDefault() {
 	((ChainedStruct*)&chain)->setDefault();
 	chain.sType = SType::DawnTextureInternalUsageDescriptor;
+}
+
+// Methods of DawnTogglesDescriptor
+void DawnTogglesDescriptor::setDefault() {
+	((ChainedStruct*)&chain)->setDefault();
+	chain.sType = SType::DawnTogglesDescriptor;
 }
 
 // Methods of DawnTogglesDeviceDescriptor
@@ -1797,6 +1826,7 @@ void ImageCopyBuffer::setDefault() {
 // Methods of ImageCopyExternalTexture
 void ImageCopyExternalTexture::setDefault() {
 	((Origin3D*)&origin)->setDefault();
+	((Extent2D*)&naturalSize)->setDefault();
 }
 
 // Methods of ImageCopyTexture
@@ -1814,7 +1844,6 @@ void ProgrammableStageDescriptor::setDefault() {
 void RenderPassColorAttachment::setDefault() {
 	loadOp = LoadOp::Undefined;
 	storeOp = StoreOp::Undefined;
-	((Color*)&clearColor)->setDefault();
 	((Color*)&clearValue)->setDefault();
 }
 
@@ -1886,6 +1915,9 @@ Device Adapter::createDevice(const DeviceDescriptor& descriptor) {
 }
 size_t Adapter::enumerateFeatures(FeatureName * features) {
 	return wgpuAdapterEnumerateFeatures(m_raw, reinterpret_cast<WGPUFeatureName *>(features));
+}
+Instance Adapter::getInstance() {
+	return wgpuAdapterGetInstance(m_raw);
 }
 bool Adapter::getLimits(SupportedLimits * limits) {
 	return wgpuAdapterGetLimits(m_raw, limits);
@@ -2259,6 +2291,9 @@ std::unique_ptr<ErrorCallback> Device::setUncapturedErrorCallback(ErrorCallback&
 void Device::tick() {
 	return wgpuDeviceTick(m_raw);
 }
+void Device::validateTextureDescriptor(const TextureDescriptor& descriptor) {
+	return wgpuDeviceValidateTextureDescriptor(m_raw, &descriptor);
+}
 void Device::reference() {
 	return wgpuDeviceReference(m_raw);
 }
@@ -2270,6 +2305,12 @@ void Device::release() {
 // Methods of ExternalTexture
 void ExternalTexture::destroy() {
 	return wgpuExternalTextureDestroy(m_raw);
+}
+void ExternalTexture::expire() {
+	return wgpuExternalTextureExpire(m_raw);
+}
+void ExternalTexture::refresh() {
+	return wgpuExternalTextureRefresh(m_raw);
 }
 void ExternalTexture::setLabel(char const * label) {
 	return wgpuExternalTextureSetLabel(m_raw, label);
@@ -2285,6 +2326,9 @@ void ExternalTexture::release() {
 // Methods of Instance
 Surface Instance::createSurface(const SurfaceDescriptor& descriptor) {
 	return wgpuInstanceCreateSurface(m_raw, &descriptor);
+}
+void Instance::processEvents() {
+	return wgpuInstanceProcessEvents(m_raw);
 }
 std::unique_ptr<RequestAdapterCallback> Instance::requestAdapter(const RequestAdapterOptions& options, RequestAdapterCallback&& callback) {
 	auto handle = std::make_unique<RequestAdapterCallback>(callback);
@@ -2586,9 +2630,6 @@ void Surface::release() {
 
 
 // Methods of SwapChain
-void SwapChain::configure(TextureFormat format, TextureUsageFlags allowedUsage, uint32_t width, uint32_t height) {
-	return wgpuSwapChainConfigure(m_raw, static_cast<WGPUTextureFormat>(format), static_cast<WGPUTextureUsageFlags>(allowedUsage), width, height);
-}
 TextureView SwapChain::getCurrentTextureView() {
 	return wgpuSwapChainGetCurrentTextureView(m_raw);
 }
