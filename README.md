@@ -57,7 +57,7 @@ Quick Start
 #include "webgpu/webgpu.hpp"
 ```
 
- 3. In **exaclty one** of your source files, add `#define WEBGPU_CPP_IMPLEMENTATION` before including webgpu.cpp:
+ 3. In **exactly one** of your source files, add `#define WEBGPU_CPP_IMPLEMENTATION` before including webgpu.cpp:
 
 ```C++
 #define WEBGPU_CPP_IMPLEMENTATION
