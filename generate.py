@@ -53,12 +53,20 @@ parser.add_argument("-o", "--output", type=str,
                     default="webgpu.hpp",
                     help="Path where to output the generated webgpu.hpp")
 
-parser.add_argument("-u", "--header-url", type=str,
-                    default="https://raw.githubusercontent.com/webgpu-native/webgpu-headers/main/webgpu.h",
-                    help="URL of the official webgpu.h from the webgpu-native project. If the URL does not start with http(s)://, it is considered as a local file")
+DEFAULT_HEADER_URL = "https://raw.githubusercontent.com/webgpu-native/webgpu-headers/main/webgpu.h"
+parser.add_argument("-u", "--header-url", action='append',
+                    default=[],
+                    help=f"""
+                    URL of the official webgpu.h from the webgpu-native project. If the URL
+                    does not start with http(s)://, it is considered as a local file. You can
+                    specify this option multiple times to agregate multiple headers (e.g.,
+                    the standard webgpu.h plus backend-specific extensions wgpu.h).
+                    If no URL is specified, the official header from '{DEFAULT_HEADER_URL}'
+                    is used.
+                    """)
 
 parser.add_argument("-d", "--defaults", action='append',
-                    default=["defaults.txt", "extra-defaults.txt"],
+                    default=[],
                     help="File listing default values for descriptor fields. This argument can be provided multiple times, the last ones override the previous values.")
 
 parser.add_argument("--pplux", action='store_true',
@@ -78,9 +86,12 @@ parser.add_argument("--use-non-member-procedures", action='store_true',
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 
 def main(args):
+    applyDefaultArgs(args)
     template, meta = loadTemplate(args.template)
-    header = downloadHeader(args.header_url)
-    api = parseHeader(header)
+    api = WebGpuApi()
+    for url in args.header_url:
+        header = downloadHeader(url)
+        parseHeader(api, header)
     loadDefaults(args, api)
 
     if args.pplux:
@@ -89,6 +100,12 @@ def main(args):
         binding = produceBinding(api, meta)
     
     generateOutput(args.output, template, binding)
+
+def applyDefaultArgs(args):
+    if not args.header_url:
+        args.header_url = [DEFAULT_HEADER_URL]
+    if not args.defaults:
+        args.defaults = ["defaults.txt", "extra-defaults.txt"]
 
 # -----------------------------------------------------------------------------
 # Parser, for analyzing webgpu.h
@@ -155,15 +172,16 @@ class WebGpuApi:
 STypes = {}
 DoNotGenerate = []#["Color", "Origin3D"]
 
-def parseHeader(header):
+def parseHeader(api, header):
+    """
+    Add fields to api while reading a header file
+    """
     it = iter(header.split("\n"))
     
-    api = WebGpuApi()
-
     struct_re = re.compile(r"struct *WGPU(\w+) *{")
     typedef_re = re.compile(r"typedef struct .*WGPU(\w+);")
     stype_re = re.compile(r"WGPUSType_(\w+)")
-    procedure_re = re.compile(r"WGPU_EXPORT ([\w *]+) wgpu(\w+)\((.*)\);")
+    procedure_re = re.compile(r"(?:WGPU_EXPORT )?([\w *]+) wgpu(\w+)\((.*)\);")
     enum_re = re.compile(r"typedef enum WGPU(\w+) {")
     flag_enum_re = re.compile(r"typedef WGPUFlags WGPU(\w+)Flags;")
     callback_re = re.compile(r"typedef void \(\*WGPU(\w+)Callback\)\((.*)\);")

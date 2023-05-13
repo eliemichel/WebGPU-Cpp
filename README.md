@@ -301,7 +301,7 @@ options:
 The examples provided in this repository were generated as follows:
 
 ```
-python generate.py -u wgpu-native/webgpu.h -t wgpu-native/webgpu.template.hpp -o wgpu-native/webgpu.hpp -d defaults.txt -d extra-defaults.txt
+python generate.py -u wgpu-native/webgpu.h -u wgpu-native/wgpu.h -t wgpu-native/webgpu.template.hpp -o wgpu-native/webgpu.hpp -d defaults.txt -d extra-defaults.txt
 python generate.py -u dawn/webgpu.h -t dawn/webgpu.template.hpp -o dawn/webgpu.hpp -d defaults.txt -d extra-defaults.txt
 python generate.py -u emscripten/webgpu.h -t emscripten/webgpu.template.hpp -o emscripten/webgpu.hpp -d defaults.txt -d extra-defaults.txt
 python generate.py -t pplux/wgpu-pplux.template.hpp -o pplux/wgpu-pplux.hpp --pplux
