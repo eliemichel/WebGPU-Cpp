@@ -6,6 +6,8 @@
   </picture>
 
   <a href="https://github.com/eliemichel/LearnWebGPU">LearnWebGPU</a> &nbsp;|&nbsp; <a href="https://github.com/eliemichel/WebGPU-Cpp">WebGPU-C++</a> &nbsp;|&nbsp; <a href="https://github.com/eliemichel/glfw3webgpu">glfw3webgpu</a> &nbsp;|&nbsp; <a href="https://github.com/eliemichel/WebGPU-distribution">WebGPU-distribution</a>
+  
+  <a href="https://discord.gg/2Tar4Kt564"><img src="https://img.shields.io/static/v1?label=Discord&message=Join%20us!&color=blue&logo=discord&logoColor=white" alt="Discord | Join us!"/></a>
 </div>
 
 WebGPU-C++
@@ -55,7 +57,7 @@ Quick Start
 #include "webgpu/webgpu.hpp"
 ```
 
- 3. In **exaclty one** of your source files, add `#define WEBGPU_CPP_IMPLEMENTATION` before including webgpu.cpp:
+ 3. In **exactly one** of your source files, add `#define WEBGPU_CPP_IMPLEMENTATION` before including webgpu.cpp:
 
 ```C++
 #define WEBGPU_CPP_IMPLEMENTATION
