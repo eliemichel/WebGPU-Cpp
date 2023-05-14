@@ -132,6 +132,9 @@ END
 {{begin-blacklist}}
 {{end-blacklist}}
 
+// Other type aliases
+{{type_aliases}}
+
 // Enumerations
 {{enums}}
 

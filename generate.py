@@ -162,12 +162,18 @@ class CallbackApi:
     raw_arguments: str = ""
 
 @dataclass
+class TypeAliasApi:
+    aliased_type: str
+    wgpu_type: str
+
+@dataclass
 class WebGpuApi:
     handles: list[HandleApi] = field(default_factory=list)
     classes: list[ClassApi] = field(default_factory=list)
     procedures: list[ProcedureApi] = field(default_factory=list)
     enumerations: list[EnumerationApi] = field(default_factory=list)
     callbacks: list[CallbackApi] = field(default_factory=list)
+    type_aliases: list[TypeAliasApi] = field(default_factory=list)
 
 STypes = {}
 DoNotGenerate = []#["Color", "Origin3D"]
@@ -179,7 +185,8 @@ def parseHeader(api, header):
     it = iter(header.split("\n"))
     
     struct_re = re.compile(r"struct *WGPU(\w+) *{")
-    typedef_re = re.compile(r"typedef struct .*WGPU(\w+);")
+    handle_re = re.compile(r"typedef struct .*WGPU(\w+);")
+    typedef_re = re.compile(r"typedef (\w+) WGPU(\w+);")
     stype_re = re.compile(r"WGPUSType_(\w+)")
     procedure_re = re.compile(r"(?:WGPU_EXPORT )?([\w *]+) wgpu(\w+)\((.*)\);")
     enum_re = re.compile(r"typedef enum WGPU(\w+) {")
@@ -193,9 +200,16 @@ def parseHeader(api, header):
                 api.classes.append(parseClass(struct_name, it))
             continue
 
-        if (match := typedef_re.search(x)):
+        if (match := handle_re.search(x)):
             struct_name = match.group(1)
             api.handles.append(HandleApi(name=struct_name))
+            continue
+
+        if (match := typedef_re.search(x)):
+            api.type_aliases.append(TypeAliasApi(
+                aliased_type=match.group(1),
+                wgpu_type=match.group(2),
+            ))
             continue
 
         if (match := stype_re.search(x)):
@@ -324,6 +338,7 @@ def produceBinding(api, meta):
         "enums": [],
         "callbacks": [],
         "procedures": [],
+        "type_aliases": []
     }
 
     # Cached variables for format_arg
@@ -560,6 +575,9 @@ def produceBinding(api, meta):
         cb_args = map(lambda a: format_arg(a)[0], cb.arguments[:-1])
         # binding["callbacks"].append(f"typedef std::function<void({', '.join(cb_args)})> {cb.name}Callback;")
         binding["callbacks"].append(f"using {cb.name}Callback = std::function<void({', '.join(cb_args)})>;")
+
+    for ta in api.type_aliases:
+        binding["type_aliases"].append(f"using {ta.wgpu_type} = {ta.aliased_type};")
 
     for k, v in binding.items():
         binding[k] = "\n".join(v)

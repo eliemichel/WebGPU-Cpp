@@ -113,6 +113,16 @@ public:
 
 
 
+// Other type aliases
+using Flags = uint32_t;
+using BufferUsageFlags = WGPUFlags;
+using ColorWriteMaskFlags = WGPUFlags;
+using MapModeFlags = WGPUFlags;
+using ShaderStageFlags = WGPUFlags;
+using TextureUsageFlags = WGPUFlags;
+using InstanceBackendFlags = WGPUFlags;
+using SubmissionIndex = uint64_t;
+
 // Enumerations
 ENUM(AdapterType)
 	ENUM_ENTRY(DiscreteGPU, 0x00000000)
@@ -584,8 +594,6 @@ ENUM(BufferUsage)
 	ENUM_ENTRY(QueryResolve, 0x00000200)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
-ENUM(BufferUsageFlags)
-END
 ENUM(ColorWriteMask)
 	ENUM_ENTRY(None, 0x00000000)
 	ENUM_ENTRY(Red, 0x00000001)
@@ -595,15 +603,11 @@ ENUM(ColorWriteMask)
 	ENUM_ENTRY(All, 0x0000000F)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
-ENUM(ColorWriteMaskFlags)
-END
 ENUM(MapMode)
 	ENUM_ENTRY(None, 0x00000000)
 	ENUM_ENTRY(Read, 0x00000001)
 	ENUM_ENTRY(Write, 0x00000002)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
-END
-ENUM(MapModeFlags)
 END
 ENUM(ShaderStage)
 	ENUM_ENTRY(None, 0x00000000)
@@ -611,8 +615,6 @@ ENUM(ShaderStage)
 	ENUM_ENTRY(Fragment, 0x00000002)
 	ENUM_ENTRY(Compute, 0x00000004)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
-END
-ENUM(ShaderStageFlags)
 END
 ENUM(TextureUsage)
 	ENUM_ENTRY(None, 0x00000000)
@@ -622,8 +624,6 @@ ENUM(TextureUsage)
 	ENUM_ENTRY(StorageBinding, 0x00000008)
 	ENUM_ENTRY(RenderAttachment, 0x00000010)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
-END
-ENUM(TextureUsageFlags)
 END
 ENUM(NativeSType)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
@@ -655,8 +655,6 @@ ENUM(InstanceBackend)
 	ENUM_ENTRY(Secondary, WGPUInstanceBackend_GL)
 	ENUM_ENTRY(None, 0x00000000)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
-END
-ENUM(InstanceBackendFlags)
 END
 ENUM(Dx12Compiler)
 	ENUM_ENTRY(Undefined, 0x00000000)
@@ -1943,7 +1941,7 @@ std::unique_ptr<BufferMapCallback> Buffer::mapAsync(MapModeFlags mode, size_t of
 		BufferMapCallback& callback = *reinterpret_cast<BufferMapCallback*>(userdata);
 		callback(static_cast<BufferMapAsyncStatus>(status));
 	};
-	wgpuBufferMapAsync(m_raw, static_cast<WGPUMapModeFlags>(mode), offset, size, cCallback, reinterpret_cast<void*>(handle.get()));
+	wgpuBufferMapAsync(m_raw, mode, offset, size, cCallback, reinterpret_cast<void*>(handle.get()));
 	return handle;
 }
 void Buffer::setLabel(char const * label) {
@@ -2409,7 +2407,7 @@ void RenderPassEncoder::setViewport(float x, float y, float width, float height,
 	return wgpuRenderPassEncoderSetViewport(m_raw, x, y, width, height, minDepth, maxDepth);
 }
 void RenderPassEncoder::setPushConstants(ShaderStageFlags stages, uint32_t offset, uint32_t sizeBytes, void* const data) {
-	return wgpuRenderPassEncoderSetPushConstants(m_raw, static_cast<WGPUShaderStageFlags>(stages), offset, sizeBytes, data);
+	return wgpuRenderPassEncoderSetPushConstants(m_raw, stages, offset, sizeBytes, data);
 }
 void RenderPassEncoder::multiDrawIndirect(Buffer buffer, uint64_t offset, uint32_t count) {
 	return wgpuRenderPassEncoderMultiDrawIndirect(m_raw, buffer, offset, count);
