@@ -626,6 +626,14 @@ ENUM(TextureUsage)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(NativeSType)
+	ENUM_ENTRY(DeviceExtras, 0x60000001)
+	ENUM_ENTRY(AdapterExtras, 0x60000002)
+	ENUM_ENTRY(RequiredLimitsExtras, 0x60000003)
+	ENUM_ENTRY(PipelineLayoutExtras, 0x60000004)
+	ENUM_ENTRY(ShaderModuleGLSLDescriptor, 0x60000005)
+	ENUM_ENTRY(SupportedLimitsExtras, 0x60000003)
+	ENUM_ENTRY(InstanceExtras, 0x60000006)
+	ENUM_ENTRY(SwapChainDescriptorExtras, 0x60000007)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(NativeFeature)
@@ -1777,31 +1785,31 @@ void RenderPipelineDescriptor::setDefault() {
 void InstanceExtras::setDefault() {
 	dx12ShaderCompiler = Dx12Compiler::Undefined;
 	((ChainedStruct*)&chain)->setDefault();
-	chain.sType = SType::InstanceExtras;
+	chain.sType = (WGPUSType)NativeSType::InstanceExtras;
 }
 
 // Methods of AdapterExtras
 void AdapterExtras::setDefault() {
 	((ChainedStruct*)&chain)->setDefault();
-	chain.sType = SType::AdapterExtras;
+	chain.sType = (WGPUSType)NativeSType::AdapterExtras;
 }
 
 // Methods of DeviceExtras
 void DeviceExtras::setDefault() {
 	((ChainedStruct*)&chain)->setDefault();
-	chain.sType = SType::DeviceExtras;
+	chain.sType = (WGPUSType)NativeSType::DeviceExtras;
 }
 
 // Methods of RequiredLimitsExtras
 void RequiredLimitsExtras::setDefault() {
 	((ChainedStruct*)&chain)->setDefault();
-	chain.sType = SType::RequiredLimitsExtras;
+	chain.sType = (WGPUSType)NativeSType::RequiredLimitsExtras;
 }
 
 // Methods of SupportedLimitsExtras
 void SupportedLimitsExtras::setDefault() {
 	((ChainedStructOut*)&chain)->setDefault();
-	chain.sType = SType::SupportedLimitsExtras;
+	chain.sType = (WGPUSType)NativeSType::SupportedLimitsExtras;
 }
 
 // Methods of PushConstantRange
@@ -1811,7 +1819,7 @@ void PushConstantRange::setDefault() {
 // Methods of PipelineLayoutExtras
 void PipelineLayoutExtras::setDefault() {
 	((ChainedStruct*)&chain)->setDefault();
-	chain.sType = SType::PipelineLayoutExtras;
+	chain.sType = (WGPUSType)NativeSType::PipelineLayoutExtras;
 }
 
 // Methods of WrappedSubmissionIndex
@@ -1825,7 +1833,7 @@ void ShaderDefine::setDefault() {
 // Methods of ShaderModuleGLSLDescriptor
 void ShaderModuleGLSLDescriptor::setDefault() {
 	((ChainedStruct*)&chain)->setDefault();
-	chain.sType = SType::ShaderModuleGLSLDescriptor;
+	chain.sType = (WGPUSType)NativeSType::ShaderModuleGLSLDescriptor;
 }
 
 // Methods of StorageReport
@@ -1868,7 +1876,7 @@ void SurfaceCapabilities::setDefault() {
 // Methods of SwapChainDescriptorExtras
 void SwapChainDescriptorExtras::setDefault() {
 	((ChainedStruct*)&chain)->setDefault();
-	chain.sType = SType::SwapChainDescriptorExtras;
+	chain.sType = (WGPUSType)NativeSType::SwapChainDescriptorExtras;
 }
 
 // Methods of Adapter

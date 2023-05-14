@@ -174,9 +174,7 @@ class WebGpuApi:
     enumerations: list[EnumerationApi] = field(default_factory=list)
     callbacks: list[CallbackApi] = field(default_factory=list)
     type_aliases: list[TypeAliasApi] = field(default_factory=list)
-
-STypes = {}
-DoNotGenerate = []#["Color", "Origin3D"]
+    stypes: dict[str,str] = field(default_factory=dict) # Name => SType::Name
 
 def parseHeader(api, header):
     """
@@ -187,7 +185,6 @@ def parseHeader(api, header):
     struct_re = re.compile(r"struct *WGPU(\w+) *{")
     handle_re = re.compile(r"typedef struct .*WGPU(\w+);")
     typedef_re = re.compile(r"typedef (\w+) WGPU(\w+);")
-    stype_re = re.compile(r"WGPUSType_(\w+)")
     procedure_re = re.compile(r"(?:WGPU_EXPORT )?([\w *]+) wgpu(\w+)\((.*)\);")
     enum_re = re.compile(r"typedef enum WGPU(\w+) {")
     flag_enum_re = re.compile(r"typedef WGPUFlags WGPU(\w+)Flags;")
@@ -196,8 +193,7 @@ def parseHeader(api, header):
     while (x := next(it, None)) is not None:
         if (match := struct_re.search(x)):
             struct_name = match.group(1)
-            if struct_name not in DoNotGenerate:
-                api.classes.append(parseClass(struct_name, it))
+            api.classes.append(parseClass(struct_name, it))
             continue
 
         if (match := handle_re.search(x)):
@@ -212,10 +208,6 @@ def parseHeader(api, header):
             ))
             continue
 
-        if (match := stype_re.search(x)):
-            STypes[match.group(1)] = match.group(0)
-            continue
-
         if (match := procedure_re.search(x)):
             api.procedures.append(ProcedureApi(
                 name=match.group(2),
@@ -226,7 +218,7 @@ def parseHeader(api, header):
 
         if (match := enum_re.search(x)):
             name = match.group(1)
-            api.enumerations.append(parseEnum(name, it))
+            api.enumerations.append(parseEnum(name, it, api.stypes))
             continue
 
         if (match := flag_enum_re.search(x)):
@@ -255,8 +247,8 @@ def parseHeader(api, header):
 
     return api
 
-def parseEnum(name, it):
-    entry_re = re.compile(name + r"_(\w+) = (\w+),?")
+def parseEnum(name, it, stypes):
+    entry_re = re.compile(r"_(\w+) = (\w+),?")
     end_re = re.compile(".*}")
 
     api = EnumerationApi(name=name)
@@ -267,6 +259,10 @@ def parseEnum(name, it):
             value = match.group(2)
             api.entries.append(EnumerationEntryApi(key, value))
 
+            if "WGPUSType_" in x:
+                cast = "(WGPUSType)" if name != "SType" else ""
+                stypes[key] = cast + name + "::" + key
+
         elif (match := end_re.search(x)):
             break
 
@@ -276,9 +272,6 @@ def parseClass(name, it):
     api = ClassApi(name=name)
     end_of_struct_re = re.compile(r".*}")
     property_re = re.compile(r"^\s*(.+) (\w+);$")
-
-    if name in STypes:
-        api.parent = STypes[name]
 
     count_properties = []
     x = next(it)
@@ -419,7 +412,7 @@ def produceBinding(api, meta):
         ]
         if "chain" in prop_names:
             prop_defaults.append(
-                f"\tchain.sType = SType::{cls_api.name};\n"
+                f"\tchain.sType = {api.stypes[cls_api.name]};\n"
             )
         binding["handles_impl"].append(
             f"// Methods of {cls_api.name}\n"
