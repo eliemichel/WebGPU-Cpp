@@ -26,3 +26,7 @@ Add some const qualifiers?
 Restore default initializer lists for structs.
 
 They were disabled by the definition of the `Type(const DefaultFlag&)` constructor, we need to explicitely define them now.
+
+---
+
+RAII option

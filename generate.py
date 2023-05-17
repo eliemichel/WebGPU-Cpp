@@ -357,8 +357,10 @@ def produceBinding(api, meta):
         arg_cpp = arg.name
         skip_next = False
 
+        if arg_type.startswith("struct "):
+            arg_type = arg_type[len("struct "):]
         if arg_type.startswith("WGPU"):
-            arg_type = arg_type[4:]
+            arg_type = arg_type[len("WGPU"):]
 
         if arg_type in class_cptr_names:
             base_type = arg_type[:-8]
@@ -564,10 +566,13 @@ def produceBinding(api, meta):
             enum = f"typedef WGPU{enum.name} {enum.name};"
         binding["enums"].append(enum)
 
-    for cb in api.callbacks:
-        cb_args = map(lambda a: format_arg(a)[0], cb.arguments[:-1])
-        # binding["callbacks"].append(f"typedef std::function<void({', '.join(cb_args)})> {cb.name}Callback;")
-        binding["callbacks"].append(f"using {cb.name}Callback = std::function<void({', '.join(cb_args)})>;")
+    # Use a dict to merge duplicates
+    cb_dict = {
+        cb.name: map(lambda a: format_arg(a)[0], cb.arguments[:-1])
+        for cb in api.callbacks
+    }
+    for cb_name, cb_args in cb_dict.items():
+        binding["callbacks"].append(f"using {cb_name}Callback = std::function<void({', '.join(cb_args)})>;")
 
     for ta in api.type_aliases:
         binding["type_aliases"].append(f"using {ta.wgpu_type} = {ta.aliased_type};")
