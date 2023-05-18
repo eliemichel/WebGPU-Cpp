@@ -185,7 +185,7 @@ def parseHeader(api, header):
     struct_re = re.compile(r"struct *WGPU(\w+) *{")
     handle_re = re.compile(r"typedef struct .*WGPU(\w+);")
     typedef_re = re.compile(r"typedef (\w+) WGPU(\w+);")
-    procedure_re = re.compile(r"(?:WGPU_EXPORT )?([\w *]+) wgpu(\w+)\((.*)\);")
+    procedure_re = re.compile(r"(?:WGPU_EXPORT)?\s+([\w *]+) wgpu(\w+)\((.*)\);")
     enum_re = re.compile(r"typedef enum WGPU(\w+) {")
     flag_enum_re = re.compile(r"typedef WGPUFlags WGPU(\w+)Flags;")
     callback_re = re.compile(r"typedef void \(\*WGPU(\w+)Callback\)\((.*)\);")
@@ -209,9 +209,13 @@ def parseHeader(api, header):
             continue
 
         if (match := procedure_re.search(x)):
+            return_type = match.group(1)
+            if return_type.startswith("WGPU_EXPORT"):
+                return_type = return_type[len("WGPU_EXPORT"):]
+            return_type = return_type.strip()
             api.procedures.append(ProcedureApi(
                 name=match.group(2),
-                return_type=match.group(1),
+                return_type=return_type,
                 arguments=parseProcArgs(match.group(3)),
             ))
             continue
