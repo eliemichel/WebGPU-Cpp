@@ -180,15 +180,23 @@ def parseHeader(api, header):
     """
     Add fields to api while reading a header file
     """
-    it = iter(header.split("\n"))
+    it = iter([
+        line
+            .replace("WGPU_OBJECT_ATTRIBUTE", "")
+            .replace("WGPU_ENUM_ATTRIBUTE", "")
+            .replace("WGPU_STRUCTURE_ATTRIBUTE", "")
+            .replace("WGPU_FUNCTION_ATTRIBUTE", "")
+            .replace("WGPU_NULLABLE", "")
+        for line in header.split("\n")
+    ])
     
     struct_re = re.compile(r"struct *WGPU(\w+) *{")
-    handle_re = re.compile(r"typedef struct .*WGPU(\w+);")
-    typedef_re = re.compile(r"typedef (\w+) WGPU(\w+);")
-    procedure_re = re.compile(r"(?:WGPU_EXPORT)?\s+([\w *]+) wgpu(\w+)\((.*)\);")
+    handle_re = re.compile(r"typedef struct .*WGPU([^_]\w+)\s*;")
+    typedef_re = re.compile(r"typedef (\w+) WGPU(\w+)\s*;")
+    procedure_re = re.compile(r"(?:WGPU_EXPORT)?\s+([\w *]+) wgpu(\w+)\((.*)\)\s*;")
     enum_re = re.compile(r"typedef enum WGPU(\w+) {")
-    flag_enum_re = re.compile(r"typedef WGPUFlags WGPU(\w+)Flags;")
-    callback_re = re.compile(r"typedef void \(\*WGPU(\w+)Callback\)\((.*)\);")
+    flag_enum_re = re.compile(r"typedef WGPUFlags WGPU(\w+)Flags\s*;")
+    callback_re = re.compile(r"typedef void \(\*WGPU(\w+)Callback\)\((.*)\)\s*;")
 
     while (x := next(it, None)) is not None:
         if (match := struct_re.search(x)):

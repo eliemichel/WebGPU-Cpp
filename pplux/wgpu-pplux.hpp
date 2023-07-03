@@ -58,29 +58,29 @@ namespace wgpu {
     END
     // Automatically generated
 
-    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
-    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
-    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
-    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
-    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
-    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
-    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
-    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
-    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
-    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
-    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
-    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
-    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
-    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
-    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
-    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
-    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
-    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
-    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
-    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
-    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
-    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
-    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
+    typedef WGPUAdapter Adapter;
+    typedef WGPUBindGroup BindGroup;
+    typedef WGPUBindGroupLayout BindGroupLayout;
+    typedef WGPUBuffer Buffer;
+    typedef WGPUCommandBuffer CommandBuffer;
+    typedef WGPUCommandEncoder CommandEncoder;
+    typedef WGPUComputePassEncoder ComputePassEncoder;
+    typedef WGPUComputePipeline ComputePipeline;
+    typedef WGPUDevice Device;
+    typedef WGPUInstance Instance;
+    typedef WGPUPipelineLayout PipelineLayout;
+    typedef WGPUQuerySet QuerySet;
+    typedef WGPUQueue Queue;
+    typedef WGPURenderBundle RenderBundle;
+    typedef WGPURenderBundleEncoder RenderBundleEncoder;
+    typedef WGPURenderPassEncoder RenderPassEncoder;
+    typedef WGPURenderPipeline RenderPipeline;
+    typedef WGPUSampler Sampler;
+    typedef WGPUShaderModule ShaderModule;
+    typedef WGPUSurface Surface;
+    typedef WGPUSwapChain SwapChain;
+    typedef WGPUTexture Texture;
+    typedef WGPUTextureView TextureView;
 
     CLASS(ChainedStruct)
         PROP(next)
