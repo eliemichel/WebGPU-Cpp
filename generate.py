@@ -417,9 +417,12 @@ def produceBinding(api, meta):
             for subprop, default_value in cls_api.default_overrides
         ]
         if "chain" in prop_names:
-            prop_defaults.append(
-                f"\tchain.sType = {api.stypes[cls_api.name]};\n"
-            )
+            if cls_api.name in api.stypes:
+                prop_defaults.append(
+                    f"\tchain.sType = {api.stypes[cls_api.name]};\n"
+                )
+            else:
+                logging.warning(f"Type {cls_api.name} starts with a 'chain' field but has no apparent associated SType.")
         binding["handles_impl"].append(
             f"// Methods of {cls_api.name}\n"
             + f"void {cls_api.name}::setDefault() " + "{\n"

@@ -111,6 +111,14 @@ public:
 
 
 
+// Other type aliases
+using Flags = uint32_t;
+using BufferUsageFlags = WGPUFlags;
+using ColorWriteMaskFlags = WGPUFlags;
+using MapModeFlags = WGPUFlags;
+using ShaderStageFlags = WGPUFlags;
+using TextureUsageFlags = WGPUFlags;
+
 // Enumerations
 ENUM(AdapterType)
 	ENUM_ENTRY(DiscreteGPU, 0x00000000)
@@ -559,8 +567,6 @@ ENUM(BufferUsage)
 	ENUM_ENTRY(QueryResolve, 0x00000200)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
-ENUM(BufferUsageFlags)
-END
 ENUM(ColorWriteMask)
 	ENUM_ENTRY(None, 0x00000000)
 	ENUM_ENTRY(Red, 0x00000001)
@@ -570,15 +576,11 @@ ENUM(ColorWriteMask)
 	ENUM_ENTRY(All, 0x0000000F)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
-ENUM(ColorWriteMaskFlags)
-END
 ENUM(MapMode)
 	ENUM_ENTRY(None, 0x00000000)
 	ENUM_ENTRY(Read, 0x00000001)
 	ENUM_ENTRY(Write, 0x00000002)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
-END
-ENUM(MapModeFlags)
 END
 ENUM(ShaderStage)
 	ENUM_ENTRY(None, 0x00000000)
@@ -586,8 +588,6 @@ ENUM(ShaderStage)
 	ENUM_ENTRY(Fragment, 0x00000002)
 	ENUM_ENTRY(Compute, 0x00000004)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
-END
-ENUM(ShaderStageFlags)
 END
 ENUM(TextureUsage)
 	ENUM_ENTRY(None, 0x00000000)
@@ -597,8 +597,6 @@ ENUM(TextureUsage)
 	ENUM_ENTRY(StorageBinding, 0x00000008)
 	ENUM_ENTRY(RenderAttachment, 0x00000010)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
-END
-ENUM(TextureUsageFlags)
 END
 
 // Structs
@@ -1471,10 +1469,6 @@ void BindGroupLayoutEntry::setDefault() {
 	sampler.type = SamplerBindingType::Undefined;
 	storageTexture.access = StorageTextureAccess::Undefined;
 	texture.sampleType = TextureSampleType::Undefined;
-	buffer.type = BufferBindingType::Undefined;
-	sampler.type = SamplerBindingType::Undefined;
-	storageTexture.access = StorageTextureAccess::Undefined;
-	texture.sampleType = TextureSampleType::Undefined;
 }
 
 // Methods of BlendState
@@ -1666,7 +1660,7 @@ std::unique_ptr<BufferMapCallback> Buffer::mapAsync(MapModeFlags mode, size_t of
 		BufferMapCallback& callback = *reinterpret_cast<BufferMapCallback*>(userdata);
 		callback(static_cast<BufferMapAsyncStatus>(status));
 	};
-	wgpuBufferMapAsync(m_raw, static_cast<WGPUMapModeFlags>(mode), offset, size, cCallback, reinterpret_cast<void*>(handle.get()));
+	wgpuBufferMapAsync(m_raw, mode, offset, size, cCallback, reinterpret_cast<void*>(handle.get()));
 	return handle;
 }
 void Buffer::setLabel(char const * label) {

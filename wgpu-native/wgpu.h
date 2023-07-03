@@ -17,11 +17,12 @@ typedef enum WGPUNativeSType {
 } WGPUNativeSType;
 
 typedef enum WGPUNativeFeature {
-    WGPUNativeFeature_PUSH_CONSTANTS = 0x60000001,
-    WGPUNativeFeature_TEXTURE_ADAPTER_SPECIFIC_FORMAT_FEATURES = 0x60000002,
-    WGPUNativeFeature_MULTI_DRAW_INDIRECT = 0x60000003,
-    WGPUNativeFeature_MULTI_DRAW_INDIRECT_COUNT = 0x60000004,
-    WGPUNativeFeature_VERTEX_WRITABLE_STORAGE = 0x60000005,
+    WGPUNativeFeature_PushConstants = 0x60000001,
+    WGPUNativeFeature_TextureAdapterSpecificFormatFeatures = 0x60000002,
+    WGPUNativeFeature_MultiDrawIndirect = 0x60000003,
+    WGPUNativeFeature_MultiDrawIndirectCount = 0x60000004,
+    WGPUNativeFeature_VertexWritableStorage = 0x60000005,
+    WGPUNativeFeature_Force32 = 0x7FFFFFFF
 } WGPUNativeFeature;
 
 typedef enum WGPULogLevel {
@@ -177,13 +178,19 @@ typedef struct WGPUSwapChainDescriptorExtras {
     WGPUTextureFormat const * viewFormats;
 } WGPUSwapChainDescriptorExtras;
 
+typedef struct WGPUInstanceEnumerateAdapterOptions {
+    WGPUChainedStruct chain;
+    WGPUInstanceBackendFlags backends;
+} WGPUInstanceEnumerateAdapterOptions;
+
 typedef void (*WGPULogCallback)(WGPULogLevel level, char const * message, void * userdata);
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void wgpuGenerateReport(WGPUInstance instance, WGPUGlobalReport* report);
+void wgpuGenerateReport(WGPUInstance instance, WGPUGlobalReport * report);
+size_t wgpuInstanceEnumerateAdapters(WGPUInstance instance, WGPUInstanceEnumerateAdapterOptions const * options, WGPUAdapter * adapters);
 
 WGPUSubmissionIndex wgpuQueueSubmitForIndex(WGPUQueue queue, uint32_t commandCount, WGPUCommandBuffer const * commands);
 
@@ -205,29 +212,6 @@ void wgpuRenderPassEncoderMultiDrawIndexedIndirect(WGPURenderPassEncoder encoder
 
 void wgpuRenderPassEncoderMultiDrawIndirectCount(WGPURenderPassEncoder encoder, WGPUBuffer buffer, uint64_t offset, WGPUBuffer count_buffer, uint64_t count_buffer_offset, uint32_t max_count);
 void wgpuRenderPassEncoderMultiDrawIndexedIndirectCount(WGPURenderPassEncoder encoder, WGPUBuffer buffer, uint64_t offset, WGPUBuffer count_buffer, uint64_t count_buffer_offset, uint32_t max_count);
-
-void wgpuInstanceDrop(WGPUInstance instance);
-void wgpuAdapterDrop(WGPUAdapter adapter);
-void wgpuBindGroupDrop(WGPUBindGroup bindGroup);
-void wgpuBindGroupLayoutDrop(WGPUBindGroupLayout bindGroupLayout);
-void wgpuBufferDrop(WGPUBuffer buffer);
-void wgpuCommandBufferDrop(WGPUCommandBuffer commandBuffer);
-void wgpuCommandEncoderDrop(WGPUCommandEncoder commandEncoder);
-void wgpuRenderPassEncoderDrop(WGPURenderPassEncoder renderPassEncoder);
-void wgpuComputePassEncoderDrop(WGPUComputePassEncoder computePassEncoder);
-void wgpuRenderBundleEncoderDrop(WGPURenderBundleEncoder renderBundleEncoder);
-void wgpuComputePipelineDrop(WGPUComputePipeline computePipeline);
-void wgpuDeviceDrop(WGPUDevice device);
-void wgpuPipelineLayoutDrop(WGPUPipelineLayout pipelineLayout);
-void wgpuQuerySetDrop(WGPUQuerySet querySet);
-void wgpuRenderBundleDrop(WGPURenderBundle renderBundle);
-void wgpuRenderPipelineDrop(WGPURenderPipeline renderPipeline);
-void wgpuSamplerDrop(WGPUSampler sampler);
-void wgpuShaderModuleDrop(WGPUShaderModule shaderModule);
-void wgpuSurfaceDrop(WGPUSurface surface);
-void wgpuSwapChainDrop(WGPUSwapChain swapChain);
-void wgpuTextureDrop(WGPUTexture texture);
-void wgpuTextureViewDrop(WGPUTextureView textureView);
 
 #ifdef __cplusplus
 } // extern "C"

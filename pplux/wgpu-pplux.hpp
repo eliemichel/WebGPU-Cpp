@@ -58,29 +58,29 @@ namespace wgpu {
     END
     // Automatically generated
 
-    typedef WGPUAdapter Adapter;
-    typedef WGPUBindGroup BindGroup;
-    typedef WGPUBindGroupLayout BindGroupLayout;
-    typedef WGPUBuffer Buffer;
-    typedef WGPUCommandBuffer CommandBuffer;
-    typedef WGPUCommandEncoder CommandEncoder;
-    typedef WGPUComputePassEncoder ComputePassEncoder;
-    typedef WGPUComputePipeline ComputePipeline;
-    typedef WGPUDevice Device;
-    typedef WGPUInstance Instance;
-    typedef WGPUPipelineLayout PipelineLayout;
-    typedef WGPUQuerySet QuerySet;
-    typedef WGPUQueue Queue;
-    typedef WGPURenderBundle RenderBundle;
-    typedef WGPURenderBundleEncoder RenderBundleEncoder;
-    typedef WGPURenderPassEncoder RenderPassEncoder;
-    typedef WGPURenderPipeline RenderPipeline;
-    typedef WGPUSampler Sampler;
-    typedef WGPUShaderModule ShaderModule;
-    typedef WGPUSurface Surface;
-    typedef WGPUSwapChain SwapChain;
-    typedef WGPUTexture Texture;
-    typedef WGPUTextureView TextureView;
+    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
+    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
+    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
+    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
+    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
+    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
+    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
+    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
+    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
+    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
+    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
+    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
+    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
+    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
+    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
+    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
+    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
+    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
+    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
+    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
+    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
+    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
+    typedef WGPU_OBJECT_ATTRIBUTE _OBJECT_ATTRIBUTE;
 
     CLASS(ChainedStruct)
         PROP(next)
@@ -160,6 +160,9 @@ namespace wgpu {
         PROP(linePos)
         PROP(offset)
         PROP(length)
+        PROP(utf16LinePos)
+        PROP(utf16Offset)
+        PROP(utf16Length)
     END
 
     CLASS(ComputePassTimestampWrite)
@@ -209,6 +212,7 @@ namespace wgpu {
         PROP(maxInterStageShaderComponents)
         PROP(maxInterStageShaderVariables)
         PROP(maxColorAttachments)
+        PROP(maxColorAttachmentBytesPerSample)
         PROP(maxComputeWorkgroupStorageSize)
         PROP(maxComputeInvocationsPerWorkgroup)
         PROP(maxComputeWorkgroupSizeX)
@@ -274,7 +278,7 @@ namespace wgpu {
         PROP(depthStencilFormat)
         PROP(depthReadOnly)
         PROP(stencilReadOnly)
-        PROP(stencilReadOnly)
+        PROP(sampleCount)
     END
 
     CLASS(RenderPassDepthStencilAttachment)
@@ -304,6 +308,7 @@ namespace wgpu {
         PROP(nextInChain)
         PROP(compatibleSurface)
         PROP(powerPreference)
+        PROP(backendType)
         PROP(forceFallbackAdapter)
     END
 
@@ -434,8 +439,8 @@ namespace wgpu {
         PROP(baseMipLevel)
         PROP(baseArrayLayer)
         PROP(aspect)
-        PROP(aspect)
-        PROP(aspect)
+        PROP(mipLevelCount)
+        PROP(arrayLayerCount)
     END
 
     CLASS(VertexAttribute)
@@ -544,8 +549,8 @@ namespace wgpu {
         PROP(size)
         PROP(format)
         LIST(viewFormats,viewFormatCount)
-        PROP(viewFormats)
-        PROP(viewFormats)
+        PROP(mipLevelCount)
+        PROP(sampleCount)
     END
 
     CLASS(VertexBufferLayout)
@@ -580,6 +585,8 @@ namespace wgpu {
         LIST(requiredFeatures,requiredFeaturesCount)
         PROP(requiredLimits)
         PROP(defaultQueue)
+        PROP(deviceLostCallback)
+        PROP(deviceLostUserdata)
     END
 
     DESCRIPTOR(RenderPassDescriptor)
