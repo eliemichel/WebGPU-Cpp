@@ -504,7 +504,7 @@ def produceBinding(api, meta):
                 # Add utility overload for arguments of the form 'uint32_t xxCount, Xx const * xx'
                 for i in range(len(proc.arguments) - 1):
                     a, b = proc.arguments[i], proc.arguments[i + 1]
-                    if a.type == "uint32_t" and a.name.endswith("Count"):
+                    if a.type in {"uint32_t","size_t"} and a.name.endswith("Count"):
                         name = a.name[:-5]
                         if b.type.endswith("const *") and b.name.startswith(name):
                             vec_type = b.type[:-8]
@@ -513,7 +513,7 @@ def produceBinding(api, meta):
                             alternatives = [
                                 (
                                     [f"const std::vector<{vec_type}>& {vec_name}"],
-                                    [f"static_cast<uint32_t>({vec_name}.size())", f"{vec_name}.data()"]
+                                    [f"static_cast<{a.type}>({vec_name}.size())", f"{vec_name}.data()"]
                                 ),
                                 (
                                     [f"const {vec_type}& {vec_name}"],

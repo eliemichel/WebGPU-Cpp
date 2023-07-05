@@ -1146,6 +1146,8 @@ HANDLE(ComputePassEncoder)
 	void popDebugGroup();
 	void pushDebugGroup(char const * groupLabel);
 	void setBindGroup(uint32_t groupIndex, BindGroup group, size_t dynamicOffsetCount, uint32_t const * dynamicOffsets);
+	void setBindGroup(uint32_t groupIndex, BindGroup group, const std::vector<uint32_t>& dynamicOffsets);
+	void setBindGroup(uint32_t groupIndex, BindGroup group, const uint32_t& dynamicOffsets);
 	void setLabel(char const * label);
 	void setPipeline(ComputePipeline pipeline);
 	void writeTimestamp(QuerySet querySet, uint32_t queryIndex);
@@ -1241,6 +1243,8 @@ HANDLE(Queue)
 	std::unique_ptr<QueueWorkDoneCallback> onSubmittedWorkDone(uint64_t signalValue, QueueWorkDoneCallback&& callback);
 	void setLabel(char const * label);
 	void submit(size_t commandCount, CommandBuffer const * commands);
+	void submit(const std::vector<WGPUCommandBuffer>& commands);
+	void submit(const WGPUCommandBuffer& commands);
 	void writeBuffer(Buffer buffer, uint64_t bufferOffset, void const * data, size_t size);
 	void writeTexture(const ImageCopyTexture& destination, void const * data, size_t dataSize, const TextureDataLayout& dataLayout, const Extent3D& writeSize);
 	void reference();
@@ -1263,6 +1267,8 @@ HANDLE(RenderBundleEncoder)
 	void popDebugGroup();
 	void pushDebugGroup(char const * groupLabel);
 	void setBindGroup(uint32_t groupIndex, BindGroup group, size_t dynamicOffsetCount, uint32_t const * dynamicOffsets);
+	void setBindGroup(uint32_t groupIndex, BindGroup group, const std::vector<uint32_t>& dynamicOffsets);
+	void setBindGroup(uint32_t groupIndex, BindGroup group, const uint32_t& dynamicOffsets);
 	void setIndexBuffer(Buffer buffer, IndexFormat format, uint64_t offset, uint64_t size);
 	void setLabel(char const * label);
 	void setPipeline(RenderPipeline pipeline);
@@ -1280,10 +1286,14 @@ HANDLE(RenderPassEncoder)
 	void end();
 	void endOcclusionQuery();
 	void executeBundles(size_t bundleCount, RenderBundle const * bundles);
+	void executeBundles(const std::vector<WGPURenderBundle>& bundles);
+	void executeBundles(const WGPURenderBundle& bundles);
 	void insertDebugMarker(char const * markerLabel);
 	void popDebugGroup();
 	void pushDebugGroup(char const * groupLabel);
 	void setBindGroup(uint32_t groupIndex, BindGroup group, size_t dynamicOffsetCount, uint32_t const * dynamicOffsets);
+	void setBindGroup(uint32_t groupIndex, BindGroup group, const std::vector<uint32_t>& dynamicOffsets);
+	void setBindGroup(uint32_t groupIndex, BindGroup group, const uint32_t& dynamicOffsets);
 	void setBlendConstant(const Color& color);
 	void setIndexBuffer(Buffer buffer, IndexFormat format, uint64_t offset, uint64_t size);
 	void setLabel(char const * label);
@@ -2100,6 +2110,12 @@ void ComputePassEncoder::pushDebugGroup(char const * groupLabel) {
 void ComputePassEncoder::setBindGroup(uint32_t groupIndex, BindGroup group, size_t dynamicOffsetCount, uint32_t const * dynamicOffsets) {
 	return wgpuComputePassEncoderSetBindGroup(m_raw, groupIndex, group, dynamicOffsetCount, dynamicOffsets);
 }
+void ComputePassEncoder::setBindGroup(uint32_t groupIndex, BindGroup group, const std::vector<uint32_t>& dynamicOffsets) {
+	return wgpuComputePassEncoderSetBindGroup(m_raw, groupIndex, group, static_cast<size_t>(dynamicOffsets.size()), dynamicOffsets.data());
+}
+void ComputePassEncoder::setBindGroup(uint32_t groupIndex, BindGroup group, const uint32_t& dynamicOffsets) {
+	return wgpuComputePassEncoderSetBindGroup(m_raw, groupIndex, group, 1, &dynamicOffsets);
+}
 void ComputePassEncoder::setLabel(char const * label) {
 	return wgpuComputePassEncoderSetLabel(m_raw, label);
 }
@@ -2388,6 +2404,12 @@ void Queue::setLabel(char const * label) {
 void Queue::submit(size_t commandCount, CommandBuffer const * commands) {
 	return wgpuQueueSubmit(m_raw, commandCount, reinterpret_cast<WGPUCommandBuffer const *>(commands));
 }
+void Queue::submit(const std::vector<WGPUCommandBuffer>& commands) {
+	return wgpuQueueSubmit(m_raw, static_cast<size_t>(commands.size()), commands.data());
+}
+void Queue::submit(const WGPUCommandBuffer& commands) {
+	return wgpuQueueSubmit(m_raw, 1, &commands);
+}
 void Queue::writeBuffer(Buffer buffer, uint64_t bufferOffset, void const * data, size_t size) {
 	return wgpuQueueWriteBuffer(m_raw, buffer, bufferOffset, data, size);
 }
@@ -2442,6 +2464,12 @@ void RenderBundleEncoder::pushDebugGroup(char const * groupLabel) {
 void RenderBundleEncoder::setBindGroup(uint32_t groupIndex, BindGroup group, size_t dynamicOffsetCount, uint32_t const * dynamicOffsets) {
 	return wgpuRenderBundleEncoderSetBindGroup(m_raw, groupIndex, group, dynamicOffsetCount, dynamicOffsets);
 }
+void RenderBundleEncoder::setBindGroup(uint32_t groupIndex, BindGroup group, const std::vector<uint32_t>& dynamicOffsets) {
+	return wgpuRenderBundleEncoderSetBindGroup(m_raw, groupIndex, group, static_cast<size_t>(dynamicOffsets.size()), dynamicOffsets.data());
+}
+void RenderBundleEncoder::setBindGroup(uint32_t groupIndex, BindGroup group, const uint32_t& dynamicOffsets) {
+	return wgpuRenderBundleEncoderSetBindGroup(m_raw, groupIndex, group, 1, &dynamicOffsets);
+}
 void RenderBundleEncoder::setIndexBuffer(Buffer buffer, IndexFormat format, uint64_t offset, uint64_t size) {
 	return wgpuRenderBundleEncoderSetIndexBuffer(m_raw, buffer, static_cast<WGPUIndexFormat>(format), offset, size);
 }
@@ -2487,6 +2515,12 @@ void RenderPassEncoder::endOcclusionQuery() {
 void RenderPassEncoder::executeBundles(size_t bundleCount, RenderBundle const * bundles) {
 	return wgpuRenderPassEncoderExecuteBundles(m_raw, bundleCount, reinterpret_cast<WGPURenderBundle const *>(bundles));
 }
+void RenderPassEncoder::executeBundles(const std::vector<WGPURenderBundle>& bundles) {
+	return wgpuRenderPassEncoderExecuteBundles(m_raw, static_cast<size_t>(bundles.size()), bundles.data());
+}
+void RenderPassEncoder::executeBundles(const WGPURenderBundle& bundles) {
+	return wgpuRenderPassEncoderExecuteBundles(m_raw, 1, &bundles);
+}
 void RenderPassEncoder::insertDebugMarker(char const * markerLabel) {
 	return wgpuRenderPassEncoderInsertDebugMarker(m_raw, markerLabel);
 }
@@ -2498,6 +2532,12 @@ void RenderPassEncoder::pushDebugGroup(char const * groupLabel) {
 }
 void RenderPassEncoder::setBindGroup(uint32_t groupIndex, BindGroup group, size_t dynamicOffsetCount, uint32_t const * dynamicOffsets) {
 	return wgpuRenderPassEncoderSetBindGroup(m_raw, groupIndex, group, dynamicOffsetCount, dynamicOffsets);
+}
+void RenderPassEncoder::setBindGroup(uint32_t groupIndex, BindGroup group, const std::vector<uint32_t>& dynamicOffsets) {
+	return wgpuRenderPassEncoderSetBindGroup(m_raw, groupIndex, group, static_cast<size_t>(dynamicOffsets.size()), dynamicOffsets.data());
+}
+void RenderPassEncoder::setBindGroup(uint32_t groupIndex, BindGroup group, const uint32_t& dynamicOffsets) {
+	return wgpuRenderPassEncoderSetBindGroup(m_raw, groupIndex, group, 1, &dynamicOffsets);
 }
 void RenderPassEncoder::setBlendConstant(const Color& color) {
 	return wgpuRenderPassEncoderSetBlendConstant(m_raw, &color);
