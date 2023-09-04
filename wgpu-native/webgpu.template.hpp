@@ -43,6 +43,10 @@
 #include <cassert>
 #include <memory>
 
+#if __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
 /**
  * A namespace providing a more C++ idiomatic API to WebGPU.
  */
@@ -181,7 +185,13 @@ Adapter Instance::requestAdapter(const RequestAdapterOptions& options) {
 		requestEnded = true;
 	};
 
-	requestAdapter(options, onAdapterRequestEnded);
+	auto h = requestAdapter(options, onAdapterRequestEnded);
+	
+#if __EMSCRIPTEN__
+	while (!requestEnded) {
+		emscripten_sleep(100);
+	}
+#endif
 
 	assert(requestEnded);
 	return adapter;
@@ -200,7 +210,13 @@ Device Adapter::requestDevice(const DeviceDescriptor& descriptor) {
 		requestEnded = true;
 	};
 
-	requestDevice(descriptor, onDeviceRequestEnded);
+	auto h = requestDevice(descriptor, onDeviceRequestEnded);
+
+#if __EMSCRIPTEN__
+	while (!requestEnded) {
+		emscripten_sleep(100);
+	}
+#endif
 
 	assert(requestEnded);
 	return device;
