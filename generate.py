@@ -186,7 +186,7 @@ def parseHeader(api, header):
             .replace("WGPU_ENUM_ATTRIBUTE", "")
             .replace("WGPU_STRUCTURE_ATTRIBUTE", "")
             .replace("WGPU_FUNCTION_ATTRIBUTE", "")
-            .replace("WGPU_NULLABLE", "")
+            #.replace("WGPU_NULLABLE", "")
         for line in header.split("\n")
     ])
     
@@ -319,9 +319,13 @@ def parseProcArgs(line):
     args = []
     for entry in line.split(","):
         entry = entry.strip()
-        nullable = entry.strip().endswith("/* nullable */")
-        if nullable:
-            entry = entry[:-14]
+        nullable = False
+        if entry.endswith("/* nullable */"):
+            nullable = True
+            entry = entry[:-14].strip()
+        if entry.startswith("WGPU_NULLABLE"):
+            nullable = True
+            entry = entry[13:].strip()
         tokens = entry.split()
         args.append(ProcedureArgumentApi(
             name=tokens[-1],
@@ -443,98 +447,118 @@ def produceBinding(api, meta):
         decls = []
         implems = []
         for proc in api.procedures:
-            if proc.parent == handle.name:
-                if "wgpu" + handle.name + proc.name + "\n" in meta["blacklist"]:
-                    logging.debug(f"Skipping wgpu{handle.name}{proc.name} (blacklisted)...")
+            if proc.parent != handle.name:
+                continue
+            if "wgpu" + handle.name + proc.name + "\n" in meta["blacklist"]:
+                logging.debug(f"Skipping wgpu{handle.name}{proc.name} (blacklisted)...")
+                continue
+            method_name = proc.name[0].lower() + proc.name[1:]
+
+            arguments, argument_names = [], []
+            skip_next = False
+            for arg in proc.arguments[1:]:
+                if skip_next:
+                    skip_next = False
                     continue
-                method_name = proc.name[0].lower() + proc.name[1:]
+                sig, name, _, skip_next = format_arg(arg)
+                arguments.append(sig)
+                argument_names.append(name)
 
-                arguments, argument_names = [], []
-                skip_next = False
-                for arg in proc.arguments[1:]:
-                    if skip_next:
-                        skip_next = False
-                        continue
-                    sig, name, _, skip_next = format_arg(arg)
-                    arguments.append(sig)
-                    argument_names.append(name)
+            return_type = proc.return_type
 
-                return_type = proc.return_type
-
-                # Wrap callback into std::function&&
-                if "userdata" == proc.arguments[-1].name:
-                    cb = callbacks[proc.arguments[-2].type[4:]]
-                    cb_name = proc.arguments[-2].name
-                    cb_arg_names = map(lambda a: format_arg(a)[2], cb.arguments[:-1])
-                    body = (
-                          f"\tauto handle = std::make_unique<{cb.name}Callback>(callback);\n"
-                        + f"\tstatic auto cCallback = []({cb.raw_arguments}) -> void {{\n"
-                        + f"\t\t{cb.name}Callback& callback = *reinterpret_cast<{cb.name}Callback*>(userdata);\n"
-                        + f"\t\tcallback({', '.join(cb_arg_names)});\n"
-                        + "\t};\n"
-                        + "\t{wrapped_call};\n"
-                        + "\treturn handle;\n"
-                    )
-                    argument_names.append(f"reinterpret_cast<void*>(handle.get())")
-                    return_type = f"std::unique_ptr<{cb.name}Callback>"
-                else:
-                    body = "\treturn {wrapped_call};\n"
-
-                argument_names_str = ', '.join(["m_raw"] + argument_names)
-
-                begin_cast = ""
-                end_cast = ""
-
-                if return_type.startswith("WGPU"):
-                    return_type = return_type[4:]
-                if args.use_scoped_enums:
-                    if return_type in enum_names:
-                        begin_cast = f"static_cast<{return_type}>("
-                        end_cast = ")"
-                
-                name_and_args = f"{method_name}({', '.join(arguments)})"
-                decls.append(f"\t{return_type} {name_and_args};\n")
-                wrapped_call = f"{begin_cast}wgpu{handle.name}{proc.name}({argument_names_str}){end_cast}"
-                implems.append(
-                    f"{return_type} {handle.name}::{name_and_args} {{\n"
-                    + body.replace("{wrapped_call}", wrapped_call)
-                    + "}\n"
+            # Wrap callback into std::function&&
+            if "userdata" == proc.arguments[-1].name:
+                cb = callbacks[proc.arguments[-2].type[4:]]
+                cb_name = proc.arguments[-2].name
+                cb_arg_names = map(lambda a: format_arg(a)[2], cb.arguments[:-1])
+                body = (
+                      f"\tauto handle = std::make_unique<{cb.name}Callback>(callback);\n"
+                    + f"\tstatic auto cCallback = []({cb.raw_arguments}) -> void {{\n"
+                    + f"\t\t{cb.name}Callback& callback = *reinterpret_cast<{cb.name}Callback*>(userdata);\n"
+                    + f"\t\tcallback({', '.join(cb_arg_names)});\n"
+                    + "\t};\n"
+                    + "\t{wrapped_call};\n"
+                    + "\treturn handle;\n"
                 )
+                argument_names.append(f"reinterpret_cast<void*>(handle.get())")
+                return_type = f"std::unique_ptr<{cb.name}Callback>"
+            else:
+                body = "\treturn {wrapped_call};\n"
 
-                # Add utility overload for arguments of the form 'uint32_t xxCount, Xx const * xx'
-                for i in range(len(proc.arguments) - 1):
-                    a, b = proc.arguments[i], proc.arguments[i + 1]
-                    if a.type in {"uint32_t","size_t"} and a.name.endswith("Count"):
-                        name = a.name[:-5]
-                        if b.type.endswith("const *") and b.name.startswith(name):
-                            vec_type = b.type[:-8]
-                            vec_name = name if name.endswith("s") else name + "s"
+            argument_names_str = ', '.join(["m_raw"] + argument_names)
 
-                            alternatives = [
-                                (
-                                    [f"const std::vector<{vec_type}>& {vec_name}"],
-                                    [f"static_cast<{a.type}>({vec_name}.size())", f"{vec_name}.data()"]
-                                ),
-                                (
-                                    [f"const {vec_type}& {vec_name}"],
-                                    [f"1", f"&{vec_name}"]
-                                ),
-                            ]
+            begin_cast = ""
+            end_cast = ""
 
-                            for new_args, new_arg_names in alternatives:
-                                alt_arguments = arguments[:i-1] + new_args + arguments[i+2:]
-                                alt_argument_names = argument_names[:i-1] + new_arg_names + argument_names[i+2:]
-                                alt_argument_names_str = ', '.join(["m_raw"] + alt_argument_names)
+            if return_type.startswith("WGPU"):
+                return_type = return_type[4:]
+            if args.use_scoped_enums:
+                if return_type in enum_names:
+                    begin_cast = f"static_cast<{return_type}>("
+                    end_cast = ")"
+            
+            name_and_args = f"{method_name}({', '.join(arguments)})"
+            decls.append(f"\t{return_type} {name_and_args};\n")
+            wrapped_call = f"{begin_cast}wgpu{handle.name}{proc.name}({argument_names_str}){end_cast}"
+            implems.append(
+                f"{return_type} {handle.name}::{name_and_args} {{\n"
+                + body.replace("{wrapped_call}", wrapped_call)
+                + "}\n"
+            )
 
-                                wrapped_call = f"wgpu{handle.name}{proc.name}({alt_argument_names_str})"
+            # Add utility overload for arguments of the form 'uint32_t xxCount, Xx const * xx'
+            for i in range(len(proc.arguments) - 1):
+                a, b = proc.arguments[i], proc.arguments[i + 1]
+                if a.type in {"uint32_t","size_t"} and a.name.endswith("Count"):
+                    name = a.name[:-5]
+                    if b.type.endswith("const *") and b.name.startswith(name):
+                        vec_type = b.type[:-8]
+                        vec_name = name if name.endswith("s") else name + "s"
 
-                                name_and_args = f"{method_name}({', '.join(alt_arguments)})"
-                                decls.append(f"\t{return_type} {name_and_args};\n")
-                                implems.append(
-                                    f"{return_type} {handle.name}::{name_and_args} {{\n"
-                                    + body.replace("{wrapped_call}", wrapped_call)
-                                    + "}\n"
-                                )
+                        alternatives = [
+                            (
+                                [f"const std::vector<{vec_type}>& {vec_name}"],
+                                [f"static_cast<{a.type}>({vec_name}.size())", f"{vec_name}.data()"]
+                            ),
+                            (
+                                [f"const {vec_type}& {vec_name}"],
+                                [f"1", f"&{vec_name}"]
+                            ),
+                        ]
+
+                        for new_args, new_arg_names in alternatives:
+                            alt_arguments = arguments[:i-1] + new_args + arguments[i+2:]
+                            alt_argument_names = argument_names[:i-1] + new_arg_names + argument_names[i+2:]
+                            alt_argument_names_str = ', '.join(["m_raw"] + alt_argument_names)
+
+                            wrapped_call = f"wgpu{handle.name}{proc.name}({alt_argument_names_str})"
+
+                            name_and_args = f"{method_name}({', '.join(alt_arguments)})"
+                            decls.append(f"\t{return_type} {name_and_args};\n")
+                            implems.append(
+                                f"{return_type} {handle.name}::{name_and_args} {{\n"
+                                + body.replace("{wrapped_call}", wrapped_call)
+                                + "}\n"
+                            )
+
+            # Add a variant when the last argument is a nullable descriptor
+            if len(proc.arguments) > 1:
+                arg = proc.arguments[-1]
+                _, arg_c, __, ___ = format_arg(arg)
+                if arg.nullable and arg_c.startswith("&"):
+                    alt_arguments = arguments[:-1]
+                    alt_argument_names = argument_names[:-1]
+                    alt_argument_names_str = ', '.join(["m_raw"] + alt_argument_names + ["nullptr"])
+
+                    wrapped_call = f"{begin_cast}wgpu{handle.name}{proc.name}({alt_argument_names_str}){end_cast}"
+
+                    name_and_args = f"{method_name}({', '.join(alt_arguments)})"
+                    decls.append(f"\t{return_type} {name_and_args};\n")
+                    implems.append(
+                        f"{return_type} {handle.name}::{name_and_args} {{\n"
+                        + body.replace("{wrapped_call}", wrapped_call)
+                        + "}\n"
+                    )
 
         injected_decls = meta["injected-decls"].get(handle.name, [])
 

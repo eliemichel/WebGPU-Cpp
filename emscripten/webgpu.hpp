@@ -968,6 +968,7 @@ END
 
 HANDLE(CommandEncoder)
 	ComputePassEncoder beginComputePass(const ComputePassDescriptor& descriptor);
+	ComputePassEncoder beginComputePass();
 	RenderPassEncoder beginRenderPass(const RenderPassDescriptor& descriptor);
 	void clearBuffer(Buffer buffer, uint64_t offset, uint64_t size);
 	void copyBufferToBuffer(Buffer source, uint64_t sourceOffset, Buffer destination, uint64_t destinationOffset, uint64_t size);
@@ -975,6 +976,7 @@ HANDLE(CommandEncoder)
 	void copyTextureToBuffer(const ImageCopyTexture& source, const ImageCopyBuffer& destination, const Extent3D& copySize);
 	void copyTextureToTexture(const ImageCopyTexture& source, const ImageCopyTexture& destination, const Extent3D& copySize);
 	CommandBuffer finish(const CommandBufferDescriptor& descriptor);
+	CommandBuffer finish();
 	void insertDebugMarker(char const * markerLabel);
 	void popDebugGroup();
 	void pushDebugGroup(char const * groupLabel);
@@ -1016,6 +1018,7 @@ HANDLE(Device)
 	BindGroupLayout createBindGroupLayout(const BindGroupLayoutDescriptor& descriptor);
 	Buffer createBuffer(const BufferDescriptor& descriptor);
 	CommandEncoder createCommandEncoder(const CommandEncoderDescriptor& descriptor);
+	CommandEncoder createCommandEncoder();
 	ComputePipeline createComputePipeline(const ComputePipelineDescriptor& descriptor);
 	std::unique_ptr<CreateComputePipelineAsyncCallback> createComputePipelineAsync(const ComputePipelineDescriptor& descriptor, CreateComputePipelineAsyncCallback&& callback);
 	PipelineLayout createPipelineLayout(const PipelineLayoutDescriptor& descriptor);
@@ -1024,6 +1027,7 @@ HANDLE(Device)
 	RenderPipeline createRenderPipeline(const RenderPipelineDescriptor& descriptor);
 	std::unique_ptr<CreateRenderPipelineAsyncCallback> createRenderPipelineAsync(const RenderPipelineDescriptor& descriptor, CreateRenderPipelineAsyncCallback&& callback);
 	Sampler createSampler(const SamplerDescriptor& descriptor);
+	Sampler createSampler();
 	ShaderModule createShaderModule(const ShaderModuleDescriptor& descriptor);
 	SwapChain createSwapChain(Surface surface, const SwapChainDescriptor& descriptor);
 	Texture createTexture(const TextureDescriptor& descriptor);
@@ -1088,6 +1092,7 @@ HANDLE(RenderBundleEncoder)
 	void drawIndexedIndirect(Buffer indirectBuffer, uint64_t indirectOffset);
 	void drawIndirect(Buffer indirectBuffer, uint64_t indirectOffset);
 	RenderBundle finish(const RenderBundleDescriptor& descriptor);
+	RenderBundle finish();
 	void insertDebugMarker(char const * markerLabel);
 	void popDebugGroup();
 	void pushDebugGroup(char const * groupLabel);
@@ -1169,6 +1174,7 @@ END
 
 HANDLE(Texture)
 	TextureView createView(const TextureViewDescriptor& descriptor);
+	TextureView createView();
 	void destroy();
 	uint32_t getDepthOrArrayLayers();
 	TextureDimension getDimension();
@@ -1720,6 +1726,9 @@ void CommandBuffer::release() {
 ComputePassEncoder CommandEncoder::beginComputePass(const ComputePassDescriptor& descriptor) {
 	return wgpuCommandEncoderBeginComputePass(m_raw, &descriptor);
 }
+ComputePassEncoder CommandEncoder::beginComputePass() {
+	return wgpuCommandEncoderBeginComputePass(m_raw, nullptr);
+}
 RenderPassEncoder CommandEncoder::beginRenderPass(const RenderPassDescriptor& descriptor) {
 	return wgpuCommandEncoderBeginRenderPass(m_raw, &descriptor);
 }
@@ -1740,6 +1749,9 @@ void CommandEncoder::copyTextureToTexture(const ImageCopyTexture& source, const 
 }
 CommandBuffer CommandEncoder::finish(const CommandBufferDescriptor& descriptor) {
 	return wgpuCommandEncoderFinish(m_raw, &descriptor);
+}
+CommandBuffer CommandEncoder::finish() {
+	return wgpuCommandEncoderFinish(m_raw, nullptr);
 }
 void CommandEncoder::insertDebugMarker(char const * markerLabel) {
 	return wgpuCommandEncoderInsertDebugMarker(m_raw, markerLabel);
@@ -1846,6 +1858,9 @@ Buffer Device::createBuffer(const BufferDescriptor& descriptor) {
 CommandEncoder Device::createCommandEncoder(const CommandEncoderDescriptor& descriptor) {
 	return wgpuDeviceCreateCommandEncoder(m_raw, &descriptor);
 }
+CommandEncoder Device::createCommandEncoder() {
+	return wgpuDeviceCreateCommandEncoder(m_raw, nullptr);
+}
 ComputePipeline Device::createComputePipeline(const ComputePipelineDescriptor& descriptor) {
 	return wgpuDeviceCreateComputePipeline(m_raw, &descriptor);
 }
@@ -1881,6 +1896,9 @@ std::unique_ptr<CreateRenderPipelineAsyncCallback> Device::createRenderPipelineA
 }
 Sampler Device::createSampler(const SamplerDescriptor& descriptor) {
 	return wgpuDeviceCreateSampler(m_raw, &descriptor);
+}
+Sampler Device::createSampler() {
+	return wgpuDeviceCreateSampler(m_raw, nullptr);
 }
 ShaderModule Device::createShaderModule(const ShaderModuleDescriptor& descriptor) {
 	return wgpuDeviceCreateShaderModule(m_raw, &descriptor);
@@ -2058,6 +2076,9 @@ void RenderBundleEncoder::drawIndirect(Buffer indirectBuffer, uint64_t indirectO
 }
 RenderBundle RenderBundleEncoder::finish(const RenderBundleDescriptor& descriptor) {
 	return wgpuRenderBundleEncoderFinish(m_raw, &descriptor);
+}
+RenderBundle RenderBundleEncoder::finish() {
+	return wgpuRenderBundleEncoderFinish(m_raw, nullptr);
 }
 void RenderBundleEncoder::insertDebugMarker(char const * markerLabel) {
 	return wgpuRenderBundleEncoderInsertDebugMarker(m_raw, markerLabel);
@@ -2265,6 +2286,9 @@ void SwapChain::release() {
 // Methods of Texture
 TextureView Texture::createView(const TextureViewDescriptor& descriptor) {
 	return wgpuTextureCreateView(m_raw, &descriptor);
+}
+TextureView Texture::createView() {
+	return wgpuTextureCreateView(m_raw, nullptr);
 }
 void Texture::destroy() {
 	return wgpuTextureDestroy(m_raw);
