@@ -49,7 +49,9 @@ Quick Start
 
 ### Setup
 
- 1. Copy the file [webgpu.hpp](webgpu.hpp) file to your C++17 project.
+ 1. Copy the file [dawn/webgpu.hpp](dawn/webgpu.hpp), [wgpu-native/webgpu.hpp](wgpu-native/webgpu.hpp) or [emscripten/webgpu.hpp](emscripten/webgpu.hpp) (depending on your backend) to your C++17 project.
+
+**NB** You should also check the git tag that is in a file of this repo next to each `webgpu.hpp`. If your version of the backend is newer, see below how to generate the `webgpu.hpp` file yourself.
 
  2. Replace `#include <webgpu/webgpu.h>` by `#include "webgpu/webgpu.hpp"` in your source files:
 
