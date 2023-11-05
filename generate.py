@@ -250,10 +250,14 @@ def parseHeader(api, header):
     # Post process: find parent of each method
     for proc in api.procedures:
         maxi = 0
-        for handle in api.handles:
-            if len(handle.name) > maxi and proc.name.startswith(handle.name):
-                proc.parent = handle.name
-                maxi = len(handle.name)
+        parent_names = (
+            [ handle.name for handle in api.handles ] +
+            [ desc.name for desc in api.classes ]
+        )
+        for parent in parent_names:
+            if len(parent) > maxi and proc.name.startswith(parent) and len(parent) < len(proc.name):
+                proc.parent = parent
+                maxi = len(parent)
         if proc.parent is not None:
             proc.name = proc.name[maxi:]
 
@@ -341,6 +345,7 @@ def produceBinding(api, meta):
     binding = {
         "descriptors": [],
         "structs": [],
+        "class_impl": [],
         "handles_decl": [],
         "handles": [],
         "handles_impl": [],
@@ -402,55 +407,62 @@ def produceBinding(api, meta):
         return sig_cpp, arg_c, arg_cpp, skip_next
 
     class_names = [f"WGPU{c.name}" for c in api.classes]
-    for cls_api in api.classes:
-        prop_names = [f"{p.name}" for p in cls_api.properties]
-        macro = "DESCRIPTOR" if cls_api.is_descriptor else "STRUCT"
-        namespace = "descriptors" if cls_api.is_descriptor else "structs"
-
-        injected_decls = meta["injected-decls"].get(cls_api.name, [])
-
-        binding[namespace].append(
-            f"{macro}({cls_api.name})\n"
-            + "".join(injected_decls)
-            + "\tvoid setDefault();\n"
-            + "END\n"
-        )
-
-        prop_defaults = [
-            f"\t{prop.name} = {prop.default_value};\n"
-            for prop in cls_api.properties
-            if prop.default_value is not None
-        ] + [
-            f"\t(({prop.type[4:]}*)&{prop.name})->setDefault();\n"
-            for prop in cls_api.properties
-            if prop.type in class_names
-        ] + [
-            f"\t{subprop} = {default_value};\n"
-            for subprop, default_value in cls_api.default_overrides
-        ]
-        if "chain" in prop_names:
-            if cls_api.name in api.stypes:
-                prop_defaults.append(
-                    f"\tchain.sType = {api.stypes[cls_api.name]};\n"
-                )
-            else:
-                logging.warning(f"Type {cls_api.name} starts with a 'chain' field but has no apparent associated SType.")
-        binding["handles_impl"].append(
-            f"// Methods of {cls_api.name}\n"
-            + f"void {cls_api.name}::setDefault() " + "{\n"
-            + "".join(prop_defaults)
-            + "}\n"
-        )
-
-    for handle in api.handles:
-        binding["handles_decl"].append(f"class {handle.name};")
+    classes_and_handles = (
+        [ ('CLASS', cls_api) for cls_api in api.classes ] +
+        [ ('HANDLE', handle_api) for handle_api in api.handles ]
+    )
+    for entry_type, handle_or_class in classes_and_handles:
+        entry_name = handle_or_class.name
+        if entry_type == 'CLASS':
+            macro = "DESCRIPTOR" if handle_or_class.is_descriptor else "STRUCT"
+            namespace = "descriptors" if handle_or_class.is_descriptor else "structs"
+            namespace_impl = "class_impl"
+        elif entry_type == 'HANDLE':
+            binding["handles_decl"].append(f"class {entry_name};")
+            macro = "HANDLE"
+            namespace = "handles"
+            namespace_impl = "handles_impl"
+        
         decls = []
         implems = []
+
+        # Auto-generate setDefault
+        if entry_type == 'CLASS':
+            decls.append("\tvoid setDefault();\n")
+
+            cls_api = handle_or_class
+            prop_names = [f"{p.name}" for p in cls_api.properties]
+
+            prop_defaults = [
+                f"\t{prop.name} = {prop.default_value};\n"
+                for prop in cls_api.properties
+                if prop.default_value is not None
+            ] + [
+                f"\t(({prop.type[4:]}*)&{prop.name})->setDefault();\n"
+                for prop in cls_api.properties
+                if prop.type in class_names
+            ] + [
+                f"\t{subprop} = {default_value};\n"
+                for subprop, default_value in cls_api.default_overrides
+            ]
+            if "chain" in prop_names:
+                if entry_name in api.stypes:
+                    prop_defaults.append(
+                        f"\tchain.sType = {api.stypes[entry_name]};\n"
+                    )
+                else:
+                    logging.warning(f"Type {entry_name} starts with a 'chain' field but has no apparent associated SType.")
+            implems.append(
+                f"void {entry_name}::setDefault() " + "{\n"
+                + "".join(prop_defaults)
+                + "}\n"
+            )
+
         for proc in api.procedures:
-            if proc.parent != handle.name:
+            if proc.parent != entry_name:
                 continue
-            if "wgpu" + handle.name + proc.name + "\n" in meta["blacklist"]:
-                logging.debug(f"Skipping wgpu{handle.name}{proc.name} (blacklisted)...")
+            if "wgpu" + entry_name + proc.name + "\n" in meta["blacklist"]:
+                logging.debug(f"Skipping wgpu{entry_name}{proc.name} (blacklisted)...")
                 continue
             method_name = proc.name[0].lower() + proc.name[1:]
 
@@ -499,9 +511,9 @@ def produceBinding(api, meta):
             
             name_and_args = f"{method_name}({', '.join(arguments)})"
             decls.append(f"\t{return_type} {name_and_args};\n")
-            wrapped_call = f"{begin_cast}wgpu{handle.name}{proc.name}({argument_names_str}){end_cast}"
+            wrapped_call = f"{begin_cast}wgpu{entry_name}{proc.name}({argument_names_str}){end_cast}"
             implems.append(
-                f"{return_type} {handle.name}::{name_and_args} {{\n"
+                f"{return_type} {entry_name}::{name_and_args} {{\n"
                 + body.replace("{wrapped_call}", wrapped_call)
                 + "}\n"
             )
@@ -531,12 +543,12 @@ def produceBinding(api, meta):
                             alt_argument_names = argument_names[:i-1] + new_arg_names + argument_names[i+2:]
                             alt_argument_names_str = ', '.join(["m_raw"] + alt_argument_names)
 
-                            wrapped_call = f"wgpu{handle.name}{proc.name}({alt_argument_names_str})"
+                            wrapped_call = f"wgpu{entry_name}{proc.name}({alt_argument_names_str})"
 
                             name_and_args = f"{method_name}({', '.join(alt_arguments)})"
                             decls.append(f"\t{return_type} {name_and_args};\n")
                             implems.append(
-                                f"{return_type} {handle.name}::{name_and_args} {{\n"
+                                f"{return_type} {entry_name}::{name_and_args} {{\n"
                                 + body.replace("{wrapped_call}", wrapped_call)
                                 + "}\n"
                             )
@@ -550,29 +562,35 @@ def produceBinding(api, meta):
                     alt_argument_names = argument_names[:-1]
                     alt_argument_names_str = ', '.join(["m_raw"] + alt_argument_names + ["nullptr"])
 
-                    wrapped_call = f"{begin_cast}wgpu{handle.name}{proc.name}({alt_argument_names_str}){end_cast}"
+                    wrapped_call = f"{begin_cast}wgpu{entry_name}{proc.name}({alt_argument_names_str}){end_cast}"
 
                     name_and_args = f"{method_name}({', '.join(alt_arguments)})"
                     decls.append(f"\t{return_type} {name_and_args};\n")
                     implems.append(
-                        f"{return_type} {handle.name}::{name_and_args} {{\n"
+                        f"{return_type} {entry_name}::{name_and_args} {{\n"
                         + body.replace("{wrapped_call}", wrapped_call)
                         + "}\n"
                     )
 
-        injected_decls = meta["injected-decls"].get(handle.name, [])
+        injected_decls = meta["injected-decls"].get(entry_name, [])
 
-        binding["handles"].append(
-            f"HANDLE({handle.name})\n"
+        binding[namespace].append(
+            f"{macro}({entry_name})\n"
             + "".join(decls + injected_decls)
             + "END\n"
         )
 
-        binding["handles_impl"].append(
-            f"// Methods of {handle.name}\n"
+        binding[namespace_impl].append(
+            f"// Methods of {entry_name}\n"
             + "".join(implems)
             + "\n"
         )
+
+    # Only handles_impl is present in the tamplate
+    binding["handles_impl"] = (
+        binding["class_impl"] +
+        binding["handles_impl"]
+    )
 
     if args.use_non_member_procedures:
         for proc in api.procedures:

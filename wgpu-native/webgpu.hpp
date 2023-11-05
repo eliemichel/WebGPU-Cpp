@@ -718,8 +718,8 @@ STRUCT(BlendComponent)
 END
 
 STRUCT(Color)
-	Color(double r, double g, double b, double a) : WGPUColor{ r, g, b, a } {}
 	void setDefault();
+	Color(double r, double g, double b, double a) : WGPUColor{ r, g, b, a } {}
 END
 
 STRUCT(ComputePassTimestampWrites)
@@ -727,8 +727,8 @@ STRUCT(ComputePassTimestampWrites)
 END
 
 STRUCT(Extent3D)
-	Extent3D(uint32_t width, uint32_t height, uint32_t depthOrArrayLayers) : WGPUExtent3D{ width, height, depthOrArrayLayers } {}
 	void setDefault();
+	Extent3D(uint32_t width, uint32_t height, uint32_t depthOrArrayLayers) : WGPUExtent3D{ width, height, depthOrArrayLayers } {}
 END
 
 STRUCT(Limits)
@@ -736,8 +736,8 @@ STRUCT(Limits)
 END
 
 STRUCT(Origin3D)
-	Origin3D(uint32_t x, uint32_t y, uint32_t z) : WGPUOrigin3D{ x, y, z } {}
 	void setDefault();
+	Origin3D(uint32_t x, uint32_t y, uint32_t z) : WGPUOrigin3D{ x, y, z } {}
 END
 
 STRUCT(PrimitiveDepthClipControl)
@@ -960,6 +960,7 @@ END
 
 DESCRIPTOR(SurfaceCapabilities)
 	void setDefault();
+	void freeMembers();
 END
 
 DESCRIPTOR(SurfaceConfiguration)
@@ -1351,7 +1352,6 @@ HANDLE(Surface)
 	void unconfigure();
 	void reference();
 	void release();
-	void capabilitiesFreeMembers();
 END
 
 HANDLE(Texture)
@@ -1628,6 +1628,9 @@ void StorageTextureBindingLayout::setDefault() {
 
 // Methods of SurfaceCapabilities
 void SurfaceCapabilities::setDefault() {
+}
+void SurfaceCapabilities::freeMembers() {
+	return wgpuSurfaceCapabilitiesFreeMembers(m_raw);
 }
 
 // Methods of SurfaceConfiguration
@@ -1976,7 +1979,6 @@ void Adapter::release() {
 	return wgpuAdapterRelease(m_raw);
 }
 
-
 // Methods of BindGroup
 void BindGroup::setLabel(char const * label) {
 	return wgpuBindGroupSetLabel(m_raw, label);
@@ -1988,7 +1990,6 @@ void BindGroup::release() {
 	return wgpuBindGroupRelease(m_raw);
 }
 
-
 // Methods of BindGroupLayout
 void BindGroupLayout::setLabel(char const * label) {
 	return wgpuBindGroupLayoutSetLabel(m_raw, label);
@@ -1999,7 +2000,6 @@ void BindGroupLayout::reference() {
 void BindGroupLayout::release() {
 	return wgpuBindGroupLayoutRelease(m_raw);
 }
-
 
 // Methods of Buffer
 void Buffer::destroy() {
@@ -2042,7 +2042,6 @@ void Buffer::release() {
 	return wgpuBufferRelease(m_raw);
 }
 
-
 // Methods of CommandBuffer
 void CommandBuffer::setLabel(char const * label) {
 	return wgpuCommandBufferSetLabel(m_raw, label);
@@ -2053,7 +2052,6 @@ void CommandBuffer::reference() {
 void CommandBuffer::release() {
 	return wgpuCommandBufferRelease(m_raw);
 }
-
 
 // Methods of CommandEncoder
 ComputePassEncoder CommandEncoder::beginComputePass(const ComputePassDescriptor& descriptor) {
@@ -2111,7 +2109,6 @@ void CommandEncoder::release() {
 	return wgpuCommandEncoderRelease(m_raw);
 }
 
-
 // Methods of ComputePassEncoder
 void ComputePassEncoder::beginPipelineStatisticsQuery(QuerySet querySet, uint32_t queryIndex) {
 	return wgpuComputePassEncoderBeginPipelineStatisticsQuery(m_raw, querySet, queryIndex);
@@ -2159,7 +2156,6 @@ void ComputePassEncoder::release() {
 	return wgpuComputePassEncoderRelease(m_raw);
 }
 
-
 // Methods of ComputePipeline
 BindGroupLayout ComputePipeline::getBindGroupLayout(uint32_t groupIndex) {
 	return wgpuComputePipelineGetBindGroupLayout(m_raw, groupIndex);
@@ -2173,7 +2169,6 @@ void ComputePipeline::reference() {
 void ComputePipeline::release() {
 	return wgpuComputePipelineRelease(m_raw);
 }
-
 
 // Methods of Device
 BindGroup Device::createBindGroup(const BindGroupDescriptor& descriptor) {
@@ -2282,7 +2277,6 @@ void Device::release() {
 	return wgpuDeviceRelease(m_raw);
 }
 
-
 // Methods of Instance
 Surface Instance::createSurface(const SurfaceDescriptor& descriptor) {
 	return wgpuInstanceCreateSurface(m_raw, &descriptor);
@@ -2306,7 +2300,6 @@ void Instance::release() {
 	return wgpuInstanceRelease(m_raw);
 }
 
-
 // Methods of PipelineLayout
 void PipelineLayout::setLabel(char const * label) {
 	return wgpuPipelineLayoutSetLabel(m_raw, label);
@@ -2317,7 +2310,6 @@ void PipelineLayout::reference() {
 void PipelineLayout::release() {
 	return wgpuPipelineLayoutRelease(m_raw);
 }
-
 
 // Methods of QuerySet
 void QuerySet::destroy() {
@@ -2338,7 +2330,6 @@ void QuerySet::reference() {
 void QuerySet::release() {
 	return wgpuQuerySetRelease(m_raw);
 }
-
 
 // Methods of Queue
 std::unique_ptr<QueueWorkDoneCallback> Queue::onSubmittedWorkDone(QueueWorkDoneCallback&& callback) {
@@ -2375,7 +2366,6 @@ void Queue::release() {
 	return wgpuQueueRelease(m_raw);
 }
 
-
 // Methods of RenderBundle
 void RenderBundle::setLabel(char const * label) {
 	return wgpuRenderBundleSetLabel(m_raw, label);
@@ -2386,7 +2376,6 @@ void RenderBundle::reference() {
 void RenderBundle::release() {
 	return wgpuRenderBundleRelease(m_raw);
 }
-
 
 // Methods of RenderBundleEncoder
 void RenderBundleEncoder::draw(uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) {
@@ -2443,7 +2432,6 @@ void RenderBundleEncoder::reference() {
 void RenderBundleEncoder::release() {
 	return wgpuRenderBundleEncoderRelease(m_raw);
 }
-
 
 // Methods of RenderPassEncoder
 void RenderPassEncoder::beginOcclusionQuery(uint32_t queryIndex) {
@@ -2531,7 +2519,6 @@ void RenderPassEncoder::release() {
 	return wgpuRenderPassEncoderRelease(m_raw);
 }
 
-
 // Methods of RenderPipeline
 BindGroupLayout RenderPipeline::getBindGroupLayout(uint32_t groupIndex) {
 	return wgpuRenderPipelineGetBindGroupLayout(m_raw, groupIndex);
@@ -2546,7 +2533,6 @@ void RenderPipeline::release() {
 	return wgpuRenderPipelineRelease(m_raw);
 }
 
-
 // Methods of Sampler
 void Sampler::setLabel(char const * label) {
 	return wgpuSamplerSetLabel(m_raw, label);
@@ -2557,7 +2543,6 @@ void Sampler::reference() {
 void Sampler::release() {
 	return wgpuSamplerRelease(m_raw);
 }
-
 
 // Methods of ShaderModule
 std::unique_ptr<CompilationInfoCallback> ShaderModule::getCompilationInfo(CompilationInfoCallback&& callback) {
@@ -2578,7 +2563,6 @@ void ShaderModule::reference() {
 void ShaderModule::release() {
 	return wgpuShaderModuleRelease(m_raw);
 }
-
 
 // Methods of Surface
 void Surface::configure(const SurfaceConfiguration& config) {
@@ -2605,10 +2589,6 @@ void Surface::reference() {
 void Surface::release() {
 	return wgpuSurfaceRelease(m_raw);
 }
-void Surface::capabilitiesFreeMembers() {
-	return wgpuSurfaceCapabilitiesFreeMembers(m_raw);
-}
-
 
 // Methods of Texture
 TextureView Texture::createView(const TextureViewDescriptor& descriptor) {
@@ -2654,7 +2634,6 @@ void Texture::release() {
 	return wgpuTextureRelease(m_raw);
 }
 
-
 // Methods of TextureView
 void TextureView::setLabel(char const * label) {
 	return wgpuTextureViewSetLabel(m_raw, label);
@@ -2665,7 +2644,6 @@ void TextureView::reference() {
 void TextureView::release() {
 	return wgpuTextureViewRelease(m_raw);
 }
-
 
 
 // Extra implementations

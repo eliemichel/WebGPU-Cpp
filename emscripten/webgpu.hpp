@@ -637,8 +637,8 @@ STRUCT(BlendComponent)
 END
 
 STRUCT(Color)
-	Color(double r, double g, double b, double a) : WGPUColor{ r, g, b, a } {}
 	void setDefault();
+	Color(double r, double g, double b, double a) : WGPUColor{ r, g, b, a } {}
 END
 
 STRUCT(ComputePassTimestampWrite)
@@ -646,8 +646,8 @@ STRUCT(ComputePassTimestampWrite)
 END
 
 STRUCT(Extent3D)
-	Extent3D(uint32_t width, uint32_t height, uint32_t depthOrArrayLayers) : WGPUExtent3D{ width, height, depthOrArrayLayers } {}
 	void setDefault();
+	Extent3D(uint32_t width, uint32_t height, uint32_t depthOrArrayLayers) : WGPUExtent3D{ width, height, depthOrArrayLayers } {}
 END
 
 STRUCT(Limits)
@@ -655,8 +655,8 @@ STRUCT(Limits)
 END
 
 STRUCT(Origin3D)
-	Origin3D(uint32_t x, uint32_t y, uint32_t z) : WGPUOrigin3D{ x, y, z } {}
 	void setDefault();
+	Origin3D(uint32_t x, uint32_t y, uint32_t z) : WGPUOrigin3D{ x, y, z } {}
 END
 
 STRUCT(PrimitiveDepthClipControl)
@@ -1217,19 +1217,23 @@ Instance createInstance(const InstanceDescriptor& descriptor) {
 void ChainedStruct::setDefault() {
 }
 
+
 // Methods of ChainedStructOut
 void ChainedStructOut::setDefault() {
 }
+
 
 // Methods of AdapterProperties
 void AdapterProperties::setDefault() {
 	backendType = BackendType::Undefined;
 }
 
+
 // Methods of BindGroupEntry
 void BindGroupEntry::setDefault() {
 	offset = 0;
 }
+
 
 // Methods of BlendComponent
 void BlendComponent::setDefault() {
@@ -1238,6 +1242,7 @@ void BlendComponent::setDefault() {
 	dstFactor = BlendFactor::Zero;
 }
 
+
 // Methods of BufferBindingLayout
 void BufferBindingLayout::setDefault() {
 	type = BufferBindingType::Uniform;
@@ -1245,34 +1250,42 @@ void BufferBindingLayout::setDefault() {
 	minBindingSize = 0;
 }
 
+
 // Methods of BufferDescriptor
 void BufferDescriptor::setDefault() {
 	mappedAtCreation = false;
 }
 
+
 // Methods of Color
 void Color::setDefault() {
 }
+
 
 // Methods of CommandBufferDescriptor
 void CommandBufferDescriptor::setDefault() {
 }
 
+
 // Methods of CommandEncoderDescriptor
 void CommandEncoderDescriptor::setDefault() {
 }
+
 
 // Methods of CompilationMessage
 void CompilationMessage::setDefault() {
 }
 
+
 // Methods of ComputePassTimestampWrite
 void ComputePassTimestampWrite::setDefault() {
 }
 
+
 // Methods of ConstantEntry
 void ConstantEntry::setDefault() {
 }
+
 
 // Methods of Extent3D
 void Extent3D::setDefault() {
@@ -1280,9 +1293,11 @@ void Extent3D::setDefault() {
 	depthOrArrayLayers = 1;
 }
 
+
 // Methods of InstanceDescriptor
 void InstanceDescriptor::setDefault() {
 }
+
 
 // Methods of Limits
 void Limits::setDefault() {
@@ -1319,12 +1334,14 @@ void Limits::setDefault() {
 	maxComputeWorkgroupsPerDimension = 0;
 }
 
+
 // Methods of MultisampleState
 void MultisampleState::setDefault() {
 	count = 1;
 	mask = 0xFFFFFFFF;
 	alphaToCoverageEnabled = false;
 }
+
 
 // Methods of Origin3D
 void Origin3D::setDefault() {
@@ -1333,9 +1350,11 @@ void Origin3D::setDefault() {
 	z = 0;
 }
 
+
 // Methods of PipelineLayoutDescriptor
 void PipelineLayoutDescriptor::setDefault() {
 }
+
 
 // Methods of PrimitiveDepthClipControl
 void PrimitiveDepthClipControl::setDefault() {
@@ -1343,6 +1362,7 @@ void PrimitiveDepthClipControl::setDefault() {
 	((ChainedStruct*)&chain)->setDefault();
 	chain.sType = SType::PrimitiveDepthClipControl;
 }
+
 
 // Methods of PrimitiveState
 void PrimitiveState::setDefault() {
@@ -1352,17 +1372,21 @@ void PrimitiveState::setDefault() {
 	cullMode = CullMode::None;
 }
 
+
 // Methods of QuerySetDescriptor
 void QuerySetDescriptor::setDefault() {
 }
+
 
 // Methods of QueueDescriptor
 void QueueDescriptor::setDefault() {
 }
 
+
 // Methods of RenderBundleDescriptor
 void RenderBundleDescriptor::setDefault() {
 }
+
 
 // Methods of RenderBundleEncoderDescriptor
 void RenderBundleEncoderDescriptor::setDefault() {
@@ -1371,6 +1395,7 @@ void RenderBundleEncoderDescriptor::setDefault() {
 	stencilReadOnly = false;
 	sampleCount = 1;
 }
+
 
 // Methods of RenderPassDepthStencilAttachment
 void RenderPassDepthStencilAttachment::setDefault() {
@@ -1383,15 +1408,18 @@ void RenderPassDepthStencilAttachment::setDefault() {
 	stencilReadOnly = false;
 }
 
+
 // Methods of RenderPassDescriptorMaxDrawCount
 void RenderPassDescriptorMaxDrawCount::setDefault() {
 	((ChainedStruct*)&chain)->setDefault();
 	chain.sType = SType::RenderPassDescriptorMaxDrawCount;
 }
 
+
 // Methods of RenderPassTimestampWrite
 void RenderPassTimestampWrite::setDefault() {
 }
+
 
 // Methods of RequestAdapterOptions
 void RequestAdapterOptions::setDefault() {
@@ -1400,10 +1428,12 @@ void RequestAdapterOptions::setDefault() {
 	forceFallbackAdapter = false;
 }
 
+
 // Methods of SamplerBindingLayout
 void SamplerBindingLayout::setDefault() {
 	type = SamplerBindingType::Filtering;
 }
+
 
 // Methods of SamplerDescriptor
 void SamplerDescriptor::setDefault() {
@@ -1418,9 +1448,11 @@ void SamplerDescriptor::setDefault() {
 	compare = CompareFunction::Undefined;
 }
 
+
 // Methods of ShaderModuleDescriptor
 void ShaderModuleDescriptor::setDefault() {
 }
+
 
 // Methods of ShaderModuleSPIRVDescriptor
 void ShaderModuleSPIRVDescriptor::setDefault() {
@@ -1428,11 +1460,13 @@ void ShaderModuleSPIRVDescriptor::setDefault() {
 	chain.sType = SType::ShaderModuleSPIRVDescriptor;
 }
 
+
 // Methods of ShaderModuleWGSLDescriptor
 void ShaderModuleWGSLDescriptor::setDefault() {
 	((ChainedStruct*)&chain)->setDefault();
 	chain.sType = SType::ShaderModuleWGSLDescriptor;
 }
+
 
 // Methods of StencilFaceState
 void StencilFaceState::setDefault() {
@@ -1442,6 +1476,7 @@ void StencilFaceState::setDefault() {
 	passOp = StencilOperation::Keep;
 }
 
+
 // Methods of StorageTextureBindingLayout
 void StorageTextureBindingLayout::setDefault() {
 	access = StorageTextureAccess::WriteOnly;
@@ -1449,9 +1484,11 @@ void StorageTextureBindingLayout::setDefault() {
 	viewDimension = TextureViewDimension::_2D;
 }
 
+
 // Methods of SurfaceDescriptor
 void SurfaceDescriptor::setDefault() {
 }
+
 
 // Methods of SurfaceDescriptorFromCanvasHTMLSelector
 void SurfaceDescriptorFromCanvasHTMLSelector::setDefault() {
@@ -1459,10 +1496,12 @@ void SurfaceDescriptorFromCanvasHTMLSelector::setDefault() {
 	chain.sType = SType::SurfaceDescriptorFromCanvasHTMLSelector;
 }
 
+
 // Methods of SwapChainDescriptor
 void SwapChainDescriptor::setDefault() {
 	format = TextureFormat::Undefined;
 }
+
 
 // Methods of TextureBindingLayout
 void TextureBindingLayout::setDefault() {
@@ -1471,9 +1510,11 @@ void TextureBindingLayout::setDefault() {
 	multisampled = false;
 }
 
+
 // Methods of TextureDataLayout
 void TextureDataLayout::setDefault() {
 }
+
 
 // Methods of TextureViewDescriptor
 void TextureViewDescriptor::setDefault() {
@@ -1484,14 +1525,17 @@ void TextureViewDescriptor::setDefault() {
 	aspect = TextureAspect::All;
 }
 
+
 // Methods of VertexAttribute
 void VertexAttribute::setDefault() {
 	format = VertexFormat::Undefined;
 }
 
+
 // Methods of BindGroupDescriptor
 void BindGroupDescriptor::setDefault() {
 }
+
 
 // Methods of BindGroupLayoutEntry
 void BindGroupLayoutEntry::setDefault() {
@@ -1505,19 +1549,23 @@ void BindGroupLayoutEntry::setDefault() {
 	texture.sampleType = TextureSampleType::Undefined;
 }
 
+
 // Methods of BlendState
 void BlendState::setDefault() {
 	((BlendComponent*)&color)->setDefault();
 	((BlendComponent*)&alpha)->setDefault();
 }
 
+
 // Methods of CompilationInfo
 void CompilationInfo::setDefault() {
 }
 
+
 // Methods of ComputePassDescriptor
 void ComputePassDescriptor::setDefault() {
 }
+
 
 // Methods of DepthStencilState
 void DepthStencilState::setDefault() {
@@ -1532,10 +1580,12 @@ void DepthStencilState::setDefault() {
 	((StencilFaceState*)&stencilBack)->setDefault();
 }
 
+
 // Methods of ImageCopyBuffer
 void ImageCopyBuffer::setDefault() {
 	((TextureDataLayout*)&layout)->setDefault();
 }
+
 
 // Methods of ImageCopyTexture
 void ImageCopyTexture::setDefault() {
@@ -1544,9 +1594,11 @@ void ImageCopyTexture::setDefault() {
 	((Origin3D*)&origin)->setDefault();
 }
 
+
 // Methods of ProgrammableStageDescriptor
 void ProgrammableStageDescriptor::setDefault() {
 }
+
 
 // Methods of RenderPassColorAttachment
 void RenderPassColorAttachment::setDefault() {
@@ -1555,15 +1607,18 @@ void RenderPassColorAttachment::setDefault() {
 	((Color*)&clearValue)->setDefault();
 }
 
+
 // Methods of RequiredLimits
 void RequiredLimits::setDefault() {
 	((Limits*)&limits)->setDefault();
 }
 
+
 // Methods of SupportedLimits
 void SupportedLimits::setDefault() {
 	((Limits*)&limits)->setDefault();
 }
+
 
 // Methods of TextureDescriptor
 void TextureDescriptor::setDefault() {
@@ -1574,41 +1629,50 @@ void TextureDescriptor::setDefault() {
 	((Extent3D*)&size)->setDefault();
 }
 
+
 // Methods of VertexBufferLayout
 void VertexBufferLayout::setDefault() {
 	stepMode = VertexStepMode::Vertex;
 }
 
+
 // Methods of BindGroupLayoutDescriptor
 void BindGroupLayoutDescriptor::setDefault() {
 }
+
 
 // Methods of ColorTargetState
 void ColorTargetState::setDefault() {
 	format = TextureFormat::Undefined;
 }
 
+
 // Methods of ComputePipelineDescriptor
 void ComputePipelineDescriptor::setDefault() {
 	((ProgrammableStageDescriptor*)&compute)->setDefault();
 }
+
 
 // Methods of DeviceDescriptor
 void DeviceDescriptor::setDefault() {
 	((QueueDescriptor*)&defaultQueue)->setDefault();
 }
 
+
 // Methods of RenderPassDescriptor
 void RenderPassDescriptor::setDefault() {
 }
+
 
 // Methods of VertexState
 void VertexState::setDefault() {
 }
 
+
 // Methods of FragmentState
 void FragmentState::setDefault() {
 }
+
 
 // Methods of RenderPipelineDescriptor
 void RenderPipelineDescriptor::setDefault() {
@@ -1616,6 +1680,7 @@ void RenderPipelineDescriptor::setDefault() {
 	((PrimitiveState*)&primitive)->setDefault();
 	((MultisampleState*)&multisample)->setDefault();
 }
+
 
 // Methods of Adapter
 size_t Adapter::enumerateFeatures(FeatureName * features) {
