@@ -4,7 +4,7 @@
 #   https://github.com/eliemichel/LearnWebGPU
 #
 # MIT License
-# Copyright (c) 2022 Elie Michel
+# Copyright (c) 2022-2023 Elie Michel
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -417,11 +417,13 @@ def produceBinding(api, meta):
             macro = "DESCRIPTOR" if handle_or_class.is_descriptor else "STRUCT"
             namespace = "descriptors" if handle_or_class.is_descriptor else "structs"
             namespace_impl = "class_impl"
+            argument_self = "*this"
         elif entry_type == 'HANDLE':
             binding["handles_decl"].append(f"class {entry_name};")
             macro = "HANDLE"
             namespace = "handles"
             namespace_impl = "handles_impl"
+            argument_self = "m_raw"
         
         decls = []
         implems = []
@@ -497,7 +499,7 @@ def produceBinding(api, meta):
             else:
                 body = "\treturn {wrapped_call};\n"
 
-            argument_names_str = ', '.join(["m_raw"] + argument_names)
+            argument_names_str = ', '.join([argument_self] + argument_names)
 
             begin_cast = ""
             end_cast = ""
@@ -541,7 +543,7 @@ def produceBinding(api, meta):
                         for new_args, new_arg_names in alternatives:
                             alt_arguments = arguments[:i-1] + new_args + arguments[i+2:]
                             alt_argument_names = argument_names[:i-1] + new_arg_names + argument_names[i+2:]
-                            alt_argument_names_str = ', '.join(["m_raw"] + alt_argument_names)
+                            alt_argument_names_str = ', '.join([argument_self] + alt_argument_names)
 
                             wrapped_call = f"wgpu{entry_name}{proc.name}({alt_argument_names_str})"
 
@@ -560,7 +562,7 @@ def produceBinding(api, meta):
                 if arg.nullable and arg_c.startswith("&"):
                     alt_arguments = arguments[:-1]
                     alt_argument_names = argument_names[:-1]
-                    alt_argument_names_str = ', '.join(["m_raw"] + alt_argument_names + ["nullptr"])
+                    alt_argument_names_str = ', '.join([argument_self] + alt_argument_names + ["nullptr"])
 
                     wrapped_call = f"{begin_cast}wgpu{entry_name}{proc.name}({alt_argument_names_str}){end_cast}"
 

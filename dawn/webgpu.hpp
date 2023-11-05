@@ -1663,7 +1663,7 @@ void AdapterProperties::setDefault() {
 	backendType = BackendType::Undefined;
 }
 void AdapterProperties::freeMembers() {
-	return wgpuAdapterPropertiesFreeMembers(m_raw);
+	return wgpuAdapterPropertiesFreeMembers(*this);
 }
 
 
@@ -2164,7 +2164,7 @@ void SharedTextureMemoryEGLImageDescriptor::setDefault() {
 void SharedTextureMemoryEndAccessState::setDefault() {
 }
 void SharedTextureMemoryEndAccessState::freeMembers() {
-	return wgpuSharedTextureMemoryEndAccessStateFreeMembers(m_raw);
+	return wgpuSharedTextureMemoryEndAccessStateFreeMembers(*this);
 }
 
 

@@ -1394,19 +1394,23 @@ Instance createInstance(const InstanceDescriptor& descriptor) {
 void ChainedStruct::setDefault() {
 }
 
+
 // Methods of ChainedStructOut
 void ChainedStructOut::setDefault() {
 }
+
 
 // Methods of AdapterProperties
 void AdapterProperties::setDefault() {
 	backendType = BackendType::Undefined;
 }
 
+
 // Methods of BindGroupEntry
 void BindGroupEntry::setDefault() {
 	offset = 0;
 }
+
 
 // Methods of BlendComponent
 void BlendComponent::setDefault() {
@@ -1415,6 +1419,7 @@ void BlendComponent::setDefault() {
 	dstFactor = BlendFactor::Zero;
 }
 
+
 // Methods of BufferBindingLayout
 void BufferBindingLayout::setDefault() {
 	type = BufferBindingType::Uniform;
@@ -1422,34 +1427,42 @@ void BufferBindingLayout::setDefault() {
 	minBindingSize = 0;
 }
 
+
 // Methods of BufferDescriptor
 void BufferDescriptor::setDefault() {
 	mappedAtCreation = false;
 }
 
+
 // Methods of Color
 void Color::setDefault() {
 }
+
 
 // Methods of CommandBufferDescriptor
 void CommandBufferDescriptor::setDefault() {
 }
 
+
 // Methods of CommandEncoderDescriptor
 void CommandEncoderDescriptor::setDefault() {
 }
+
 
 // Methods of CompilationMessage
 void CompilationMessage::setDefault() {
 }
 
+
 // Methods of ComputePassTimestampWrites
 void ComputePassTimestampWrites::setDefault() {
 }
 
+
 // Methods of ConstantEntry
 void ConstantEntry::setDefault() {
 }
+
 
 // Methods of Extent3D
 void Extent3D::setDefault() {
@@ -1457,9 +1470,11 @@ void Extent3D::setDefault() {
 	depthOrArrayLayers = 1;
 }
 
+
 // Methods of InstanceDescriptor
 void InstanceDescriptor::setDefault() {
 }
+
 
 // Methods of Limits
 void Limits::setDefault() {
@@ -1496,12 +1511,14 @@ void Limits::setDefault() {
 	maxComputeWorkgroupsPerDimension = 0;
 }
 
+
 // Methods of MultisampleState
 void MultisampleState::setDefault() {
 	count = 1;
 	mask = 0xFFFFFFFF;
 	alphaToCoverageEnabled = false;
 }
+
 
 // Methods of Origin3D
 void Origin3D::setDefault() {
@@ -1510,9 +1527,11 @@ void Origin3D::setDefault() {
 	z = 0;
 }
 
+
 // Methods of PipelineLayoutDescriptor
 void PipelineLayoutDescriptor::setDefault() {
 }
+
 
 // Methods of PrimitiveDepthClipControl
 void PrimitiveDepthClipControl::setDefault() {
@@ -1520,6 +1539,7 @@ void PrimitiveDepthClipControl::setDefault() {
 	((ChainedStruct*)&chain)->setDefault();
 	chain.sType = SType::PrimitiveDepthClipControl;
 }
+
 
 // Methods of PrimitiveState
 void PrimitiveState::setDefault() {
@@ -1529,17 +1549,21 @@ void PrimitiveState::setDefault() {
 	cullMode = CullMode::None;
 }
 
+
 // Methods of QuerySetDescriptor
 void QuerySetDescriptor::setDefault() {
 }
+
 
 // Methods of QueueDescriptor
 void QueueDescriptor::setDefault() {
 }
 
+
 // Methods of RenderBundleDescriptor
 void RenderBundleDescriptor::setDefault() {
 }
+
 
 // Methods of RenderBundleEncoderDescriptor
 void RenderBundleEncoderDescriptor::setDefault() {
@@ -1548,6 +1572,7 @@ void RenderBundleEncoderDescriptor::setDefault() {
 	stencilReadOnly = false;
 	sampleCount = 1;
 }
+
 
 // Methods of RenderPassDepthStencilAttachment
 void RenderPassDepthStencilAttachment::setDefault() {
@@ -1560,15 +1585,18 @@ void RenderPassDepthStencilAttachment::setDefault() {
 	stencilReadOnly = false;
 }
 
+
 // Methods of RenderPassDescriptorMaxDrawCount
 void RenderPassDescriptorMaxDrawCount::setDefault() {
 	((ChainedStruct*)&chain)->setDefault();
 	chain.sType = SType::RenderPassDescriptorMaxDrawCount;
 }
 
+
 // Methods of RenderPassTimestampWrites
 void RenderPassTimestampWrites::setDefault() {
 }
+
 
 // Methods of RequestAdapterOptions
 void RequestAdapterOptions::setDefault() {
@@ -1577,10 +1605,12 @@ void RequestAdapterOptions::setDefault() {
 	forceFallbackAdapter = false;
 }
 
+
 // Methods of SamplerBindingLayout
 void SamplerBindingLayout::setDefault() {
 	type = SamplerBindingType::Filtering;
 }
+
 
 // Methods of SamplerDescriptor
 void SamplerDescriptor::setDefault() {
@@ -1595,9 +1625,11 @@ void SamplerDescriptor::setDefault() {
 	compare = CompareFunction::Undefined;
 }
 
+
 // Methods of ShaderModuleCompilationHint
 void ShaderModuleCompilationHint::setDefault() {
 }
+
 
 // Methods of ShaderModuleSPIRVDescriptor
 void ShaderModuleSPIRVDescriptor::setDefault() {
@@ -1605,11 +1637,13 @@ void ShaderModuleSPIRVDescriptor::setDefault() {
 	chain.sType = SType::ShaderModuleSPIRVDescriptor;
 }
 
+
 // Methods of ShaderModuleWGSLDescriptor
 void ShaderModuleWGSLDescriptor::setDefault() {
 	((ChainedStruct*)&chain)->setDefault();
 	chain.sType = SType::ShaderModuleWGSLDescriptor;
 }
+
 
 // Methods of StencilFaceState
 void StencilFaceState::setDefault() {
@@ -1619,6 +1653,7 @@ void StencilFaceState::setDefault() {
 	passOp = StencilOperation::Keep;
 }
 
+
 // Methods of StorageTextureBindingLayout
 void StorageTextureBindingLayout::setDefault() {
 	access = StorageTextureAccess::WriteOnly;
@@ -1626,21 +1661,25 @@ void StorageTextureBindingLayout::setDefault() {
 	viewDimension = TextureViewDimension::_2D;
 }
 
+
 // Methods of SurfaceCapabilities
 void SurfaceCapabilities::setDefault() {
 }
 void SurfaceCapabilities::freeMembers() {
-	return wgpuSurfaceCapabilitiesFreeMembers(m_raw);
+	return wgpuSurfaceCapabilitiesFreeMembers(*this);
 }
+
 
 // Methods of SurfaceConfiguration
 void SurfaceConfiguration::setDefault() {
 	format = TextureFormat::Undefined;
 }
 
+
 // Methods of SurfaceDescriptor
 void SurfaceDescriptor::setDefault() {
 }
+
 
 // Methods of SurfaceDescriptorFromAndroidNativeWindow
 void SurfaceDescriptorFromAndroidNativeWindow::setDefault() {
@@ -1648,11 +1687,13 @@ void SurfaceDescriptorFromAndroidNativeWindow::setDefault() {
 	chain.sType = SType::SurfaceDescriptorFromAndroidNativeWindow;
 }
 
+
 // Methods of SurfaceDescriptorFromCanvasHTMLSelector
 void SurfaceDescriptorFromCanvasHTMLSelector::setDefault() {
 	((ChainedStruct*)&chain)->setDefault();
 	chain.sType = SType::SurfaceDescriptorFromCanvasHTMLSelector;
 }
+
 
 // Methods of SurfaceDescriptorFromMetalLayer
 void SurfaceDescriptorFromMetalLayer::setDefault() {
@@ -1660,11 +1701,13 @@ void SurfaceDescriptorFromMetalLayer::setDefault() {
 	chain.sType = SType::SurfaceDescriptorFromMetalLayer;
 }
 
+
 // Methods of SurfaceDescriptorFromWaylandSurface
 void SurfaceDescriptorFromWaylandSurface::setDefault() {
 	((ChainedStruct*)&chain)->setDefault();
 	chain.sType = SType::SurfaceDescriptorFromWaylandSurface;
 }
+
 
 // Methods of SurfaceDescriptorFromWindowsHWND
 void SurfaceDescriptorFromWindowsHWND::setDefault() {
@@ -1672,11 +1715,13 @@ void SurfaceDescriptorFromWindowsHWND::setDefault() {
 	chain.sType = SType::SurfaceDescriptorFromWindowsHWND;
 }
 
+
 // Methods of SurfaceDescriptorFromXcbWindow
 void SurfaceDescriptorFromXcbWindow::setDefault() {
 	((ChainedStruct*)&chain)->setDefault();
 	chain.sType = SType::SurfaceDescriptorFromXcbWindow;
 }
+
 
 // Methods of SurfaceDescriptorFromXlibWindow
 void SurfaceDescriptorFromXlibWindow::setDefault() {
@@ -1684,9 +1729,11 @@ void SurfaceDescriptorFromXlibWindow::setDefault() {
 	chain.sType = SType::SurfaceDescriptorFromXlibWindow;
 }
 
+
 // Methods of SurfaceTexture
 void SurfaceTexture::setDefault() {
 }
+
 
 // Methods of TextureBindingLayout
 void TextureBindingLayout::setDefault() {
@@ -1695,9 +1742,11 @@ void TextureBindingLayout::setDefault() {
 	multisampled = false;
 }
 
+
 // Methods of TextureDataLayout
 void TextureDataLayout::setDefault() {
 }
+
 
 // Methods of TextureViewDescriptor
 void TextureViewDescriptor::setDefault() {
@@ -1708,14 +1757,17 @@ void TextureViewDescriptor::setDefault() {
 	aspect = TextureAspect::All;
 }
 
+
 // Methods of VertexAttribute
 void VertexAttribute::setDefault() {
 	format = VertexFormat::Undefined;
 }
 
+
 // Methods of BindGroupDescriptor
 void BindGroupDescriptor::setDefault() {
 }
+
 
 // Methods of BindGroupLayoutEntry
 void BindGroupLayoutEntry::setDefault() {
@@ -1729,19 +1781,23 @@ void BindGroupLayoutEntry::setDefault() {
 	texture.sampleType = TextureSampleType::Undefined;
 }
 
+
 // Methods of BlendState
 void BlendState::setDefault() {
 	((BlendComponent*)&color)->setDefault();
 	((BlendComponent*)&alpha)->setDefault();
 }
 
+
 // Methods of CompilationInfo
 void CompilationInfo::setDefault() {
 }
 
+
 // Methods of ComputePassDescriptor
 void ComputePassDescriptor::setDefault() {
 }
+
 
 // Methods of DepthStencilState
 void DepthStencilState::setDefault() {
@@ -1756,10 +1812,12 @@ void DepthStencilState::setDefault() {
 	((StencilFaceState*)&stencilBack)->setDefault();
 }
 
+
 // Methods of ImageCopyBuffer
 void ImageCopyBuffer::setDefault() {
 	((TextureDataLayout*)&layout)->setDefault();
 }
+
 
 // Methods of ImageCopyTexture
 void ImageCopyTexture::setDefault() {
@@ -1768,9 +1826,11 @@ void ImageCopyTexture::setDefault() {
 	((Origin3D*)&origin)->setDefault();
 }
 
+
 // Methods of ProgrammableStageDescriptor
 void ProgrammableStageDescriptor::setDefault() {
 }
+
 
 // Methods of RenderPassColorAttachment
 void RenderPassColorAttachment::setDefault() {
@@ -1779,19 +1839,23 @@ void RenderPassColorAttachment::setDefault() {
 	((Color*)&clearValue)->setDefault();
 }
 
+
 // Methods of RequiredLimits
 void RequiredLimits::setDefault() {
 	((Limits*)&limits)->setDefault();
 }
 
+
 // Methods of ShaderModuleDescriptor
 void ShaderModuleDescriptor::setDefault() {
 }
+
 
 // Methods of SupportedLimits
 void SupportedLimits::setDefault() {
 	((Limits*)&limits)->setDefault();
 }
+
 
 // Methods of TextureDescriptor
 void TextureDescriptor::setDefault() {
@@ -1802,41 +1866,50 @@ void TextureDescriptor::setDefault() {
 	((Extent3D*)&size)->setDefault();
 }
 
+
 // Methods of VertexBufferLayout
 void VertexBufferLayout::setDefault() {
 	stepMode = VertexStepMode::Vertex;
 }
 
+
 // Methods of BindGroupLayoutDescriptor
 void BindGroupLayoutDescriptor::setDefault() {
 }
+
 
 // Methods of ColorTargetState
 void ColorTargetState::setDefault() {
 	format = TextureFormat::Undefined;
 }
 
+
 // Methods of ComputePipelineDescriptor
 void ComputePipelineDescriptor::setDefault() {
 	((ProgrammableStageDescriptor*)&compute)->setDefault();
 }
+
 
 // Methods of DeviceDescriptor
 void DeviceDescriptor::setDefault() {
 	((QueueDescriptor*)&defaultQueue)->setDefault();
 }
 
+
 // Methods of RenderPassDescriptor
 void RenderPassDescriptor::setDefault() {
 }
+
 
 // Methods of VertexState
 void VertexState::setDefault() {
 }
 
+
 // Methods of FragmentState
 void FragmentState::setDefault() {
 }
+
 
 // Methods of RenderPipelineDescriptor
 void RenderPipelineDescriptor::setDefault() {
@@ -1845,6 +1918,7 @@ void RenderPipelineDescriptor::setDefault() {
 	((MultisampleState*)&multisample)->setDefault();
 }
 
+
 // Methods of InstanceExtras
 void InstanceExtras::setDefault() {
 	dx12ShaderCompiler = Dx12Compiler::Undefined;
@@ -1852,15 +1926,18 @@ void InstanceExtras::setDefault() {
 	chain.sType = (WGPUSType)NativeSType::InstanceExtras;
 }
 
+
 // Methods of DeviceExtras
 void DeviceExtras::setDefault() {
 	((ChainedStruct*)&chain)->setDefault();
 	chain.sType = (WGPUSType)NativeSType::DeviceExtras;
 }
 
+
 // Methods of NativeLimits
 void NativeLimits::setDefault() {
 }
+
 
 // Methods of RequiredLimitsExtras
 void RequiredLimitsExtras::setDefault() {
@@ -1869,6 +1946,7 @@ void RequiredLimitsExtras::setDefault() {
 	chain.sType = (WGPUSType)NativeSType::RequiredLimitsExtras;
 }
 
+
 // Methods of SupportedLimitsExtras
 void SupportedLimitsExtras::setDefault() {
 	((ChainedStructOut*)&chain)->setDefault();
@@ -1876,9 +1954,11 @@ void SupportedLimitsExtras::setDefault() {
 	chain.sType = (WGPUSType)NativeSType::SupportedLimitsExtras;
 }
 
+
 // Methods of PushConstantRange
 void PushConstantRange::setDefault() {
 }
+
 
 // Methods of PipelineLayoutExtras
 void PipelineLayoutExtras::setDefault() {
@@ -1886,13 +1966,16 @@ void PipelineLayoutExtras::setDefault() {
 	chain.sType = (WGPUSType)NativeSType::PipelineLayoutExtras;
 }
 
+
 // Methods of WrappedSubmissionIndex
 void WrappedSubmissionIndex::setDefault() {
 }
 
+
 // Methods of ShaderDefine
 void ShaderDefine::setDefault() {
 }
+
 
 // Methods of ShaderModuleGLSLDescriptor
 void ShaderModuleGLSLDescriptor::setDefault() {
@@ -1900,9 +1983,11 @@ void ShaderModuleGLSLDescriptor::setDefault() {
 	chain.sType = (WGPUSType)NativeSType::ShaderModuleGLSLDescriptor;
 }
 
+
 // Methods of StorageReport
 void StorageReport::setDefault() {
 }
+
 
 // Methods of HubReport
 void HubReport::setDefault() {
@@ -1923,6 +2008,7 @@ void HubReport::setDefault() {
 	((StorageReport*)&samplers)->setDefault();
 }
 
+
 // Methods of GlobalReport
 void GlobalReport::setDefault() {
 	backendType = BackendType::Undefined;
@@ -1934,9 +2020,11 @@ void GlobalReport::setDefault() {
 	((HubReport*)&gl)->setDefault();
 }
 
+
 // Methods of InstanceEnumerateAdapterOptions
 void InstanceEnumerateAdapterOptions::setDefault() {
 }
+
 
 // Methods of BindGroupEntryExtras
 void BindGroupEntryExtras::setDefault() {
@@ -1944,11 +2032,13 @@ void BindGroupEntryExtras::setDefault() {
 	chain.sType = (WGPUSType)NativeSType::BindGroupEntryExtras;
 }
 
+
 // Methods of BindGroupLayoutEntryExtras
 void BindGroupLayoutEntryExtras::setDefault() {
 	((ChainedStruct*)&chain)->setDefault();
 	chain.sType = (WGPUSType)NativeSType::BindGroupLayoutEntryExtras;
 }
+
 
 // Methods of Adapter
 size_t Adapter::enumerateFeatures(FeatureName * features) {
@@ -1979,6 +2069,7 @@ void Adapter::release() {
 	return wgpuAdapterRelease(m_raw);
 }
 
+
 // Methods of BindGroup
 void BindGroup::setLabel(char const * label) {
 	return wgpuBindGroupSetLabel(m_raw, label);
@@ -1990,6 +2081,7 @@ void BindGroup::release() {
 	return wgpuBindGroupRelease(m_raw);
 }
 
+
 // Methods of BindGroupLayout
 void BindGroupLayout::setLabel(char const * label) {
 	return wgpuBindGroupLayoutSetLabel(m_raw, label);
@@ -2000,6 +2092,7 @@ void BindGroupLayout::reference() {
 void BindGroupLayout::release() {
 	return wgpuBindGroupLayoutRelease(m_raw);
 }
+
 
 // Methods of Buffer
 void Buffer::destroy() {
@@ -2042,6 +2135,7 @@ void Buffer::release() {
 	return wgpuBufferRelease(m_raw);
 }
 
+
 // Methods of CommandBuffer
 void CommandBuffer::setLabel(char const * label) {
 	return wgpuCommandBufferSetLabel(m_raw, label);
@@ -2052,6 +2146,7 @@ void CommandBuffer::reference() {
 void CommandBuffer::release() {
 	return wgpuCommandBufferRelease(m_raw);
 }
+
 
 // Methods of CommandEncoder
 ComputePassEncoder CommandEncoder::beginComputePass(const ComputePassDescriptor& descriptor) {
@@ -2109,6 +2204,7 @@ void CommandEncoder::release() {
 	return wgpuCommandEncoderRelease(m_raw);
 }
 
+
 // Methods of ComputePassEncoder
 void ComputePassEncoder::beginPipelineStatisticsQuery(QuerySet querySet, uint32_t queryIndex) {
 	return wgpuComputePassEncoderBeginPipelineStatisticsQuery(m_raw, querySet, queryIndex);
@@ -2156,6 +2252,7 @@ void ComputePassEncoder::release() {
 	return wgpuComputePassEncoderRelease(m_raw);
 }
 
+
 // Methods of ComputePipeline
 BindGroupLayout ComputePipeline::getBindGroupLayout(uint32_t groupIndex) {
 	return wgpuComputePipelineGetBindGroupLayout(m_raw, groupIndex);
@@ -2169,6 +2266,7 @@ void ComputePipeline::reference() {
 void ComputePipeline::release() {
 	return wgpuComputePipelineRelease(m_raw);
 }
+
 
 // Methods of Device
 BindGroup Device::createBindGroup(const BindGroupDescriptor& descriptor) {
@@ -2277,6 +2375,7 @@ void Device::release() {
 	return wgpuDeviceRelease(m_raw);
 }
 
+
 // Methods of Instance
 Surface Instance::createSurface(const SurfaceDescriptor& descriptor) {
 	return wgpuInstanceCreateSurface(m_raw, &descriptor);
@@ -2300,6 +2399,7 @@ void Instance::release() {
 	return wgpuInstanceRelease(m_raw);
 }
 
+
 // Methods of PipelineLayout
 void PipelineLayout::setLabel(char const * label) {
 	return wgpuPipelineLayoutSetLabel(m_raw, label);
@@ -2310,6 +2410,7 @@ void PipelineLayout::reference() {
 void PipelineLayout::release() {
 	return wgpuPipelineLayoutRelease(m_raw);
 }
+
 
 // Methods of QuerySet
 void QuerySet::destroy() {
@@ -2330,6 +2431,7 @@ void QuerySet::reference() {
 void QuerySet::release() {
 	return wgpuQuerySetRelease(m_raw);
 }
+
 
 // Methods of Queue
 std::unique_ptr<QueueWorkDoneCallback> Queue::onSubmittedWorkDone(QueueWorkDoneCallback&& callback) {
@@ -2366,6 +2468,7 @@ void Queue::release() {
 	return wgpuQueueRelease(m_raw);
 }
 
+
 // Methods of RenderBundle
 void RenderBundle::setLabel(char const * label) {
 	return wgpuRenderBundleSetLabel(m_raw, label);
@@ -2376,6 +2479,7 @@ void RenderBundle::reference() {
 void RenderBundle::release() {
 	return wgpuRenderBundleRelease(m_raw);
 }
+
 
 // Methods of RenderBundleEncoder
 void RenderBundleEncoder::draw(uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) {
@@ -2432,6 +2536,7 @@ void RenderBundleEncoder::reference() {
 void RenderBundleEncoder::release() {
 	return wgpuRenderBundleEncoderRelease(m_raw);
 }
+
 
 // Methods of RenderPassEncoder
 void RenderPassEncoder::beginOcclusionQuery(uint32_t queryIndex) {
@@ -2519,6 +2624,7 @@ void RenderPassEncoder::release() {
 	return wgpuRenderPassEncoderRelease(m_raw);
 }
 
+
 // Methods of RenderPipeline
 BindGroupLayout RenderPipeline::getBindGroupLayout(uint32_t groupIndex) {
 	return wgpuRenderPipelineGetBindGroupLayout(m_raw, groupIndex);
@@ -2533,6 +2639,7 @@ void RenderPipeline::release() {
 	return wgpuRenderPipelineRelease(m_raw);
 }
 
+
 // Methods of Sampler
 void Sampler::setLabel(char const * label) {
 	return wgpuSamplerSetLabel(m_raw, label);
@@ -2543,6 +2650,7 @@ void Sampler::reference() {
 void Sampler::release() {
 	return wgpuSamplerRelease(m_raw);
 }
+
 
 // Methods of ShaderModule
 std::unique_ptr<CompilationInfoCallback> ShaderModule::getCompilationInfo(CompilationInfoCallback&& callback) {
@@ -2563,6 +2671,7 @@ void ShaderModule::reference() {
 void ShaderModule::release() {
 	return wgpuShaderModuleRelease(m_raw);
 }
+
 
 // Methods of Surface
 void Surface::configure(const SurfaceConfiguration& config) {
@@ -2589,6 +2698,7 @@ void Surface::reference() {
 void Surface::release() {
 	return wgpuSurfaceRelease(m_raw);
 }
+
 
 // Methods of Texture
 TextureView Texture::createView(const TextureViewDescriptor& descriptor) {
@@ -2634,6 +2744,7 @@ void Texture::release() {
 	return wgpuTextureRelease(m_raw);
 }
 
+
 // Methods of TextureView
 void TextureView::setLabel(char const * label) {
 	return wgpuTextureViewSetLabel(m_raw, label);
@@ -2644,6 +2755,7 @@ void TextureView::reference() {
 void TextureView::release() {
 	return wgpuTextureViewRelease(m_raw);
 }
+
 
 
 // Extra implementations
