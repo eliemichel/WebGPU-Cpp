@@ -64,6 +64,8 @@ public: \
 	operator W&() { return m_raw; } \
 	operator const W&() const { return m_raw; } \
 	operator bool() const { return m_raw != nullptr; } \
+	bool operator==(const Type& other) const { return m_raw == other.m_raw; } \
+	bool operator!=(const Type& other) const { return m_raw != other.m_raw; } \
 	friend auto operator<<(std::ostream &stream, const S& self) -> std::ostream & { \
 		return stream << "<wgpu::" << #Type << " " << self.m_raw << ">"; \
 	} \

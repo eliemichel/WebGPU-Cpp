@@ -47,8 +47,6 @@ WGPUBlendComponent::operation = "add";
 WGPUBlendComponent::srcFactor = "one";
 WGPUBlendComponent::dstFactor = "zero";
 
-WGPUDepthStencilState::depthWriteEnabled = false;
-WGPUDepthStencilState::depthCompare = "always";
 WGPUDepthStencilState::stencilReadMask = 0xFFFFFFFF;
 WGPUDepthStencilState::stencilWriteMask = 0xFFFFFFFF;
 WGPUDepthStencilState::depthBias = 0;
@@ -67,7 +65,6 @@ WGPUImageCopyTexture::aspect = "all";
 
 WGPURenderPassDescriptor::maxDrawCount = 50000000;
 
-WGPURenderPassDepthStencilAttachment::depthClearValue = 0;
 WGPURenderPassDepthStencilAttachment::depthReadOnly = false;
 WGPURenderPassDepthStencilAttachment::stencilClearValue = 0;
 WGPURenderPassDepthStencilAttachment::stencilReadOnly = false;

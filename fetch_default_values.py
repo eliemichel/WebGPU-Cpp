@@ -42,7 +42,7 @@ parser.add_argument('-d', '--output-defaults', type=str, default='defaults.txt',
 def main(args):
     configureLogging(args)
     spec = download(args.url, label="WebGPU specification")
-    api = parseAllDefinition(spec)
+    api = parseAllDefinitions(spec)
     exportApi(api, args.output_spec)
     exportDefaults(api, args.output_defaults)
     logging.info(f"Done.")
@@ -73,7 +73,7 @@ class WebGpuApi:
 def configureLogging(args):
     logging.basicConfig(format='[%(levelname)s] %(message)s', level=args.log_level)
 
-def parseAllDefinition(spec):
+def parseAllDefinitions(spec):
     root = html.fromstring(spec)
     defs = root.xpath("//pre[@class='idl highlight def']")
 
@@ -138,14 +138,102 @@ def parseDefinition(api, body):
     it = iter(body.text_content().split("\n"))
 
     start_dict_re = re.compile(r"^dictionary (\w+)( : (\w+))? {$")
+    split_start_dict_A_re = re.compile(r"^dictionary (\w+)$")
+    split_start_dict_B_re = re.compile(r"^\s*: (\w+)? {$")
+    start_enum_re = re.compile(r"^enum (\w+) {$")
+
+    end_enum_re = re.compile(r"^};$")
+
+    start_interface_re = re.compile(r"^interface (\w+)( : (\w+))? {$")
+    split_start_interface_A_re = re.compile(r"^interface (\w+)$")
+    split_start_interface_B_re = re.compile(r"^\s*: (\w+)? {$")
+    start_partial_interface_re = re.compile(r"^partial interface (\w+) {$")
+    start_interface_mixin_re = re.compile(r"^interface mixin (\w+) {$")
+    end_interface_re = re.compile(r"^};$")
+
+    start_namespace_re = re.compile(r"^namespace (\w+) {$")
+    end_namespace_re = re.compile(r"^};$")
+
+    interface_attribs_re = re.compile(r"^\[Exposed=")
+
+    typedef_re = re.compile(r"^typedef( (\[\w+\]))?( (\w+))+;")
+    typedef2_re = re.compile(r"^typedef \([\w<>]+( or [\w<>]+)+\) (\w+);")
+    start_typedef_re = re.compile(r"^typedef \(\w+ or$")
+    end_typedef_re = re.compile(r"^\s*\w+\) (\w+);")
+
+    includes_re = re.compile(r"^(\w+) includes (\w+);")
+
+    state = 'NONE'
+    dict_name = None
 
     while (x := next(it, None)) is not None:
-        if (match := start_dict_re.search(x)):
-            dict_name = match.group(1)
-            parent_name = match.group(3)
-            api.dictionaries[dict_name] = (
-                parseDictionary(DictionaryApi(dict_name, parent_name), it)
-            )
+        if state == 'NONE':
+            if (match := start_dict_re.search(x)):
+                dict_name = match.group(1)
+                parent_name = match.group(3)
+                api.dictionaries[dict_name] = (
+                    parseDictionary(DictionaryApi(dict_name, parent_name), it)
+                )
+            elif (match := split_start_dict_A_re.search(x)):
+                dict_name = match.group(1)
+                state = 'SPLIT_START_DICT'
+            elif (match := start_enum_re.search(x)):
+                while (x := next(it, None)) is not None:
+                    if end_enum_re.search(x):
+                        break
+            elif (match := start_partial_interface_re.search(x)):
+                while (x := next(it, None)) is not None:
+                    if end_interface_re.search(x):
+                        break
+            elif (match := start_interface_re.search(x)):
+                while (x := next(it, None)) is not None:
+                    if end_interface_re.search(x):
+                        break
+            elif (match := start_interface_mixin_re.search(x)):
+                while (x := next(it, None)) is not None:
+                    if end_interface_re.search(x):
+                        break
+            elif (match := split_start_interface_A_re.search(x)):
+                dict_name = match.group(1)
+                state = 'SPLIT_START_INTERFACE'
+            elif (match := start_namespace_re.search(x)):
+                while (x := next(it, None)) is not None:
+                    if end_namespace_re.search(x):
+                        break
+            elif (match := start_typedef_re.search(x)):
+                while (x := next(it, None)) is not None:
+                    if end_typedef_re.search(x):
+                        break
+            elif (match := interface_attribs_re.search(x)):
+                continue
+            elif (match := typedef_re.search(x)):
+                continue
+            elif (match := typedef2_re.search(x)):
+                continue
+            elif (match := includes_re.search(x)):
+                continue
+            elif x.strip() == "":
+                continue
+            else:
+                logging.warning(f"Unable to parse line: {x}")
+        elif state == 'SPLIT_START_DICT':
+            if (match := split_start_dict_B_re.search(x)):
+                parent_name = match.group(1)
+                api.dictionaries[dict_name] = (
+                    parseDictionary(DictionaryApi(dict_name, parent_name), it)
+                )
+                state = 'NONE'
+            else:
+                logging.warning(f"Unable to parse line: {x}")
+        elif state == 'SPLIT_START_INTERFACE':
+            if (match := split_start_interface_B_re.search(x)):
+                parent_name = match.group(1)
+                while (x := next(it, None)) is not None:
+                    if end_interface_re.search(x):
+                        break
+                state = 'NONE'
+            else:
+                logging.warning(f"Unable to parse line: {x}")
 
     return api
 

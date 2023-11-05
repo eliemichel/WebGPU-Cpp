@@ -117,12 +117,6 @@
       "parent": "GPUObjectDescriptorBase",
       "fields": [
         {
-          "name": "source",
-          "type": "HTMLVideoElement",
-          "default": null,
-          "required": true
-        },
-        {
           "name": "colorSpace",
           "type": "PredefinedColorSpace",
           "default": "\"srgb\"",
@@ -364,7 +358,14 @@
     "GPUShaderModuleCompilationHint": {
       "name": "GPUShaderModuleCompilationHint",
       "parent": null,
-      "fields": []
+      "fields": [
+        {
+          "name": "entryPoint",
+          "type": "USVString",
+          "default": null,
+          "required": true
+        }
+      ]
     },
     "GPUPipelineErrorInit": {
       "name": "GPUPipelineErrorInit",
@@ -549,18 +550,6 @@
           "required": true
         },
         {
-          "name": "depthWriteEnabled",
-          "type": "boolean",
-          "default": "false",
-          "required": false
-        },
-        {
-          "name": "depthCompare",
-          "type": "GPUCompareFunction",
-          "default": "\"always\"",
-          "required": false
-        },
-        {
           "name": "stencilReadMask",
           "type": "GPUStencilValue",
           "default": "0xFFFFFFFF",
@@ -740,6 +729,12 @@
       "parent": null,
       "fields": [
         {
+          "name": "source",
+          "type": "GPUImageCopyExternalImageSource",
+          "default": null,
+          "required": true
+        },
+        {
           "name": "flipY",
           "type": "boolean",
           "default": "false",
@@ -757,25 +752,13 @@
       "parent": "GPUObjectDescriptorBase",
       "fields": []
     },
-    "GPUComputePassTimestampWrite": {
-      "name": "GPUComputePassTimestampWrite",
+    "GPUComputePassTimestampWrites": {
+      "name": "GPUComputePassTimestampWrites",
       "parent": null,
       "fields": [
         {
           "name": "querySet",
           "type": "GPUQuerySet",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "queryIndex",
-          "type": "GPUSize32",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "location",
-          "type": "GPUComputePassTimestampLocation",
           "default": null,
           "required": true
         }
@@ -786,25 +769,13 @@
       "parent": "GPUObjectDescriptorBase",
       "fields": []
     },
-    "GPURenderPassTimestampWrite": {
-      "name": "GPURenderPassTimestampWrite",
+    "GPURenderPassTimestampWrites": {
+      "name": "GPURenderPassTimestampWrites",
       "parent": null,
       "fields": [
         {
           "name": "querySet",
           "type": "GPUQuerySet",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "queryIndex",
-          "type": "GPUSize32",
-          "default": null,
-          "required": true
-        },
-        {
-          "name": "location",
-          "type": "GPURenderPassTimestampLocation",
           "default": null,
           "required": true
         }
@@ -855,12 +826,6 @@
           "type": "GPUTextureView",
           "default": null,
           "required": true
-        },
-        {
-          "name": "depthClearValue",
-          "type": "float",
-          "default": "0",
-          "required": false
         },
         {
           "name": "depthReadOnly",

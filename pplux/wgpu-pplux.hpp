@@ -78,7 +78,6 @@ namespace wgpu {
     typedef WGPUSampler Sampler;
     typedef WGPUShaderModule ShaderModule;
     typedef WGPUSurface Surface;
-    typedef WGPUSwapChain SwapChain;
     typedef WGPUTexture Texture;
     typedef WGPUTextureView TextureView;
 
@@ -165,10 +164,10 @@ namespace wgpu {
         PROP(utf16Length)
     END
 
-    CLASS(ComputePassTimestampWrite)
+    CLASS(ComputePassTimestampWrites)
         PROP(querySet)
-        PROP(queryIndex)
-        PROP(location)
+        PROP(beginningOfPassWriteIndex)
+        PROP(endOfPassWriteIndex)
     END
 
     DESCRIPTOR(ConstantEntry)
@@ -193,6 +192,7 @@ namespace wgpu {
         PROP(maxTextureDimension3D)
         PROP(maxTextureArrayLayers)
         PROP(maxBindGroups)
+        PROP(maxBindGroupsPlusVertexBuffers)
         PROP(maxBindingsPerBindGroup)
         PROP(maxDynamicUniformBuffersPerPipelineLayout)
         PROP(maxDynamicStorageBuffersPerPipelineLayout)
@@ -258,7 +258,6 @@ namespace wgpu {
         PROP(label)
         PROP(type)
         PROP(count)
-        LIST(pipelineStatistics,pipelineStatisticsCount)
     END
 
     DESCRIPTOR(QueueDescriptor)
@@ -274,7 +273,7 @@ namespace wgpu {
     DESCRIPTOR(RenderBundleEncoderDescriptor)
         PROP(nextInChain)
         PROP(label)
-        LIST(colorFormats,colorFormatsCount)
+        LIST(colorFormats,colorFormatCount)
         PROP(depthStencilFormat)
         PROP(depthReadOnly)
         PROP(stencilReadOnly)
@@ -298,10 +297,10 @@ namespace wgpu {
         PROP(maxDrawCount)
     END
 
-    CLASS(RenderPassTimestampWrite)
+    CLASS(RenderPassTimestampWrites)
         PROP(querySet)
-        PROP(queryIndex)
-        PROP(location)
+        PROP(beginningOfPassWriteIndex)
+        PROP(endOfPassWriteIndex)
     END
 
     DESCRIPTOR(RequestAdapterOptions)
@@ -363,6 +362,25 @@ namespace wgpu {
         PROP(viewDimension)
     END
 
+    DESCRIPTOR(SurfaceCapabilities)
+        PROP(nextInChain)
+        LIST(formats,formatCount)
+        LIST(presentModes,presentModeCount)
+        LIST(alphaModes,alphaModeCount)
+    END
+
+    DESCRIPTOR(SurfaceConfiguration)
+        PROP(nextInChain)
+        PROP(device)
+        PROP(format)
+        PROP(usage)
+        LIST(viewFormats,viewFormatCount)
+        PROP(alphaMode)
+        PROP(width)
+        PROP(height)
+        PROP(presentMode)
+    END
+
     DESCRIPTOR(SurfaceDescriptor)
         PROP(nextInChain)
         PROP(label)
@@ -407,14 +425,10 @@ namespace wgpu {
         PROP(window)
     END
 
-    DESCRIPTOR(SwapChainDescriptor)
-        PROP(nextInChain)
-        PROP(label)
-        PROP(usage)
-        PROP(format)
-        PROP(width)
-        PROP(height)
-        PROP(presentMode)
+    CLASS(SurfaceTexture)
+        PROP(texture)
+        PROP(suboptimal)
+        PROP(status)
     END
 
     DESCRIPTOR(TextureBindingLayout)
@@ -479,7 +493,7 @@ namespace wgpu {
     DESCRIPTOR(ComputePassDescriptor)
         PROP(nextInChain)
         PROP(label)
-        LIST(timestampWrites,timestampWriteCount)
+        PROP(timestampWrites)
     END
 
     DESCRIPTOR(DepthStencilState)
@@ -517,7 +531,8 @@ namespace wgpu {
         LIST(constants,constantCount)
     END
 
-    CLASS(RenderPassColorAttachment)
+    DESCRIPTOR(RenderPassColorAttachment)
+        PROP(nextInChain)
         PROP(view)
         PROP(resolveTarget)
         PROP(loadOp)
@@ -582,7 +597,7 @@ namespace wgpu {
     DESCRIPTOR(DeviceDescriptor)
         PROP(nextInChain)
         PROP(label)
-        LIST(requiredFeatures,requiredFeaturesCount)
+        LIST(requiredFeatures,requiredFeatureCount)
         PROP(requiredLimits)
         PROP(defaultQueue)
         PROP(deviceLostCallback)
@@ -595,7 +610,7 @@ namespace wgpu {
         LIST(colorAttachments,colorAttachmentCount)
         PROP(depthStencilAttachment)
         PROP(occlusionQuerySet)
-        LIST(timestampWrites,timestampWriteCount)
+        PROP(timestampWrites)
     END
 
     DESCRIPTOR(VertexState)
