@@ -15,7 +15,7 @@ void setUncapturedErrorCallback(ErrorCallbackFn callback) {
 }
 ```
 
-This copies the context but ensures that the callback is still valid. Another drawback is that it requires to define the function in the header, which may lead to forward declaration loops.
+This copies the context but ensures that the callback is still valid.
 
 ---
 
