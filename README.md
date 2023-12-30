@@ -46,6 +46,8 @@ The C++ wrapper is automatically generated from the official [webgpu.h](https://
 Quick Start
 -----------
 
+The easiest route is to use the Web service: [https://eliemichel.github.io/WebGPU-Cpp](https://eliemichel.github.io/WebGPU-Cpp)
+
 **NB** *To get started with WebGPU in general, see our [Learn WebGPU for C++](https://eliemichel.github.io/LearnWebGPU) documentation!*
 
 ### Setup
