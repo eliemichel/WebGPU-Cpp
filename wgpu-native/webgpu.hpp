@@ -281,15 +281,14 @@ ENUM(FeatureName)
 	ENUM_ENTRY(DepthClipControl, 0x00000001)
 	ENUM_ENTRY(Depth32FloatStencil8, 0x00000002)
 	ENUM_ENTRY(TimestampQuery, 0x00000003)
-	ENUM_ENTRY(PipelineStatisticsQuery, 0x00000004)
-	ENUM_ENTRY(TextureCompressionBC, 0x00000005)
-	ENUM_ENTRY(TextureCompressionETC2, 0x00000006)
-	ENUM_ENTRY(TextureCompressionASTC, 0x00000007)
-	ENUM_ENTRY(IndirectFirstInstance, 0x00000008)
-	ENUM_ENTRY(ShaderF16, 0x00000009)
-	ENUM_ENTRY(RG11B10UfloatRenderable, 0x0000000A)
-	ENUM_ENTRY(BGRA8UnormStorage, 0x0000000B)
-	ENUM_ENTRY(Float32Filterable, 0x0000000C)
+	ENUM_ENTRY(TextureCompressionBC, 0x00000004)
+	ENUM_ENTRY(TextureCompressionETC2, 0x00000005)
+	ENUM_ENTRY(TextureCompressionASTC, 0x00000006)
+	ENUM_ENTRY(IndirectFirstInstance, 0x00000007)
+	ENUM_ENTRY(ShaderF16, 0x00000008)
+	ENUM_ENTRY(RG11B10UfloatRenderable, 0x00000009)
+	ENUM_ENTRY(BGRA8UnormStorage, 0x0000000A)
+	ENUM_ENTRY(Float32Filterable, 0x0000000B)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(FilterMode)
@@ -319,14 +318,6 @@ ENUM(MipmapFilterMode)
 	ENUM_ENTRY(Linear, 0x00000001)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
-ENUM(PipelineStatisticName)
-	ENUM_ENTRY(VertexShaderInvocations, 0x00000000)
-	ENUM_ENTRY(ClipperInvocations, 0x00000001)
-	ENUM_ENTRY(ClipperPrimitivesOut, 0x00000002)
-	ENUM_ENTRY(FragmentShaderInvocations, 0x00000003)
-	ENUM_ENTRY(ComputeShaderInvocations, 0x00000004)
-	ENUM_ENTRY(Force32, 0x7FFFFFFF)
-END
 ENUM(PowerPreference)
 	ENUM_ENTRY(Undefined, 0x00000000)
 	ENUM_ENTRY(LowPower, 0x00000001)
@@ -350,8 +341,7 @@ ENUM(PrimitiveTopology)
 END
 ENUM(QueryType)
 	ENUM_ENTRY(Occlusion, 0x00000000)
-	ENUM_ENTRY(PipelineStatistics, 0x00000001)
-	ENUM_ENTRY(Timestamp, 0x00000002)
+	ENUM_ENTRY(Timestamp, 0x00000001)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(QueueWorkDoneStatus)
@@ -650,6 +640,7 @@ ENUM(NativeSType)
 	ENUM_ENTRY(InstanceExtras, 0x00030006)
 	ENUM_ENTRY(BindGroupEntryExtras, 0x00030007)
 	ENUM_ENTRY(BindGroupLayoutEntryExtras, 0x00030008)
+	ENUM_ENTRY(QuerySetDescriptorExtras, 0x00030009)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(NativeFeature)
@@ -660,6 +651,7 @@ ENUM(NativeFeature)
 	ENUM_ENTRY(VertexWritableStorage, 0x00030005)
 	ENUM_ENTRY(TextureBindingArray, 0x00030006)
 	ENUM_ENTRY(SampledTextureAndStorageBufferArrayNonUniformIndexing, 0x00030007)
+	ENUM_ENTRY(PipelineStatisticsQuery, 0x00030008)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(LogLevel)
@@ -701,6 +693,18 @@ ENUM(Gles3MinorVersion)
 	ENUM_ENTRY(Version0, 0x00000001)
 	ENUM_ENTRY(Version1, 0x00000002)
 	ENUM_ENTRY(Version2, 0x00000003)
+	ENUM_ENTRY(Force32, 0x7FFFFFFF)
+END
+ENUM(PipelineStatisticName)
+	ENUM_ENTRY(VertexShaderInvocations, 0x00000000)
+	ENUM_ENTRY(ClipperInvocations, 0x00000001)
+	ENUM_ENTRY(ClipperPrimitivesOut, 0x00000002)
+	ENUM_ENTRY(FragmentShaderInvocations, 0x00000003)
+	ENUM_ENTRY(ComputeShaderInvocations, 0x00000004)
+	ENUM_ENTRY(Force32, 0x7FFFFFFF)
+END
+ENUM(NativeQueryType)
+	ENUM_ENTRY(PipelineStatistics, 0x00030000)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 
@@ -869,6 +873,10 @@ STRUCT(BindGroupEntryExtras)
 END
 
 STRUCT(BindGroupLayoutEntryExtras)
+	void setDefault();
+END
+
+STRUCT(QuerySetDescriptorExtras)
 	void setDefault();
 END
 
@@ -1175,11 +1183,9 @@ HANDLE(CommandEncoder)
 END
 
 HANDLE(ComputePassEncoder)
-	void beginPipelineStatisticsQuery(QuerySet querySet, uint32_t queryIndex);
 	void dispatchWorkgroups(uint32_t workgroupCountX, uint32_t workgroupCountY, uint32_t workgroupCountZ);
 	void dispatchWorkgroupsIndirect(Buffer indirectBuffer, uint64_t indirectOffset);
 	void end();
-	void endPipelineStatisticsQuery();
 	void insertDebugMarker(char const * markerLabel);
 	void popDebugGroup();
 	void pushDebugGroup(char const * groupLabel);
@@ -1294,14 +1300,12 @@ END
 
 HANDLE(RenderPassEncoder)
 	void beginOcclusionQuery(uint32_t queryIndex);
-	void beginPipelineStatisticsQuery(QuerySet querySet, uint32_t queryIndex);
 	void draw(uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance);
 	void drawIndexed(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t baseVertex, uint32_t firstInstance);
 	void drawIndexedIndirect(Buffer indirectBuffer, uint64_t indirectOffset);
 	void drawIndirect(Buffer indirectBuffer, uint64_t indirectOffset);
 	void end();
 	void endOcclusionQuery();
-	void endPipelineStatisticsQuery();
 	void executeBundles(size_t bundleCount, RenderBundle const * bundles);
 	void executeBundles(const std::vector<WGPURenderBundle>& bundles);
 	void executeBundles(const WGPURenderBundle& bundles);
@@ -2040,6 +2044,13 @@ void BindGroupLayoutEntryExtras::setDefault() {
 }
 
 
+// Methods of QuerySetDescriptorExtras
+void QuerySetDescriptorExtras::setDefault() {
+	((ChainedStruct*)&chain)->setDefault();
+	chain.sType = (WGPUSType)NativeSType::QuerySetDescriptorExtras;
+}
+
+
 // Methods of Adapter
 size_t Adapter::enumerateFeatures(FeatureName * features) {
 	return wgpuAdapterEnumerateFeatures(m_raw, reinterpret_cast<WGPUFeatureName *>(features));
@@ -2206,9 +2217,6 @@ void CommandEncoder::release() {
 
 
 // Methods of ComputePassEncoder
-void ComputePassEncoder::beginPipelineStatisticsQuery(QuerySet querySet, uint32_t queryIndex) {
-	return wgpuComputePassEncoderBeginPipelineStatisticsQuery(m_raw, querySet, queryIndex);
-}
 void ComputePassEncoder::dispatchWorkgroups(uint32_t workgroupCountX, uint32_t workgroupCountY, uint32_t workgroupCountZ) {
 	return wgpuComputePassEncoderDispatchWorkgroups(m_raw, workgroupCountX, workgroupCountY, workgroupCountZ);
 }
@@ -2217,9 +2225,6 @@ void ComputePassEncoder::dispatchWorkgroupsIndirect(Buffer indirectBuffer, uint6
 }
 void ComputePassEncoder::end() {
 	return wgpuComputePassEncoderEnd(m_raw);
-}
-void ComputePassEncoder::endPipelineStatisticsQuery() {
-	return wgpuComputePassEncoderEndPipelineStatisticsQuery(m_raw);
 }
 void ComputePassEncoder::insertDebugMarker(char const * markerLabel) {
 	return wgpuComputePassEncoderInsertDebugMarker(m_raw, markerLabel);
@@ -2542,9 +2547,6 @@ void RenderBundleEncoder::release() {
 void RenderPassEncoder::beginOcclusionQuery(uint32_t queryIndex) {
 	return wgpuRenderPassEncoderBeginOcclusionQuery(m_raw, queryIndex);
 }
-void RenderPassEncoder::beginPipelineStatisticsQuery(QuerySet querySet, uint32_t queryIndex) {
-	return wgpuRenderPassEncoderBeginPipelineStatisticsQuery(m_raw, querySet, queryIndex);
-}
 void RenderPassEncoder::draw(uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) {
 	return wgpuRenderPassEncoderDraw(m_raw, vertexCount, instanceCount, firstVertex, firstInstance);
 }
@@ -2562,9 +2564,6 @@ void RenderPassEncoder::end() {
 }
 void RenderPassEncoder::endOcclusionQuery() {
 	return wgpuRenderPassEncoderEndOcclusionQuery(m_raw);
-}
-void RenderPassEncoder::endPipelineStatisticsQuery() {
-	return wgpuRenderPassEncoderEndPipelineStatisticsQuery(m_raw);
 }
 void RenderPassEncoder::executeBundles(size_t bundleCount, RenderBundle const * bundles) {
 	return wgpuRenderPassEncoderExecuteBundles(m_raw, bundleCount, reinterpret_cast<WGPURenderBundle const *>(bundles));

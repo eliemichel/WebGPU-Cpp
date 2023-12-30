@@ -111,7 +111,9 @@ def applyDefaultArgs(args):
         args.header_url = [DEFAULT_HEADER_URL]
     if not args.defaults:
         args.defaults = ["defaults.txt", "extra-defaults.txt"]
-    VfsFile.virtual_fs = args.virtual_fs
+
+    if hasattr(args, "virtual_fs"):
+        VfsFile.virtual_fs = args.virtual_fs
 
 # -----------------------------------------------------------------------------
 # Virtual File System, to enable using this script as a lib (in an environement
