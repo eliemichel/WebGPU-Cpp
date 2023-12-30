@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>webgpu.hpp generator</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<meta name="description" content="A generator of webgpu.hpp, a zero-overhead C++ idiomatic wrapper around any version of the webgpu.h C API."/>
+	<meta name="keywords" content="WebGPU, C++, LearnWebGPU, GPU, Graphics Programming, OpenGL, Metal, DirectX, Vulkan"/>
+	<meta name="author" content="Élie Michel" />
+	<link rel="author" href="https://exppad.com/" />
+	<link rel="canonical" href="https://eliemichel.github.io/WebGPU-Cpp" />
+
+	<meta property="og:url" content="https://eliemichel.github.io/WebGPU-Cpp">
+	<meta property="og:description" content="A generator of webgpu.hpp, a zero-overhead C++ idiomatic wrapper around any version of the webgpu.h C API.">
+	<meta property="og:title" content="webgpu.hpp generator">
+	<meta property="og:site_name" content="WebGPU-Cpp">
+
+	<!--
+	<link rel="stylesheet" href="reset.css" />
+	<link rel="stylesheet" href="sakura.css" />
+	-->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/base-min.css" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-min.css" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-responsive-min.css"  crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/buttons-min.css" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/forms-min.css" crossorigin="anonymous">
+	<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+	<main class="content">
+		<h1>webgpu.hpp generator</h1>
+
+		<h2 class="content-subhead">What is this?</h2>
+
+		<p>
+			The WebGPU spec provides a <code>webgpu.h</code> C API. But when using C++, it is confortable to use a C++ wrapper, called <code>webgpu.hpp</code> here, that provides <strong>C++ idioms at zero overhead</strong>. <a href="https://github.com/eliemichel/WebGPU-Cpp">Learn More about the features of <code>webgpu.hpp</code></a>.
+		</p>
+
+		<p>
+			<strong>Different implementations</strong> of WebGPU provide a slightly modified version of the <code>webgpu.h</code> C API, which makes it hard to maintain a single <code>webgpu.hpp</code> wrapper. So this website provides an <strong>automatic generator</strong>, to which you can provide the <code>webgpu.h</code> of <strong>your choice</strong>.
+		</p>
+
+		<p>
+			You may run the Python generator <strong>yourself</strong> by pulling this GitHub repo: <a href="https://github.com/eliemichel/WebGPU-Cpp">eliemichel / WebGPU-Cpp</a>.
+		</p>
+
+		<h2 class="content-subhead">Generator</h2>
+
+		<form id="form" action="#" class="pure-form pure-form-stacked">
+			<div class="pure-g">
+				<fieldset class="pure-u-1 pure-u-md-3-5">
+					<legend>Input</legend>
+					<span class="pure-form-message">Select the <code>webgpu.h</code> file for which you need the <code>webgpu.hpp</code> wrapper:</span>
+
+					<div class="form-group">
+						<label for="headers">Headers</label>
+						<input type="file" name="headers" id="headers" accept=".h" multiple />
+						<span class="pure-form-message">(<code>webgpu.h</code> and extensions like <code>wgpu.h</code>)</span>
+					</div>
+
+					<div class="form-group">
+						<label for="template">Template</label>
+						<select name="template" id="template">
+							<option value="dawn">Dawn (Chrome)</option>
+							<option value="wgpu-native">wgpu-native (Firefox)</option>
+							<option value="emscripten">emscripten</option>
+						</select>
+					</div>
+
+				</fieldset>
+
+				<fieldset class="pure-u-1 pure-u-md-2-5 l-box">
+					<legend>Advanced</legend>
+					<span class="pure-form-message">
+						These extra options are directly passed to <a href="https://github.com/eliemichel/WebGPU-Cpp/blob/main/generate.py#L37"><code>generate.py</code></a>.
+					</span>
+
+					<label class="pure-checkbox" for="no_scoped_enums">
+						<input type="checkbox" id="no_scoped_enums" name="no_scoped_enums" />
+						no_scoped_enums
+					</label>
+
+					<label class="pure-checkbox" for="no_fake_scoped_enums">
+						<input type="checkbox" id="no_fake_scoped_enums" name="no_fake_scoped_enums" />
+						no_fake_scoped_enums
+					</label>
+
+					<label class="pure-checkbox" for="use_non_member_procedures">
+						<input type="checkbox" id="use_non_member_procedures" name="use_non_member_procedures" />
+						use_non_member_procedures
+					</label>
+				</fieldset>
+			</div>
+
+			<div>
+				<button type="submit" id="submit" class="pure-button pure-button-primary">
+					Generate webgpu.hpp
+				</button>
+				<span id="spinner">(loading...)</span>
+			</div>
+			<div id="error-box" style="color: red">
+				<strong><span id="error-name"></span>:</strong> <span id="error"></span>
+			</div>
+
+		</form>
+	</main>
+	<footer class="footer">
+		<div class="content">
+			<!--This generator is based on <a href="https://github.com/eliemichel/WebGPU-Cpp/blob/main/generate.py#L37"><code>generate.py</code></a>.-->
+			Written by <a href="https://www.exppad.com/">Élie Michel</a> – See source on <a href="https://github.com/eliemichel/WebGPU-Cpp/tree/gh-page">GitHub</a>.
+		</div>
+	</footer>
+
+	<script type="text/javascript">
+
+const config = {
+	endpoints: {
+		generate: "https://faas-fra1-afec6ce7.doserverless.co/api/v1/web/fn-8a634431-1f31-4d2b-aa62-35e93e682a30/webgpu-cpp/generate",
+	},
+}
+
+const $dom = new Promise(resolve => {
+	document.addEventListener('DOMContentLoaded', e => {
+		resolve({
+			form: document.getElementById("form"),
+			submit: document.getElementById("submit"),
+			spinner: document.getElementById("spinner"),
+			errorBox: document.getElementById("error-box"),
+			errorName: document.getElementById("error-name"),
+			error: document.getElementById("error"),
+		});
+	});
+});
+
+$dom.then(dom => {
+	dom.spinner.style.display = "none";
+	dom.errorBox.style.display = "none";
+
+	dom.form.addEventListener("submit", async event => {
+		event.preventDefault();
+		dom.spinner.style.display = "inline";
+		dom.submit.disabled = true;
+		dom.error.innerText = "";
+		dom.errorBox.style.display = "none";
+
+		// Build arguments
+		const args = {};
+		for (const el of event.target.elements) {
+			if (!el.name) continue;
+
+			if (el.type == 'checkbox') {
+				args[el.name] = el.checked;
+			} else if (el.type == 'file') {
+				args[el.name] = await Promise.all(Array.from(el.files).map(file => new Promise(resolve => {
+					const reader = new FileReader();
+					reader.onload = event => resolve(event.target.result);
+					reader.readAsText(file);
+				})));
+			} else {
+				args[el.name] = el.value;
+			}
+		}
+		console.log(args);
+
+		// Run function
+		try {
+			//const result = await fetch(config.endpoints.generate + "?" + new URLSearchParams(args));
+			const result = await fetch(config.endpoints.generate, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(args),
+			});
+
+			console.log(result);
+			const json = await result.json()
+			console.log(json);
+			const error = json.error;
+
+			if (error) {
+				dom.errorName.innerText = "ServerError";
+				dom.error.innerText = error;
+				dom.errorBox.style.display = "block";
+			} else {
+				// Provide file to user
+				const element = document.createElement('a');
+				element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(json.output));
+				element.setAttribute('download', "webgpu.hpp");
+				element.style.display = 'none';
+				document.body.appendChild(element);
+				element.click();
+				document.body.removeChild(element);
+			}
+		} catch (e) {
+			dom.errorName.innerText = "Unexpected " + e.name;
+			dom.error.innerText = e.message;
+			dom.errorBox.style.display = "block";
+			throw e;
+		}
+
+		dom.spinner.style.display = "none";
+		dom.submit.disabled = false;
+	});
+});
+
+	</script>
+</body>
+</html>
