@@ -27,61 +27,66 @@
 # NB: The process is inpired by PpluX' wgpu.hpp generator
 #   (see https://github.com/pplux/wgpu.hpp )
 
-import argparse
 import re
 from dataclasses import dataclass, field
 from collections import defaultdict
 from os.path import dirname, isfile, join
 import logging
 
-parser = argparse.ArgumentParser(description="""
-Generate the webgpu-cpp binding from official webgpu-native headers.
-You should not have to change any of the default arguments for a regular use.
-
-This generates a webgpu.hpp file that you can include in your project.
-Exactly one of your source files must #define WEBGPU_CPP_IMPLEMENTATION
-before including this header.
-
-TODO: Add some const qualifiers?
-""")
-
-parser.add_argument("-t", "--template", type=str,
-                    default="webgpu.template.hpp",
-                    help="Template used for generating the output binding file")
-
-parser.add_argument("-o", "--output", type=str,
-                    default="webgpu.hpp",
-                    help="Path where to output the generated webgpu.hpp")
-
 DEFAULT_HEADER_URL = "https://raw.githubusercontent.com/webgpu-native/webgpu-headers/main/webgpu.h"
-parser.add_argument("-u", "--header-url", action='append',
-                    default=[],
-                    help=f"""
-                    URL of the official webgpu.h from the webgpu-native project. If the URL
-                    does not start with http(s)://, it is considered as a local file. You can
-                    specify this option multiple times to agregate multiple headers (e.g.,
-                    the standard webgpu.h plus backend-specific extensions wgpu.h).
-                    If no URL is specified, the official header from '{DEFAULT_HEADER_URL}'
-                    is used.
-                    """)
 
-parser.add_argument("-d", "--defaults", action='append',
-                    default=[],
-                    help="File listing default values for descriptor fields. This argument can be provided multiple times, the last ones override the previous values.")
+def makeArgParser():
+    import argparse
 
-parser.add_argument("--pplux", action='store_true',
-                    help="Generate a binding compatible with https://github.com/pplux/wgpu.hpp (requires the use of pplux.template.h as the template)")
+    parser = argparse.ArgumentParser(description="""
+    Generate the webgpu-cpp binding from official webgpu-native headers.
+    You should not have to change any of the default arguments for a regular use.
 
-# Advanced options
+    This generates a webgpu.hpp file that you can include in your project.
+    Exactly one of your source files must #define WEBGPU_CPP_IMPLEMENTATION
+    before including this header.
 
-parser.add_argument("--no-scoped-enums", action='store_false', dest="use_scoped_enums",
-                    help="Do not replace WebGPU enums with C++ scoped enums")
+    TODO: Add some const qualifiers?
+    """)
 
-parser.add_argument("--no-fake-scoped-enums", action='store_false', dest="use_fake_scoped_enums",
-                    help="Use scoped aliases to original enum values so that no casting is needed")
+    parser.add_argument("-t", "--template", type=str,
+                        default="webgpu.template.hpp",
+                        help="Template used for generating the output binding file")
 
-parser.add_argument("--use-non-member-procedures", action='store_true',
-                    help="Include WebGPU methods that are not members of any WebGPU object")
+    parser.add_argument("-o", "--output", type=str,
+                        default="webgpu.hpp",
+                        help="Path where to output the generated webgpu.hpp")
+
+    parser.add_argument("-u", "--header-url", action='append',
+                        default=[],
+                        help=f"""
+                        URL of the official webgpu.h from the webgpu-native project. If the URL
+                        does not start with http(s)://, it is considered as a local file. You can
+                        specify this option multiple times to agregate multiple headers (e.g.,
+                        the standard webgpu.h plus backend-specific extensions wgpu.h).
+                        If no URL is specified, the official header from '{DEFAULT_HEADER_URL}'
+                        is used.
+                        """)
+
+    parser.add_argument("-d", "--defaults", action='append',
+                        default=[],
+                        help="File listing default values for descriptor fields. This argument can be provided multiple times, the last ones override the previous values.")
+
+    parser.add_argument("--pplux", action='store_true',
+                        help="Generate a binding compatible with https://github.com/pplux/wgpu.hpp (requires the use of pplux.template.h as the template)")
+
+    # Advanced options
+
+    parser.add_argument("--no-scoped-enums", action='store_false', dest="use_scoped_enums",
+                        help="Do not replace WebGPU enums with C++ scoped enums")
+
+    parser.add_argument("--no-fake-scoped-enums", action='store_false', dest="use_fake_scoped_enums",
+                        help="Use scoped aliases to original enum values so that no casting is needed")
+
+    parser.add_argument("--use-non-member-procedures", action='store_true',
+                        help="Include WebGPU methods that are not members of any WebGPU object")
+
+    return parser
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 
@@ -97,7 +102,7 @@ def main(args):
     if args.pplux:
         binding = producePpluxBinding(api)
     else:
-        binding = produceBinding(api, meta)
+        binding = produceBinding(args, api, meta)
     
     generateOutput(args.output, template, binding)
 
@@ -106,6 +111,36 @@ def applyDefaultArgs(args):
         args.header_url = [DEFAULT_HEADER_URL]
     if not args.defaults:
         args.defaults = ["defaults.txt", "extra-defaults.txt"]
+    VfsFile.virtual_fs = args.virtual_fs
+
+# -----------------------------------------------------------------------------
+# Virtual File System, to enable using this script as a lib (in an environement
+# where there is no file system).
+
+class VfsFile():
+    virtual_fs = None
+    def __init__(self, filename):
+        self.filename = filename
+    def __enter__(self):
+        return VfsFile.virtual_fs[self.filename]
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        pass
+
+def openVfs(filename, mode='r', **kwargs):
+    """
+    This is a wrapper around the standard 'open' that enables paths starting
+    with "vfs://" to refer to files in a virtual file system.
+    """
+    if filename.startswith("vfs://"):
+        return VfsFile(filename[6:])
+    else:
+        return open(filename, mode, **kwargs)
+
+def isfileVfs(filename):
+    if filename.startswith("vfs://"):
+        return filename[6:] in VfsFile.virtual_fs
+    else:
+        return isfile(filename)
 
 # -----------------------------------------------------------------------------
 # Parser, for analyzing webgpu.h
@@ -340,7 +375,7 @@ def parseProcArgs(line):
 
 # -----------------------------------------------------------------------------
 
-def produceBinding(api, meta):
+def produceBinding(args, api, meta):
     """Produce binding compatible with PpluX' wgpu.hpp"""
     binding = {
         "descriptors": [],
@@ -658,7 +693,7 @@ def loadDefaultFile(api, filename):
 
     name_to_class_idx = { c.name: i for i, c in enumerate(api.classes) }
 
-    with open(resolved, encoding="utf-8") as f:
+    with openVfs(resolved, encoding="utf-8") as f:
         for lineno, line in enumerate(f):
             if (match := entry_re.search(line)):
                 class_name = match.group(1)
@@ -734,7 +769,7 @@ def postProcessDefaults(api):
 def loadTemplate(path):
     resolved = resolveFilepath(path)
     logging.info(f"Loading template from {resolved}...")
-    with open(resolved, encoding="utf-8") as f:
+    with openVfs(resolved, encoding="utf-8") as f:
         in_inject = False
         in_blacklist = False
         injected = ""
@@ -804,18 +839,18 @@ def downloadHeader(url):
     else:
         resolved = resolveFilepath(url)
         logging.info(f"Loading webgpu-native header from {resolved}...")
-        with open(resolved, encoding="utf-8") as f:
+        with openVfs(resolved, encoding="utf-8") as f:
             return f.read()
 
 def generateOutput(path, template, fields):
     logging.info(f"Writing generated binding to {path}...")
     out = template.format(**fields)
-    with open(path, 'w', encoding="utf-8") as f:
+    with openVfs(path, 'w', encoding="utf-8") as f:
         f.write(out)
 
 def resolveFilepath(path):
     for p in [ join(dirname(__file__), path), path ]:
-        if isfile(p):
+        if isfileVfs(p):
             return p
     logging.error(f"Invalid template path: {path}")
     raise ValueError("Invalid template path")
@@ -864,6 +899,6 @@ def unzip(l):
 # -----------------------------------------------------------------------------
 
 if __name__ == "__main__":
-    args = parser.parse_args() 
+    args = makeArgParser().parse_args() 
     main(args)
     
