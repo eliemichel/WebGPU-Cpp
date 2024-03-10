@@ -124,7 +124,9 @@ class VfsFile():
     def __init__(self, filename):
         self.filename = filename
     def __enter__(self):
-        return VfsFile.virtual_fs[self.filename]
+        stream = VfsFile.virtual_fs[self.filename]
+        stream.seek(0)
+        return stream
     def __exit__(self, exc_type, exc_val, exc_tb):
         pass
 
@@ -751,6 +753,8 @@ def postProcessDefaults(api):
 
     def getType(path, cls_api):
         name_to_prop = { p.name: p for p in cls_api.properties }
+        if path[0] not in name_to_prop:
+            return None
         prop = name_to_prop[path[0]]
         if len(path) == 1:
             return prop.type
@@ -763,7 +767,8 @@ def postProcessDefaults(api):
             prop.default_value = fixDefaultValue(prop.type, prop.default_value)
         for i, (subprop, default_value) in enumerate(c.default_overrides):
             prop_type = getType(subprop.split('.'), c)
-            c.default_overrides[i] = (subprop, fixDefaultValue(prop_type, default_value))
+            if prop_type is not None:
+                c.default_overrides[i] = (subprop, fixDefaultValue(prop_type, default_value))
 
 # -----------------------------------------------------------------------------
 # Utility functions
