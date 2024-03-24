@@ -401,6 +401,8 @@ END
 ENUM(StorageTextureAccess)
 	ENUM_ENTRY(Undefined, 0x00000000)
 	ENUM_ENTRY(WriteOnly, 0x00000001)
+	ENUM_ENTRY(ReadOnly, 0x00000002)
+	ENUM_ENTRY(ReadWrite, 0x00000003)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(StoreOp)
@@ -456,76 +458,77 @@ ENUM(TextureFormat)
 	ENUM_ENTRY(RGBA8Sint, 0x00000016)
 	ENUM_ENTRY(BGRA8Unorm, 0x00000017)
 	ENUM_ENTRY(BGRA8UnormSrgb, 0x00000018)
-	ENUM_ENTRY(RGB10A2Unorm, 0x00000019)
-	ENUM_ENTRY(RG11B10Ufloat, 0x0000001A)
-	ENUM_ENTRY(RGB9E5Ufloat, 0x0000001B)
-	ENUM_ENTRY(RG32Float, 0x0000001C)
-	ENUM_ENTRY(RG32Uint, 0x0000001D)
-	ENUM_ENTRY(RG32Sint, 0x0000001E)
-	ENUM_ENTRY(RGBA16Uint, 0x0000001F)
-	ENUM_ENTRY(RGBA16Sint, 0x00000020)
-	ENUM_ENTRY(RGBA16Float, 0x00000021)
-	ENUM_ENTRY(RGBA32Float, 0x00000022)
-	ENUM_ENTRY(RGBA32Uint, 0x00000023)
-	ENUM_ENTRY(RGBA32Sint, 0x00000024)
-	ENUM_ENTRY(Stencil8, 0x00000025)
-	ENUM_ENTRY(Depth16Unorm, 0x00000026)
-	ENUM_ENTRY(Depth24Plus, 0x00000027)
-	ENUM_ENTRY(Depth24PlusStencil8, 0x00000028)
-	ENUM_ENTRY(Depth32Float, 0x00000029)
-	ENUM_ENTRY(Depth32FloatStencil8, 0x0000002A)
-	ENUM_ENTRY(BC1RGBAUnorm, 0x0000002B)
-	ENUM_ENTRY(BC1RGBAUnormSrgb, 0x0000002C)
-	ENUM_ENTRY(BC2RGBAUnorm, 0x0000002D)
-	ENUM_ENTRY(BC2RGBAUnormSrgb, 0x0000002E)
-	ENUM_ENTRY(BC3RGBAUnorm, 0x0000002F)
-	ENUM_ENTRY(BC3RGBAUnormSrgb, 0x00000030)
-	ENUM_ENTRY(BC4RUnorm, 0x00000031)
-	ENUM_ENTRY(BC4RSnorm, 0x00000032)
-	ENUM_ENTRY(BC5RGUnorm, 0x00000033)
-	ENUM_ENTRY(BC5RGSnorm, 0x00000034)
-	ENUM_ENTRY(BC6HRGBUfloat, 0x00000035)
-	ENUM_ENTRY(BC6HRGBFloat, 0x00000036)
-	ENUM_ENTRY(BC7RGBAUnorm, 0x00000037)
-	ENUM_ENTRY(BC7RGBAUnormSrgb, 0x00000038)
-	ENUM_ENTRY(ETC2RGB8Unorm, 0x00000039)
-	ENUM_ENTRY(ETC2RGB8UnormSrgb, 0x0000003A)
-	ENUM_ENTRY(ETC2RGB8A1Unorm, 0x0000003B)
-	ENUM_ENTRY(ETC2RGB8A1UnormSrgb, 0x0000003C)
-	ENUM_ENTRY(ETC2RGBA8Unorm, 0x0000003D)
-	ENUM_ENTRY(ETC2RGBA8UnormSrgb, 0x0000003E)
-	ENUM_ENTRY(EACR11Unorm, 0x0000003F)
-	ENUM_ENTRY(EACR11Snorm, 0x00000040)
-	ENUM_ENTRY(EACRG11Unorm, 0x00000041)
-	ENUM_ENTRY(EACRG11Snorm, 0x00000042)
-	ENUM_ENTRY(ASTC4x4Unorm, 0x00000043)
-	ENUM_ENTRY(ASTC4x4UnormSrgb, 0x00000044)
-	ENUM_ENTRY(ASTC5x4Unorm, 0x00000045)
-	ENUM_ENTRY(ASTC5x4UnormSrgb, 0x00000046)
-	ENUM_ENTRY(ASTC5x5Unorm, 0x00000047)
-	ENUM_ENTRY(ASTC5x5UnormSrgb, 0x00000048)
-	ENUM_ENTRY(ASTC6x5Unorm, 0x00000049)
-	ENUM_ENTRY(ASTC6x5UnormSrgb, 0x0000004A)
-	ENUM_ENTRY(ASTC6x6Unorm, 0x0000004B)
-	ENUM_ENTRY(ASTC6x6UnormSrgb, 0x0000004C)
-	ENUM_ENTRY(ASTC8x5Unorm, 0x0000004D)
-	ENUM_ENTRY(ASTC8x5UnormSrgb, 0x0000004E)
-	ENUM_ENTRY(ASTC8x6Unorm, 0x0000004F)
-	ENUM_ENTRY(ASTC8x6UnormSrgb, 0x00000050)
-	ENUM_ENTRY(ASTC8x8Unorm, 0x00000051)
-	ENUM_ENTRY(ASTC8x8UnormSrgb, 0x00000052)
-	ENUM_ENTRY(ASTC10x5Unorm, 0x00000053)
-	ENUM_ENTRY(ASTC10x5UnormSrgb, 0x00000054)
-	ENUM_ENTRY(ASTC10x6Unorm, 0x00000055)
-	ENUM_ENTRY(ASTC10x6UnormSrgb, 0x00000056)
-	ENUM_ENTRY(ASTC10x8Unorm, 0x00000057)
-	ENUM_ENTRY(ASTC10x8UnormSrgb, 0x00000058)
-	ENUM_ENTRY(ASTC10x10Unorm, 0x00000059)
-	ENUM_ENTRY(ASTC10x10UnormSrgb, 0x0000005A)
-	ENUM_ENTRY(ASTC12x10Unorm, 0x0000005B)
-	ENUM_ENTRY(ASTC12x10UnormSrgb, 0x0000005C)
-	ENUM_ENTRY(ASTC12x12Unorm, 0x0000005D)
-	ENUM_ENTRY(ASTC12x12UnormSrgb, 0x0000005E)
+	ENUM_ENTRY(RGB10A2Uint, 0x00000019)
+	ENUM_ENTRY(RGB10A2Unorm, 0x0000001A)
+	ENUM_ENTRY(RG11B10Ufloat, 0x0000001B)
+	ENUM_ENTRY(RGB9E5Ufloat, 0x0000001C)
+	ENUM_ENTRY(RG32Float, 0x0000001D)
+	ENUM_ENTRY(RG32Uint, 0x0000001E)
+	ENUM_ENTRY(RG32Sint, 0x0000001F)
+	ENUM_ENTRY(RGBA16Uint, 0x00000020)
+	ENUM_ENTRY(RGBA16Sint, 0x00000021)
+	ENUM_ENTRY(RGBA16Float, 0x00000022)
+	ENUM_ENTRY(RGBA32Float, 0x00000023)
+	ENUM_ENTRY(RGBA32Uint, 0x00000024)
+	ENUM_ENTRY(RGBA32Sint, 0x00000025)
+	ENUM_ENTRY(Stencil8, 0x00000026)
+	ENUM_ENTRY(Depth16Unorm, 0x00000027)
+	ENUM_ENTRY(Depth24Plus, 0x00000028)
+	ENUM_ENTRY(Depth24PlusStencil8, 0x00000029)
+	ENUM_ENTRY(Depth32Float, 0x0000002A)
+	ENUM_ENTRY(Depth32FloatStencil8, 0x0000002B)
+	ENUM_ENTRY(BC1RGBAUnorm, 0x0000002C)
+	ENUM_ENTRY(BC1RGBAUnormSrgb, 0x0000002D)
+	ENUM_ENTRY(BC2RGBAUnorm, 0x0000002E)
+	ENUM_ENTRY(BC2RGBAUnormSrgb, 0x0000002F)
+	ENUM_ENTRY(BC3RGBAUnorm, 0x00000030)
+	ENUM_ENTRY(BC3RGBAUnormSrgb, 0x00000031)
+	ENUM_ENTRY(BC4RUnorm, 0x00000032)
+	ENUM_ENTRY(BC4RSnorm, 0x00000033)
+	ENUM_ENTRY(BC5RGUnorm, 0x00000034)
+	ENUM_ENTRY(BC5RGSnorm, 0x00000035)
+	ENUM_ENTRY(BC6HRGBUfloat, 0x00000036)
+	ENUM_ENTRY(BC6HRGBFloat, 0x00000037)
+	ENUM_ENTRY(BC7RGBAUnorm, 0x00000038)
+	ENUM_ENTRY(BC7RGBAUnormSrgb, 0x00000039)
+	ENUM_ENTRY(ETC2RGB8Unorm, 0x0000003A)
+	ENUM_ENTRY(ETC2RGB8UnormSrgb, 0x0000003B)
+	ENUM_ENTRY(ETC2RGB8A1Unorm, 0x0000003C)
+	ENUM_ENTRY(ETC2RGB8A1UnormSrgb, 0x0000003D)
+	ENUM_ENTRY(ETC2RGBA8Unorm, 0x0000003E)
+	ENUM_ENTRY(ETC2RGBA8UnormSrgb, 0x0000003F)
+	ENUM_ENTRY(EACR11Unorm, 0x00000040)
+	ENUM_ENTRY(EACR11Snorm, 0x00000041)
+	ENUM_ENTRY(EACRG11Unorm, 0x00000042)
+	ENUM_ENTRY(EACRG11Snorm, 0x00000043)
+	ENUM_ENTRY(ASTC4x4Unorm, 0x00000044)
+	ENUM_ENTRY(ASTC4x4UnormSrgb, 0x00000045)
+	ENUM_ENTRY(ASTC5x4Unorm, 0x00000046)
+	ENUM_ENTRY(ASTC5x4UnormSrgb, 0x00000047)
+	ENUM_ENTRY(ASTC5x5Unorm, 0x00000048)
+	ENUM_ENTRY(ASTC5x5UnormSrgb, 0x00000049)
+	ENUM_ENTRY(ASTC6x5Unorm, 0x0000004A)
+	ENUM_ENTRY(ASTC6x5UnormSrgb, 0x0000004B)
+	ENUM_ENTRY(ASTC6x6Unorm, 0x0000004C)
+	ENUM_ENTRY(ASTC6x6UnormSrgb, 0x0000004D)
+	ENUM_ENTRY(ASTC8x5Unorm, 0x0000004E)
+	ENUM_ENTRY(ASTC8x5UnormSrgb, 0x0000004F)
+	ENUM_ENTRY(ASTC8x6Unorm, 0x00000050)
+	ENUM_ENTRY(ASTC8x6UnormSrgb, 0x00000051)
+	ENUM_ENTRY(ASTC8x8Unorm, 0x00000052)
+	ENUM_ENTRY(ASTC8x8UnormSrgb, 0x00000053)
+	ENUM_ENTRY(ASTC10x5Unorm, 0x00000054)
+	ENUM_ENTRY(ASTC10x5UnormSrgb, 0x00000055)
+	ENUM_ENTRY(ASTC10x6Unorm, 0x00000056)
+	ENUM_ENTRY(ASTC10x6UnormSrgb, 0x00000057)
+	ENUM_ENTRY(ASTC10x8Unorm, 0x00000058)
+	ENUM_ENTRY(ASTC10x8UnormSrgb, 0x00000059)
+	ENUM_ENTRY(ASTC10x10Unorm, 0x0000005A)
+	ENUM_ENTRY(ASTC10x10UnormSrgb, 0x0000005B)
+	ENUM_ENTRY(ASTC12x10Unorm, 0x0000005C)
+	ENUM_ENTRY(ASTC12x10UnormSrgb, 0x0000005D)
+	ENUM_ENTRY(ASTC12x12Unorm, 0x0000005E)
+	ENUM_ENTRY(ASTC12x12UnormSrgb, 0x0000005F)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(TextureSampleType)
@@ -642,6 +645,7 @@ ENUM(NativeSType)
 	ENUM_ENTRY(BindGroupEntryExtras, 0x00030007)
 	ENUM_ENTRY(BindGroupLayoutEntryExtras, 0x00030008)
 	ENUM_ENTRY(QuerySetDescriptorExtras, 0x00030009)
+	ENUM_ENTRY(SurfaceConfigurationExtras, 0x0003000A)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(NativeFeature)
@@ -653,6 +657,8 @@ ENUM(NativeFeature)
 	ENUM_ENTRY(TextureBindingArray, 0x00030006)
 	ENUM_ENTRY(SampledTextureAndStorageBufferArrayNonUniformIndexing, 0x00030007)
 	ENUM_ENTRY(PipelineStatisticsQuery, 0x00030008)
+	ENUM_ENTRY(StorageResourceBindingArray, 0x00030009)
+	ENUM_ENTRY(PartiallyBoundBindingArray, 0x0003000A)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(LogLevel)
@@ -857,7 +863,7 @@ STRUCT(ShaderModuleGLSLDescriptor)
 	void setDefault();
 END
 
-STRUCT(StorageReport)
+STRUCT(RegistryReport)
 	void setDefault();
 END
 
@@ -878,6 +884,10 @@ STRUCT(BindGroupLayoutEntryExtras)
 END
 
 STRUCT(QuerySetDescriptorExtras)
+	void setDefault();
+END
+
+STRUCT(SurfaceConfigurationExtras)
 	void setDefault();
 END
 
@@ -1989,39 +1999,39 @@ void ShaderModuleGLSLDescriptor::setDefault() {
 }
 
 
-// Methods of StorageReport
-void StorageReport::setDefault() {
+// Methods of RegistryReport
+void RegistryReport::setDefault() {
 }
 
 
 // Methods of HubReport
 void HubReport::setDefault() {
-	((StorageReport*)&adapters)->setDefault();
-	((StorageReport*)&devices)->setDefault();
-	((StorageReport*)&pipelineLayouts)->setDefault();
-	((StorageReport*)&shaderModules)->setDefault();
-	((StorageReport*)&bindGroupLayouts)->setDefault();
-	((StorageReport*)&bindGroups)->setDefault();
-	((StorageReport*)&commandBuffers)->setDefault();
-	((StorageReport*)&renderBundles)->setDefault();
-	((StorageReport*)&renderPipelines)->setDefault();
-	((StorageReport*)&computePipelines)->setDefault();
-	((StorageReport*)&querySets)->setDefault();
-	((StorageReport*)&buffers)->setDefault();
-	((StorageReport*)&textures)->setDefault();
-	((StorageReport*)&textureViews)->setDefault();
-	((StorageReport*)&samplers)->setDefault();
+	((RegistryReport*)&adapters)->setDefault();
+	((RegistryReport*)&devices)->setDefault();
+	((RegistryReport*)&queues)->setDefault();
+	((RegistryReport*)&pipelineLayouts)->setDefault();
+	((RegistryReport*)&shaderModules)->setDefault();
+	((RegistryReport*)&bindGroupLayouts)->setDefault();
+	((RegistryReport*)&bindGroups)->setDefault();
+	((RegistryReport*)&commandBuffers)->setDefault();
+	((RegistryReport*)&renderBundles)->setDefault();
+	((RegistryReport*)&renderPipelines)->setDefault();
+	((RegistryReport*)&computePipelines)->setDefault();
+	((RegistryReport*)&querySets)->setDefault();
+	((RegistryReport*)&buffers)->setDefault();
+	((RegistryReport*)&textures)->setDefault();
+	((RegistryReport*)&textureViews)->setDefault();
+	((RegistryReport*)&samplers)->setDefault();
 }
 
 
 // Methods of GlobalReport
 void GlobalReport::setDefault() {
 	backendType = BackendType::Undefined;
-	((StorageReport*)&surfaces)->setDefault();
+	((RegistryReport*)&surfaces)->setDefault();
 	((HubReport*)&vulkan)->setDefault();
 	((HubReport*)&metal)->setDefault();
 	((HubReport*)&dx12)->setDefault();
-	((HubReport*)&dx11)->setDefault();
 	((HubReport*)&gl)->setDefault();
 }
 
@@ -2049,6 +2059,13 @@ void BindGroupLayoutEntryExtras::setDefault() {
 void QuerySetDescriptorExtras::setDefault() {
 	((ChainedStruct*)&chain)->setDefault();
 	chain.sType = (WGPUSType)NativeSType::QuerySetDescriptorExtras;
+}
+
+
+// Methods of SurfaceConfigurationExtras
+void SurfaceConfigurationExtras::setDefault() {
+	((ChainedStruct*)&chain)->setDefault();
+	chain.sType = (WGPUSType)NativeSType::SurfaceConfigurationExtras;
 }
 
 
