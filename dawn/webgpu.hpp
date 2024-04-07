@@ -3,7 +3,7 @@
  *   https://github.com/eliemichel/LearnWebGPU
  *
  * MIT License
- * Copyright (c) 2022 Elie Michel
+ * Copyright (c) 2022-2024 Elie Michel
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -1609,7 +1609,6 @@ HANDLE(Device)
 	SharedFence importSharedFence(const SharedFenceDescriptor& descriptor);
 	SharedTextureMemory importSharedTextureMemory(const SharedTextureMemoryDescriptor& descriptor);
 	void injectError(ErrorType type, char const * message);
-	std::unique_ptr<ErrorCallback> popErrorScope(ErrorCallback&& oldCallback);
 	Future popErrorScopeF(PopErrorScopeCallbackInfo callbackInfo);
 	void pushErrorScope(ErrorFilter filter);
 	std::unique_ptr<DeviceLostCallback> setDeviceLostCallback(DeviceLostCallback&& callback);
@@ -3229,15 +3228,6 @@ SharedTextureMemory Device::importSharedTextureMemory(const SharedTextureMemoryD
 }
 void Device::injectError(ErrorType type, char const * message) {
 	return wgpuDeviceInjectError(m_raw, static_cast<WGPUErrorType>(type), message);
-}
-std::unique_ptr<ErrorCallback> Device::popErrorScope(ErrorCallback&& oldCallback) {
-	auto handle = std::make_unique<ErrorCallback>(callback);
-	static auto cCallback = [](WGPUErrorType type, char const * message, void * userdata) -> void {
-		ErrorCallback& callback = *reinterpret_cast<ErrorCallback*>(userdata);
-		callback(static_cast<ErrorType>(type), message);
-	};
-	wgpuDevicePopErrorScope(m_raw, cCallback, reinterpret_cast<void*>(handle.get()));
-	return handle;
 }
 Future Device::popErrorScopeF(PopErrorScopeCallbackInfo callbackInfo) {
 	return wgpuDevicePopErrorScopeF(m_raw, callbackInfo);

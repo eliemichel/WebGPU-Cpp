@@ -3,7 +3,7 @@
  *   https://github.com/eliemichel/LearnWebGPU
  *
  * MIT License
- * Copyright (c) 2022 Elie Michel
+ * Copyright (c) 2022-2024 Elie Michel
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -138,6 +138,7 @@ END
 {{end-inject}}
 
 {{begin-blacklist}}
+wgpuDevicePopErrorScope
 {{end-blacklist}}
 
 // Other type aliases
