@@ -34,6 +34,16 @@
 
 #pragma once
 
+#ifdef WEBGPU_CPP_MODULE
+#define EXPORT export
+#else
+#define EXPORT
+#endif
+
+#ifdef WEBGPU_CPP_MODULE
+module;
+#endif
+
 #include <webgpu/webgpu.h>
 #include <webgpu/wgpu.h>
 
@@ -47,10 +57,14 @@
 #include <emscripten.h>
 #endif
 
+#ifdef WEBGPU_CPP_MODULE
+export module webgpu;
+#endif
+
 /**
  * A namespace providing a more C++ idiomatic API to WebGPU.
  */
-namespace wgpu {
+EXPORT namespace wgpu {
 
 struct DefaultFlag {};
 constexpr DefaultFlag Default;
@@ -1398,7 +1412,7 @@ END
 
 Instance createInstance(const InstanceDescriptor& descriptor);
 
-#ifdef WEBGPU_CPP_IMPLEMENTATION
+#if defined(WEBGPU_CPP_IMPLEMENTATION) || defined(WEBGPU_CPP_MODULE)
 
 Instance createInstance(const InstanceDescriptor& descriptor) {
 	return wgpuCreateInstance(&descriptor);
@@ -2826,12 +2840,13 @@ Device Adapter::requestDevice(const DeviceDescriptor& descriptor) {
 	return device;
 }
 
-#endif // WEBGPU_CPP_IMPLEMENTATION
+#endif // defined(WEBGPU_CPP_IMPLEMENTATION) || defined(WEBGPU_CPP_MODULE)
 
 #undef HANDLE
 #undef DESCRIPTOR
 #undef ENUM
 #undef ENUM_ENTRY
 #undef END
+#undef EXPORT
 
 } // namespace wgpu
