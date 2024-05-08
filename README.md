@@ -14,7 +14,7 @@
 WebGPU-C++
 ==========
 
-**Just what you need** to make the raw C API of WebGPU feel **a bit more confy** when programming in C++, but **zero runtime overhead**, this is only syntactic sugar! 🧁
+**Just what you need** to make the raw C API of WebGPU feel **a bit more confy** when programming in C++, but **zero runtime overhead**, this is mostly syntactic sugar! 🧁
 
 Table of Contents
 -----------------
