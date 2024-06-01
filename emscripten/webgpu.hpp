@@ -247,6 +247,14 @@ ENUM(CompilationMessageType)
 	ENUM_ENTRY(Info, 0x00000003)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
+ENUM(CompositeAlphaMode)
+	ENUM_ENTRY(Auto, 0x00000000)
+	ENUM_ENTRY(Opaque, 0x00000001)
+	ENUM_ENTRY(Premultiplied, 0x00000002)
+	ENUM_ENTRY(Unpremultiplied, 0x00000003)
+	ENUM_ENTRY(Inherit, 0x00000004)
+	ENUM_ENTRY(Force32, 0x7FFFFFFF)
+END
 ENUM(CreatePipelineAsyncStatus)
 	ENUM_ENTRY(Success, 0x00000000)
 	ENUM_ENTRY(ValidationError, 0x00000001)
@@ -264,8 +272,9 @@ ENUM(CullMode)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(DeviceLostReason)
-	ENUM_ENTRY(Undefined, 0x00000000)
-	ENUM_ENTRY(Destroyed, 0x00000001)
+	ENUM_ENTRY(Undefined, 0x00000001)
+	ENUM_ENTRY(Unknown, 0x00000001)
+	ENUM_ENTRY(Destroyed, 0x00000002)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(ErrorFilter)
@@ -414,6 +423,15 @@ ENUM(StoreOp)
 	ENUM_ENTRY(Undefined, 0x00000000)
 	ENUM_ENTRY(Store, 0x00000001)
 	ENUM_ENTRY(Discard, 0x00000002)
+	ENUM_ENTRY(Force32, 0x7FFFFFFF)
+END
+ENUM(SurfaceGetCurrentTextureStatus)
+	ENUM_ENTRY(Success, 0x00000000)
+	ENUM_ENTRY(Timeout, 0x00000001)
+	ENUM_ENTRY(Outdated, 0x00000002)
+	ENUM_ENTRY(Lost, 0x00000003)
+	ENUM_ENTRY(OutOfMemory, 0x00000004)
+	ENUM_ENTRY(DeviceLost, 0x00000005)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(TextureAspect)
@@ -717,6 +735,10 @@ STRUCT(SurfaceDescriptorFromCanvasHTMLSelector)
 	void setDefault();
 END
 
+STRUCT(SurfaceTexture)
+	void setDefault();
+END
+
 STRUCT(TextureBindingViewDimensionDescriptor)
 	void setDefault();
 END
@@ -833,6 +855,15 @@ DESCRIPTOR(ShaderModuleDescriptor)
 END
 
 DESCRIPTOR(StorageTextureBindingLayout)
+	void setDefault();
+END
+
+DESCRIPTOR(SurfaceCapabilities)
+	void setDefault();
+	void freeMembers();
+END
+
+DESCRIPTOR(SurfaceConfiguration)
 	void setDefault();
 END
 
@@ -1213,7 +1244,12 @@ HANDLE(ShaderModule)
 END
 
 HANDLE(Surface)
+	void configure(const SurfaceConfiguration& config);
+	void getCapabilities(Adapter adapter, SurfaceCapabilities * capabilities);
+	void getCurrentTexture(SurfaceTexture * surfaceTexture);
 	TextureFormat getPreferredFormat(Adapter adapter);
+	void present();
+	void unconfigure();
 	void reference();
 	void release();
 END
@@ -1557,6 +1593,20 @@ void StorageTextureBindingLayout::setDefault() {
 }
 
 
+// Methods of SurfaceCapabilities
+void SurfaceCapabilities::setDefault() {
+}
+void SurfaceCapabilities::freeMembers() {
+	return wgpuSurfaceCapabilitiesFreeMembers(*this);
+}
+
+
+// Methods of SurfaceConfiguration
+void SurfaceConfiguration::setDefault() {
+	format = TextureFormat::Undefined;
+}
+
+
 // Methods of SurfaceDescriptor
 void SurfaceDescriptor::setDefault() {
 }
@@ -1566,6 +1616,11 @@ void SurfaceDescriptor::setDefault() {
 void SurfaceDescriptorFromCanvasHTMLSelector::setDefault() {
 	((ChainedStruct*)&chain)->setDefault();
 	chain.sType = SType::SurfaceDescriptorFromCanvasHTMLSelector;
+}
+
+
+// Methods of SurfaceTexture
+void SurfaceTexture::setDefault() {
 }
 
 
@@ -2408,8 +2463,23 @@ void ShaderModule::release() {
 
 
 // Methods of Surface
+void Surface::configure(const SurfaceConfiguration& config) {
+	return wgpuSurfaceConfigure(m_raw, &config);
+}
+void Surface::getCapabilities(Adapter adapter, SurfaceCapabilities * capabilities) {
+	return wgpuSurfaceGetCapabilities(m_raw, adapter, capabilities);
+}
+void Surface::getCurrentTexture(SurfaceTexture * surfaceTexture) {
+	return wgpuSurfaceGetCurrentTexture(m_raw, surfaceTexture);
+}
 TextureFormat Surface::getPreferredFormat(Adapter adapter) {
 	return static_cast<TextureFormat>(wgpuSurfaceGetPreferredFormat(m_raw, adapter));
+}
+void Surface::present() {
+	return wgpuSurfacePresent(m_raw);
+}
+void Surface::unconfigure() {
+	return wgpuSurfaceUnconfigure(m_raw);
 }
 void Surface::reference() {
 	return wgpuSurfaceReference(m_raw);

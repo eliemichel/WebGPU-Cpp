@@ -91,6 +91,18 @@ namespace wgpu {
         PROP(sType)
     END
 
+    DESCRIPTOR(AdapterInfo)
+        PROP(nextInChain)
+        PROP(vendor)
+        PROP(architecture)
+        PROP(device)
+        PROP(description)
+        PROP(backendType)
+        PROP(adapterType)
+        PROP(vendorID)
+        PROP(deviceID)
+    END
+
     DESCRIPTOR(AdapterProperties)
         PROP(nextInChain)
         PROP(vendorID)
@@ -534,6 +546,7 @@ namespace wgpu {
     DESCRIPTOR(RenderPassColorAttachment)
         PROP(nextInChain)
         PROP(view)
+        PROP(depthSlice)
         PROP(resolveTarget)
         PROP(loadOp)
         PROP(storeOp)
