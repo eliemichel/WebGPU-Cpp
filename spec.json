@@ -393,12 +393,6 @@
           "type": "GPUShaderModule",
           "default": null,
           "required": true
-        },
-        {
-          "name": "entryPoint",
-          "type": "USVString",
-          "default": null,
-          "required": true
         }
       ]
     },
