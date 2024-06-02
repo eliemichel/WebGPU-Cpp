@@ -444,6 +444,8 @@ def produceBinding(args, api, meta):
             elif arg_type in enum_ptr_names:
                 arg_c = f"reinterpret_cast<WGPU{arg_type}>({arg_c})"
 
+        sig_cpp = f"{arg_type} {arg.name}"
+
         return sig_cpp, arg_c, arg_cpp, skip_next
 
     class_names = [f"WGPU{c.name}" for c in api.classes]
