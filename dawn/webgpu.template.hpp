@@ -156,7 +156,6 @@ END
 {{end-inject}}
 
 {{begin-blacklist}}
-wgpuDevicePopErrorScope
 {{end-blacklist}}
 
 // Other type aliases

@@ -528,7 +528,7 @@ def produceBinding(args, api, meta):
                 cb_name = proc.arguments[-2].name
                 cb_arg_names = map(lambda a: format_arg(a)[2], cb.arguments[:-1])
                 body = (
-                      f"\tauto handle = std::make_unique<{cb.name}Callback>(callback);\n"
+                      f"\tauto handle = std::make_unique<{cb.name}Callback>({cb_name});\n"
                     + f"\tstatic auto cCallback = []({cb.raw_arguments}) -> void {{\n"
                     + f"\t\t{cb.name}Callback& callback = *reinterpret_cast<{cb.name}Callback*>(userdata);\n"
                     + f"\t\tcallback({', '.join(cb_arg_names)});\n"

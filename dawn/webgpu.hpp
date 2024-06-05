@@ -1751,6 +1751,7 @@ HANDLE(Device)
 	SharedFence importSharedFence(const SharedFenceDescriptor& descriptor);
 	SharedTextureMemory importSharedTextureMemory(const SharedTextureMemoryDescriptor& descriptor);
 	void injectError(ErrorType type, char const * message);
+	NO_DISCARD std::unique_ptr<ErrorCallback> popErrorScope(ErrorCallback&& oldCallback);
 	Future popErrorScope2(PopErrorScopeCallbackInfo2 callbackInfo);
 	Future popErrorScopeF(PopErrorScopeCallbackInfo callbackInfo);
 	void pushErrorScope(ErrorFilter filter);
@@ -3505,6 +3506,15 @@ SharedTextureMemory Device::importSharedTextureMemory(const SharedTextureMemoryD
 }
 void Device::injectError(ErrorType type, char const * message) {
 	return wgpuDeviceInjectError(m_raw, static_cast<WGPUErrorType>(type), message);
+}
+std::unique_ptr<ErrorCallback> Device::popErrorScope(ErrorCallback&& oldCallback) {
+	auto handle = std::make_unique<ErrorCallback>(oldCallback);
+	static auto cCallback = [](WGPUErrorType type, char const * message, void * userdata) -> void {
+		ErrorCallback& callback = *reinterpret_cast<ErrorCallback*>(userdata);
+		callback(static_cast<ErrorType>(type), message);
+	};
+	wgpuDevicePopErrorScope(m_raw, cCallback, reinterpret_cast<void*>(handle.get()));
+	return handle;
 }
 Future Device::popErrorScope2(PopErrorScopeCallbackInfo2 callbackInfo) {
 	return wgpuDevicePopErrorScope2(m_raw, callbackInfo);
