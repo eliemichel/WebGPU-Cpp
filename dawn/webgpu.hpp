@@ -46,6 +46,24 @@
 #include <emscripten.h>
 #endif
 
+#ifdef _MSVC_LANG
+#  if _MSVC_LANG >= 202002L
+#   define NO_DISCARD [[nodiscard("You should keep this handle alive for as long as the callback may get invoked.")]]
+#  elif _MSVC_LANG >= 201703L
+#   define NO_DISCARD [[nodiscard]]
+#  else
+#   define NO_DISCARD
+#  endif
+#else
+#  if CPP_VERSION() >= 202002L
+#    define NO_DISCARD [[nodiscard("You should keep this handle alive for as long as the callback may get invoked.")]]
+#  elif CPP_VERSION >= 201703L
+#    define NO_DISCARD [[nodiscard]]
+#  else
+#    define NO_DISCARD
+#  endif
+#endif
+
 /**
  * A namespace providing a more C++ idiomatic API to WebGPU.
  */
@@ -1605,7 +1623,7 @@ HANDLE(Adapter)
 	Status getLimits(SupportedLimits * limits);
 	Status getProperties(AdapterProperties * properties);
 	Bool hasFeature(FeatureName feature);
-	std::unique_ptr<RequestDeviceCallback> requestDevice(const DeviceDescriptor& descriptor, RequestDeviceCallback&& callback);
+	NO_DISCARD std::unique_ptr<RequestDeviceCallback> requestDevice(const DeviceDescriptor& descriptor, RequestDeviceCallback&& callback);
 	Future requestDevice2(const DeviceDescriptor& options, RequestDeviceCallbackInfo2 callbackInfo);
 	Future requestDeviceF(const DeviceDescriptor& options, RequestDeviceCallbackInfo callbackInfo);
 	void addRef();
@@ -1632,7 +1650,7 @@ HANDLE(Buffer)
 	void * getMappedRange(size_t offset, size_t size);
 	uint64_t getSize();
 	BufferUsageFlags getUsage();
-	std::unique_ptr<BufferMapCallback> mapAsync(MapModeFlags mode, size_t offset, size_t size, BufferMapCallback&& callback);
+	NO_DISCARD std::unique_ptr<BufferMapCallback> mapAsync(MapModeFlags mode, size_t offset, size_t size, BufferMapCallback&& callback);
 	Future mapAsyncF(MapModeFlags mode, size_t offset, size_t size, BufferMapCallbackInfo callbackInfo);
 	void setLabel(char const * label);
 	void unmap();
@@ -1700,7 +1718,7 @@ HANDLE(Device)
 	CommandEncoder createCommandEncoder(const CommandEncoderDescriptor& descriptor);
 	CommandEncoder createCommandEncoder();
 	ComputePipeline createComputePipeline(const ComputePipelineDescriptor& descriptor);
-	std::unique_ptr<CreateComputePipelineAsyncCallback> createComputePipelineAsync(const ComputePipelineDescriptor& descriptor, CreateComputePipelineAsyncCallback&& callback);
+	NO_DISCARD std::unique_ptr<CreateComputePipelineAsyncCallback> createComputePipelineAsync(const ComputePipelineDescriptor& descriptor, CreateComputePipelineAsyncCallback&& callback);
 	Future createComputePipelineAsync2(const ComputePipelineDescriptor& descriptor, CreateComputePipelineAsyncCallbackInfo2 callbackInfo);
 	Future createComputePipelineAsyncF(const ComputePipelineDescriptor& descriptor, CreateComputePipelineAsyncCallbackInfo callbackInfo);
 	Buffer createErrorBuffer(const BufferDescriptor& descriptor);
@@ -1712,7 +1730,7 @@ HANDLE(Device)
 	QuerySet createQuerySet(const QuerySetDescriptor& descriptor);
 	RenderBundleEncoder createRenderBundleEncoder(const RenderBundleEncoderDescriptor& descriptor);
 	RenderPipeline createRenderPipeline(const RenderPipelineDescriptor& descriptor);
-	std::unique_ptr<CreateRenderPipelineAsyncCallback> createRenderPipelineAsync(const RenderPipelineDescriptor& descriptor, CreateRenderPipelineAsyncCallback&& callback);
+	NO_DISCARD std::unique_ptr<CreateRenderPipelineAsyncCallback> createRenderPipelineAsync(const RenderPipelineDescriptor& descriptor, CreateRenderPipelineAsyncCallback&& callback);
 	Future createRenderPipelineAsync2(const RenderPipelineDescriptor& descriptor, CreateRenderPipelineAsyncCallbackInfo2 callbackInfo);
 	Future createRenderPipelineAsyncF(const RenderPipelineDescriptor& descriptor, CreateRenderPipelineAsyncCallbackInfo callbackInfo);
 	Sampler createSampler(const SamplerDescriptor& descriptor);
@@ -1736,10 +1754,10 @@ HANDLE(Device)
 	Future popErrorScope2(PopErrorScopeCallbackInfo2 callbackInfo);
 	Future popErrorScopeF(PopErrorScopeCallbackInfo callbackInfo);
 	void pushErrorScope(ErrorFilter filter);
-	std::unique_ptr<DeviceLostCallback> setDeviceLostCallback(DeviceLostCallback&& callback);
+	NO_DISCARD std::unique_ptr<DeviceLostCallback> setDeviceLostCallback(DeviceLostCallback&& callback);
 	void setLabel(char const * label);
-	std::unique_ptr<LoggingCallback> setLoggingCallback(LoggingCallback&& callback);
-	std::unique_ptr<ErrorCallback> setUncapturedErrorCallback(ErrorCallback&& callback);
+	NO_DISCARD std::unique_ptr<LoggingCallback> setLoggingCallback(LoggingCallback&& callback);
+	NO_DISCARD std::unique_ptr<ErrorCallback> setUncapturedErrorCallback(ErrorCallback&& callback);
 	void tick();
 	void validateTextureDescriptor(const TextureDescriptor& descriptor);
 	void addRef();
@@ -1760,7 +1778,7 @@ HANDLE(Instance)
 	size_t enumerateWGSLLanguageFeatures(WGSLFeatureName * features);
 	Bool hasWGSLLanguageFeature(WGSLFeatureName feature);
 	void processEvents();
-	std::unique_ptr<RequestAdapterCallback> requestAdapter(const RequestAdapterOptions& options, RequestAdapterCallback&& callback);
+	NO_DISCARD std::unique_ptr<RequestAdapterCallback> requestAdapter(const RequestAdapterOptions& options, RequestAdapterCallback&& callback);
 	Future requestAdapter2(const RequestAdapterOptions& options, RequestAdapterCallbackInfo2 callbackInfo);
 	Future requestAdapterF(const RequestAdapterOptions& options, RequestAdapterCallbackInfo callbackInfo);
 	WaitStatus waitAny(size_t futureCount, FutureWaitInfo * futures, uint64_t timeoutNS);
@@ -1787,7 +1805,7 @@ END
 HANDLE(Queue)
 	void copyExternalTextureForBrowser(const ImageCopyExternalTexture& source, const ImageCopyTexture& destination, const Extent3D& copySize, const CopyTextureForBrowserOptions& options);
 	void copyTextureForBrowser(const ImageCopyTexture& source, const ImageCopyTexture& destination, const Extent3D& copySize, const CopyTextureForBrowserOptions& options);
-	std::unique_ptr<QueueWorkDoneCallback> onSubmittedWorkDone(QueueWorkDoneCallback&& callback);
+	NO_DISCARD std::unique_ptr<QueueWorkDoneCallback> onSubmittedWorkDone(QueueWorkDoneCallback&& callback);
 	Future onSubmittedWorkDone2(QueueWorkDoneCallbackInfo2 callbackInfo);
 	Future onSubmittedWorkDoneF(QueueWorkDoneCallbackInfo callbackInfo);
 	void setLabel(char const * label);
@@ -1872,7 +1890,7 @@ HANDLE(Sampler)
 END
 
 HANDLE(ShaderModule)
-	std::unique_ptr<CompilationInfoCallback> getCompilationInfo(CompilationInfoCallback&& callback);
+	NO_DISCARD std::unique_ptr<CompilationInfoCallback> getCompilationInfo(CompilationInfoCallback&& callback);
 	Future getCompilationInfoF(CompilationInfoCallbackInfo callbackInfo);
 	void setLabel(char const * label);
 	void addRef();

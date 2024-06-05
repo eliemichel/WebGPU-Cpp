@@ -538,8 +538,10 @@ def produceBinding(args, api, meta):
                 )
                 argument_names.append(f"reinterpret_cast<void*>(handle.get())")
                 return_type = f"std::unique_ptr<{cb.name}Callback>"
+                maybe_no_discard = "NO_DISCARD "
             else:
                 body = "\treturn {wrapped_call};\n"
+                maybe_no_discard = ""
 
             argument_names_str = ', '.join([argument_self] + argument_names)
 
@@ -554,7 +556,7 @@ def produceBinding(args, api, meta):
                     end_cast = ")"
             
             name_and_args = f"{method_name}({', '.join(arguments)})"
-            decls.append(f"\t{return_type} {name_and_args};\n")
+            decls.append(f"\t{maybe_no_discard}{return_type} {name_and_args};\n")
             wrapped_call = f"{begin_cast}wgpu{entry_name}{proc.name}({argument_names_str}){end_cast}"
             implems.append(
                 f"{return_type} {entry_name}::{name_and_args} {{\n"

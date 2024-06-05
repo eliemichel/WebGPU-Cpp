@@ -46,6 +46,24 @@
 #include <emscripten.h>
 #endif
 
+#ifdef _MSVC_LANG
+#  if _MSVC_LANG >= 202002L
+#   define NO_DISCARD [[nodiscard("You should keep this handle alive for as long as the callback may get invoked.")]]
+#  elif _MSVC_LANG >= 201703L
+#   define NO_DISCARD [[nodiscard]]
+#  else
+#   define NO_DISCARD
+#  endif
+#else
+#  if CPP_VERSION() >= 202002L
+#    define NO_DISCARD [[nodiscard("You should keep this handle alive for as long as the callback may get invoked.")]]
+#  elif CPP_VERSION >= 201703L
+#    define NO_DISCARD [[nodiscard]]
+#  else
+#    define NO_DISCARD
+#  endif
+#endif
+
 /**
  * A namespace providing a more C++ idiomatic API to WebGPU.
  */
@@ -1015,7 +1033,7 @@ HANDLE(Adapter)
 	Bool getLimits(SupportedLimits * limits);
 	void getProperties(AdapterProperties * properties);
 	Bool hasFeature(FeatureName feature);
-	std::unique_ptr<RequestDeviceCallback> requestDevice(const DeviceDescriptor& descriptor, RequestDeviceCallback&& callback);
+	NO_DISCARD std::unique_ptr<RequestDeviceCallback> requestDevice(const DeviceDescriptor& descriptor, RequestDeviceCallback&& callback);
 	void reference();
 	void release();
 	Device requestDevice(const DeviceDescriptor& descriptor);
@@ -1040,7 +1058,7 @@ HANDLE(Buffer)
 	void * getMappedRange(size_t offset, size_t size);
 	uint64_t getSize();
 	BufferUsageFlags getUsage();
-	std::unique_ptr<BufferMapCallback> mapAsync(MapModeFlags mode, size_t offset, size_t size, BufferMapCallback&& callback);
+	NO_DISCARD std::unique_ptr<BufferMapCallback> mapAsync(MapModeFlags mode, size_t offset, size_t size, BufferMapCallback&& callback);
 	void setLabel(char const * label);
 	void unmap();
 	void reference();
@@ -1105,12 +1123,12 @@ HANDLE(Device)
 	CommandEncoder createCommandEncoder(const CommandEncoderDescriptor& descriptor);
 	CommandEncoder createCommandEncoder();
 	ComputePipeline createComputePipeline(const ComputePipelineDescriptor& descriptor);
-	std::unique_ptr<CreateComputePipelineAsyncCallback> createComputePipelineAsync(const ComputePipelineDescriptor& descriptor, CreateComputePipelineAsyncCallback&& callback);
+	NO_DISCARD std::unique_ptr<CreateComputePipelineAsyncCallback> createComputePipelineAsync(const ComputePipelineDescriptor& descriptor, CreateComputePipelineAsyncCallback&& callback);
 	PipelineLayout createPipelineLayout(const PipelineLayoutDescriptor& descriptor);
 	QuerySet createQuerySet(const QuerySetDescriptor& descriptor);
 	RenderBundleEncoder createRenderBundleEncoder(const RenderBundleEncoderDescriptor& descriptor);
 	RenderPipeline createRenderPipeline(const RenderPipelineDescriptor& descriptor);
-	std::unique_ptr<CreateRenderPipelineAsyncCallback> createRenderPipelineAsync(const RenderPipelineDescriptor& descriptor, CreateRenderPipelineAsyncCallback&& callback);
+	NO_DISCARD std::unique_ptr<CreateRenderPipelineAsyncCallback> createRenderPipelineAsync(const RenderPipelineDescriptor& descriptor, CreateRenderPipelineAsyncCallback&& callback);
 	Sampler createSampler(const SamplerDescriptor& descriptor);
 	Sampler createSampler();
 	ShaderModule createShaderModule(const ShaderModuleDescriptor& descriptor);
@@ -1121,10 +1139,10 @@ HANDLE(Device)
 	Bool getLimits(SupportedLimits * limits);
 	Queue getQueue();
 	Bool hasFeature(FeatureName feature);
-	std::unique_ptr<ErrorCallback> popErrorScope(ErrorCallback&& callback);
+	NO_DISCARD std::unique_ptr<ErrorCallback> popErrorScope(ErrorCallback&& callback);
 	void pushErrorScope(ErrorFilter filter);
 	void setLabel(char const * label);
-	std::unique_ptr<ErrorCallback> setUncapturedErrorCallback(ErrorCallback&& callback);
+	NO_DISCARD std::unique_ptr<ErrorCallback> setUncapturedErrorCallback(ErrorCallback&& callback);
 	void reference();
 	void release();
 END
@@ -1133,7 +1151,7 @@ HANDLE(Instance)
 	Surface createSurface(const SurfaceDescriptor& descriptor);
 	Bool hasWGSLLanguageFeature(WGSLFeatureName feature);
 	void processEvents();
-	std::unique_ptr<RequestAdapterCallback> requestAdapter(const RequestAdapterOptions& options, RequestAdapterCallback&& callback);
+	NO_DISCARD std::unique_ptr<RequestAdapterCallback> requestAdapter(const RequestAdapterOptions& options, RequestAdapterCallback&& callback);
 	void reference();
 	void release();
 	Adapter requestAdapter(const RequestAdapterOptions& options);
@@ -1155,7 +1173,7 @@ HANDLE(QuerySet)
 END
 
 HANDLE(Queue)
-	std::unique_ptr<QueueWorkDoneCallback> onSubmittedWorkDone(QueueWorkDoneCallback&& callback);
+	NO_DISCARD std::unique_ptr<QueueWorkDoneCallback> onSubmittedWorkDone(QueueWorkDoneCallback&& callback);
 	void setLabel(char const * label);
 	void submit(size_t commandCount, CommandBuffer const * commands);
 	void submit(const std::vector<WGPUCommandBuffer>& commands);
@@ -1237,7 +1255,7 @@ HANDLE(Sampler)
 END
 
 HANDLE(ShaderModule)
-	std::unique_ptr<CompilationInfoCallback> getCompilationInfo(CompilationInfoCallback&& callback);
+	NO_DISCARD std::unique_ptr<CompilationInfoCallback> getCompilationInfo(CompilationInfoCallback&& callback);
 	void setLabel(char const * label);
 	void reference();
 	void release();
