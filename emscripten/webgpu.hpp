@@ -55,9 +55,9 @@
 #   define NO_DISCARD
 #  endif
 #else
-#  if CPP_VERSION() >= 202002L
+#  if __cplusplus >= 202002L
 #    define NO_DISCARD [[nodiscard("You should keep this handle alive for as long as the callback may get invoked.")]]
-#  elif CPP_VERSION >= 201703L
+#  elif __cplusplus >= 201703L
 #    define NO_DISCARD [[nodiscard]]
 #  else
 #    define NO_DISCARD
