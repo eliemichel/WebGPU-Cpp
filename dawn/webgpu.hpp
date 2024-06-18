@@ -233,16 +233,16 @@ ENUM(BufferBindingType)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(BufferMapAsyncStatus)
-	ENUM_ENTRY(Success, 0x00000000)
-	ENUM_ENTRY(InstanceDropped, 0x00000001)
-	ENUM_ENTRY(ValidationError, 0x00000002)
-	ENUM_ENTRY(Unknown, 0x00000003)
-	ENUM_ENTRY(DeviceLost, 0x00000004)
-	ENUM_ENTRY(DestroyedBeforeCallback, 0x00000005)
-	ENUM_ENTRY(UnmappedBeforeCallback, 0x00000006)
-	ENUM_ENTRY(MappingAlreadyPending, 0x00000007)
-	ENUM_ENTRY(OffsetOutOfRange, 0x00000008)
-	ENUM_ENTRY(SizeOutOfRange, 0x00000009)
+	ENUM_ENTRY(Success, 0x00000001)
+	ENUM_ENTRY(InstanceDropped, 0x00000002)
+	ENUM_ENTRY(ValidationError, 0x00000003)
+	ENUM_ENTRY(Unknown, 0x00000004)
+	ENUM_ENTRY(DeviceLost, 0x00000005)
+	ENUM_ENTRY(DestroyedBeforeCallback, 0x00000006)
+	ENUM_ENTRY(UnmappedBeforeCallback, 0x00000007)
+	ENUM_ENTRY(MappingAlreadyPending, 0x00000008)
+	ENUM_ENTRY(OffsetOutOfRange, 0x00000009)
+	ENUM_ENTRY(SizeOutOfRange, 0x0000000A)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(BufferMapState)
@@ -270,11 +270,11 @@ ENUM(CompareFunction)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(CompilationInfoRequestStatus)
-	ENUM_ENTRY(Success, 0x00000000)
-	ENUM_ENTRY(InstanceDropped, 0x00000001)
-	ENUM_ENTRY(Error, 0x00000002)
-	ENUM_ENTRY(DeviceLost, 0x00000003)
-	ENUM_ENTRY(Unknown, 0x00000004)
+	ENUM_ENTRY(Success, 0x00000001)
+	ENUM_ENTRY(InstanceDropped, 0x00000002)
+	ENUM_ENTRY(Error, 0x00000003)
+	ENUM_ENTRY(DeviceLost, 0x00000004)
+	ENUM_ENTRY(Unknown, 0x00000005)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(CompilationMessageType)
@@ -284,21 +284,21 @@ ENUM(CompilationMessageType)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(CompositeAlphaMode)
-	ENUM_ENTRY(Auto, 0x00000000)
-	ENUM_ENTRY(Opaque, 0x00000001)
-	ENUM_ENTRY(Premultiplied, 0x00000002)
-	ENUM_ENTRY(Unpremultiplied, 0x00000003)
-	ENUM_ENTRY(Inherit, 0x00000004)
+	ENUM_ENTRY(Auto, 0x00000001)
+	ENUM_ENTRY(Opaque, 0x00000002)
+	ENUM_ENTRY(Premultiplied, 0x00000003)
+	ENUM_ENTRY(Unpremultiplied, 0x00000004)
+	ENUM_ENTRY(Inherit, 0x00000005)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(CreatePipelineAsyncStatus)
-	ENUM_ENTRY(Success, 0x00000000)
-	ENUM_ENTRY(InstanceDropped, 0x00000001)
-	ENUM_ENTRY(ValidationError, 0x00000002)
-	ENUM_ENTRY(InternalError, 0x00000003)
-	ENUM_ENTRY(DeviceLost, 0x00000004)
-	ENUM_ENTRY(DeviceDestroyed, 0x00000005)
-	ENUM_ENTRY(Unknown, 0x00000006)
+	ENUM_ENTRY(Success, 0x00000001)
+	ENUM_ENTRY(InstanceDropped, 0x00000002)
+	ENUM_ENTRY(ValidationError, 0x00000003)
+	ENUM_ENTRY(InternalError, 0x00000004)
+	ENUM_ENTRY(DeviceLost, 0x00000005)
+	ENUM_ENTRY(DeviceDestroyed, 0x00000006)
+	ENUM_ENTRY(Unknown, 0x00000007)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(CullMode)
@@ -322,19 +322,19 @@ ENUM(ErrorFilter)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(ErrorType)
-	ENUM_ENTRY(NoError, 0x00000000)
-	ENUM_ENTRY(Validation, 0x00000001)
-	ENUM_ENTRY(OutOfMemory, 0x00000002)
-	ENUM_ENTRY(Internal, 0x00000003)
-	ENUM_ENTRY(Unknown, 0x00000004)
-	ENUM_ENTRY(DeviceLost, 0x00000005)
+	ENUM_ENTRY(NoError, 0x00000001)
+	ENUM_ENTRY(Validation, 0x00000002)
+	ENUM_ENTRY(OutOfMemory, 0x00000003)
+	ENUM_ENTRY(Internal, 0x00000004)
+	ENUM_ENTRY(Unknown, 0x00000005)
+	ENUM_ENTRY(DeviceLost, 0x00000006)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(ExternalTextureRotation)
-	ENUM_ENTRY(Rotate0Degrees, 0x00000000)
-	ENUM_ENTRY(Rotate90Degrees, 0x00000001)
-	ENUM_ENTRY(Rotate180Degrees, 0x00000002)
-	ENUM_ENTRY(Rotate270Degrees, 0x00000003)
+	ENUM_ENTRY(Rotate0Degrees, 0x00000001)
+	ENUM_ENTRY(Rotate90Degrees, 0x00000002)
+	ENUM_ENTRY(Rotate180Degrees, 0x00000003)
+	ENUM_ENTRY(Rotate270Degrees, 0x00000004)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(FeatureName)
@@ -438,6 +438,14 @@ ENUM(LoggingType)
 	ENUM_ENTRY(Error, 0x00000004)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
+ENUM(MapAsyncStatus)
+	ENUM_ENTRY(Success, 0x00000001)
+	ENUM_ENTRY(InstanceDropped, 0x00000002)
+	ENUM_ENTRY(Error, 0x00000003)
+	ENUM_ENTRY(Aborted, 0x00000004)
+	ENUM_ENTRY(Unknown, 0x00000005)
+	ENUM_ENTRY(Force32, 0x7FFFFFFF)
+END
 ENUM(MipmapFilterMode)
 	ENUM_ENTRY(Undefined, 0x00000000)
 	ENUM_ENTRY(Nearest, 0x00000001)
@@ -445,8 +453,8 @@ ENUM(MipmapFilterMode)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(PopErrorScopeStatus)
-	ENUM_ENTRY(Success, 0x00000000)
-	ENUM_ENTRY(InstanceDropped, 0x00000001)
+	ENUM_ENTRY(Success, 0x00000001)
+	ENUM_ENTRY(InstanceDropped, 0x00000002)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(PowerPreference)
@@ -456,10 +464,10 @@ ENUM(PowerPreference)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(PresentMode)
-	ENUM_ENTRY(Fifo, 0x00000000)
-	ENUM_ENTRY(FifoRelaxed, 0x00000001)
-	ENUM_ENTRY(Immediate, 0x00000002)
-	ENUM_ENTRY(Mailbox, 0x00000003)
+	ENUM_ENTRY(Fifo, 0x00000001)
+	ENUM_ENTRY(FifoRelaxed, 0x00000002)
+	ENUM_ENTRY(Immediate, 0x00000003)
+	ENUM_ENTRY(Mailbox, 0x00000004)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(PrimitiveTopology)
@@ -477,30 +485,29 @@ ENUM(QueryType)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(QueueWorkDoneStatus)
-	ENUM_ENTRY(Success, 0x00000000)
-	ENUM_ENTRY(InstanceDropped, 0x00000001)
-	ENUM_ENTRY(Error, 0x00000002)
-	ENUM_ENTRY(Unknown, 0x00000003)
-	ENUM_ENTRY(DeviceLost, 0x00000004)
+	ENUM_ENTRY(Success, 0x00000001)
+	ENUM_ENTRY(InstanceDropped, 0x00000002)
+	ENUM_ENTRY(Error, 0x00000003)
+	ENUM_ENTRY(Unknown, 0x00000004)
+	ENUM_ENTRY(DeviceLost, 0x00000005)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(RequestAdapterStatus)
-	ENUM_ENTRY(Success, 0x00000000)
-	ENUM_ENTRY(InstanceDropped, 0x00000001)
-	ENUM_ENTRY(Unavailable, 0x00000002)
+	ENUM_ENTRY(Success, 0x00000001)
+	ENUM_ENTRY(InstanceDropped, 0x00000002)
+	ENUM_ENTRY(Unavailable, 0x00000003)
+	ENUM_ENTRY(Error, 0x00000004)
+	ENUM_ENTRY(Unknown, 0x00000005)
+	ENUM_ENTRY(Force32, 0x7FFFFFFF)
+END
+ENUM(RequestDeviceStatus)
+	ENUM_ENTRY(Success, 0x00000001)
+	ENUM_ENTRY(InstanceDropped, 0x00000002)
 	ENUM_ENTRY(Error, 0x00000003)
 	ENUM_ENTRY(Unknown, 0x00000004)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
-ENUM(RequestDeviceStatus)
-	ENUM_ENTRY(Success, 0x00000000)
-	ENUM_ENTRY(InstanceDropped, 0x00000001)
-	ENUM_ENTRY(Error, 0x00000002)
-	ENUM_ENTRY(Unknown, 0x00000003)
-	ENUM_ENTRY(Force32, 0x7FFFFFFF)
-END
 ENUM(SType)
-	ENUM_ENTRY(Invalid, 0x00000000)
 	ENUM_ENTRY(SurfaceDescriptorFromMetalLayer, 0x00000001)
 	ENUM_ENTRY(SurfaceDescriptorFromWindowsHWND, 0x00000002)
 	ENUM_ENTRY(SurfaceDescriptorFromXlibWindow, 0x00000003)
@@ -528,7 +535,6 @@ ENUM(SType)
 	ENUM_ENTRY(RequestAdapterOptionsLUID, 0x000003F2)
 	ENUM_ENTRY(RequestAdapterOptionsGetGLProc, 0x000003F3)
 	ENUM_ENTRY(RequestAdapterOptionsD3D11Device, 0x000003F4)
-	ENUM_ENTRY(DawnMultisampleStateRenderToSingleSampled, 0x000003F5)
 	ENUM_ENTRY(DawnRenderPassColorAttachmentRenderToSingleSampled, 0x000003F6)
 	ENUM_ENTRY(RenderPassPixelLocalStorage, 0x000003F7)
 	ENUM_ENTRY(PipelineLayoutPixelLocalStorage, 0x000003F8)
@@ -591,8 +597,8 @@ ENUM(SharedFenceType)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(Status)
-	ENUM_ENTRY(Success, 0x00000000)
-	ENUM_ENTRY(Error, 0x00000001)
+	ENUM_ENTRY(Success, 0x00000001)
+	ENUM_ENTRY(Error, 0x00000002)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(StencilOperation)
@@ -621,12 +627,13 @@ ENUM(StoreOp)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(SurfaceGetCurrentTextureStatus)
-	ENUM_ENTRY(Success, 0x00000000)
-	ENUM_ENTRY(Timeout, 0x00000001)
-	ENUM_ENTRY(Outdated, 0x00000002)
-	ENUM_ENTRY(Lost, 0x00000003)
-	ENUM_ENTRY(OutOfMemory, 0x00000004)
-	ENUM_ENTRY(DeviceLost, 0x00000005)
+	ENUM_ENTRY(Success, 0x00000001)
+	ENUM_ENTRY(Timeout, 0x00000002)
+	ENUM_ENTRY(Outdated, 0x00000003)
+	ENUM_ENTRY(Lost, 0x00000004)
+	ENUM_ENTRY(OutOfMemory, 0x00000005)
+	ENUM_ENTRY(DeviceLost, 0x00000006)
+	ENUM_ENTRY(Error, 0x00000007)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(TextureAspect)
@@ -756,6 +763,7 @@ ENUM(TextureFormat)
 	ENUM_ENTRY(R8BG8Biplanar444Unorm, 0x0000006A)
 	ENUM_ENTRY(R10X6BG10X6Biplanar422Unorm, 0x0000006B)
 	ENUM_ENTRY(R10X6BG10X6Biplanar444Unorm, 0x0000006C)
+	ENUM_ENTRY(External, 0x0000006D)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(TextureSampleType)
@@ -820,12 +828,12 @@ ENUM(VertexStepMode)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(WaitStatus)
-	ENUM_ENTRY(Success, 0x00000000)
-	ENUM_ENTRY(TimedOut, 0x00000001)
-	ENUM_ENTRY(UnsupportedTimeout, 0x00000002)
-	ENUM_ENTRY(UnsupportedCount, 0x00000003)
-	ENUM_ENTRY(UnsupportedMixedSources, 0x00000004)
-	ENUM_ENTRY(Unknown, 0x00000005)
+	ENUM_ENTRY(Success, 0x00000001)
+	ENUM_ENTRY(TimedOut, 0x00000002)
+	ENUM_ENTRY(UnsupportedTimeout, 0x00000003)
+	ENUM_ENTRY(UnsupportedCount, 0x00000004)
+	ENUM_ENTRY(UnsupportedMixedSources, 0x00000005)
+	ENUM_ENTRY(Unknown, 0x00000006)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(BufferUsage)
@@ -948,10 +956,6 @@ STRUCT(DawnEncoderInternalUsageDescriptor)
 END
 
 STRUCT(DawnExperimentalSubgroupLimits)
-	void setDefault();
-END
-
-STRUCT(DawnMultisampleStateRenderToSingleSampled)
 	void setDefault();
 END
 
@@ -1542,6 +1546,14 @@ DESCRIPTOR(RenderPipelineDescriptor)
 	void setDefault();
 END
 
+DESCRIPTOR(BufferMapCallbackInfo2)
+	void setDefault();
+END
+
+DESCRIPTOR(CompilationInfoCallbackInfo2)
+	void setDefault();
+END
+
 DESCRIPTOR(CreateComputePipelineAsyncCallbackInfo2)
 	void setDefault();
 END
@@ -1651,6 +1663,7 @@ HANDLE(Buffer)
 	uint64_t getSize();
 	BufferUsageFlags getUsage();
 	NO_DISCARD std::unique_ptr<BufferMapCallback> mapAsync(MapModeFlags mode, size_t offset, size_t size, BufferMapCallback&& callback);
+	Future mapAsync2(MapModeFlags mode, size_t offset, size_t size, BufferMapCallbackInfo2 callbackInfo);
 	Future mapAsyncF(MapModeFlags mode, size_t offset, size_t size, BufferMapCallbackInfo callbackInfo);
 	void setLabel(char const * label);
 	void unmap();
@@ -1892,6 +1905,7 @@ END
 
 HANDLE(ShaderModule)
 	NO_DISCARD std::unique_ptr<CompilationInfoCallback> getCompilationInfo(CompilationInfoCallback&& callback);
+	Future getCompilationInfo2(CompilationInfoCallbackInfo2 callbackInfo);
 	Future getCompilationInfoF(CompilationInfoCallbackInfo callbackInfo);
 	void setLabel(char const * label);
 	void addRef();
@@ -2171,13 +2185,6 @@ void DawnEncoderInternalUsageDescriptor::setDefault() {
 void DawnExperimentalSubgroupLimits::setDefault() {
 	((ChainedStructOut*)&chain)->setDefault();
 	chain.sType = SType::DawnExperimentalSubgroupLimits;
-}
-
-
-// Methods of DawnMultisampleStateRenderToSingleSampled
-void DawnMultisampleStateRenderToSingleSampled::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
-	chain.sType = SType::DawnMultisampleStateRenderToSingleSampled;
 }
 
 
@@ -3093,6 +3100,16 @@ void RenderPipelineDescriptor::setDefault() {
 }
 
 
+// Methods of BufferMapCallbackInfo2
+void BufferMapCallbackInfo2::setDefault() {
+}
+
+
+// Methods of CompilationInfoCallbackInfo2
+void CompilationInfoCallbackInfo2::setDefault() {
+}
+
+
 // Methods of CreateComputePipelineAsyncCallbackInfo2
 void CreateComputePipelineAsyncCallbackInfo2::setDefault() {
 }
@@ -3225,6 +3242,9 @@ std::unique_ptr<BufferMapCallback> Buffer::mapAsync(MapModeFlags mode, size_t of
 	};
 	wgpuBufferMapAsync(m_raw, mode, offset, size, cCallback, reinterpret_cast<void*>(handle.get()));
 	return handle;
+}
+Future Buffer::mapAsync2(MapModeFlags mode, size_t offset, size_t size, BufferMapCallbackInfo2 callbackInfo) {
+	return wgpuBufferMapAsync2(m_raw, mode, offset, size, callbackInfo);
 }
 Future Buffer::mapAsyncF(MapModeFlags mode, size_t offset, size_t size, BufferMapCallbackInfo callbackInfo) {
 	return wgpuBufferMapAsyncF(m_raw, mode, offset, size, callbackInfo);
@@ -3903,6 +3923,9 @@ std::unique_ptr<CompilationInfoCallback> ShaderModule::getCompilationInfo(Compil
 	};
 	wgpuShaderModuleGetCompilationInfo(m_raw, cCallback, reinterpret_cast<void*>(handle.get()));
 	return handle;
+}
+Future ShaderModule::getCompilationInfo2(CompilationInfoCallbackInfo2 callbackInfo) {
+	return wgpuShaderModuleGetCompilationInfo2(m_raw, callbackInfo);
 }
 Future ShaderModule::getCompilationInfoF(CompilationInfoCallbackInfo callbackInfo) {
 	return wgpuShaderModuleGetCompilationInfoF(m_raw, callbackInfo);
