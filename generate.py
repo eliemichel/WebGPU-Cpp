@@ -231,10 +231,12 @@ def parseHeader(api, header):
     
     struct_re = re.compile(r"struct *WGPU(\w+) *{")
     handle_re = re.compile(r"typedef struct .*WGPU([^_]\w+)\s*;")
-    typedef_re = re.compile(r"typedef (\w+) WGPU(\w+)\s*;")
     procedure_re = re.compile(r"(?:WGPU_EXPORT\s+)?([\w *]+) wgpu(\w+)\((.*)\)\s*;")
     enum_re = re.compile(r"typedef enum WGPU(\w+) {")
     flag_enum_re = re.compile(r"typedef WGPUFlags WGPU(\w+)Flags\s*;")
+    new_flag_enum_re = re.compile(r"typedef WGPUFlags WGPU(\w+)\s*;")
+    flag_value_re = re.compile(r"static const WGPU(\w+) WGPU(\w+)_(\w+) = (\w+);")
+    typedef_re = re.compile(r"typedef (\w+) WGPU(\w+)\s*;")
     callback_re = re.compile(r"typedef void \(\*WGPU(\w+)Callback\)\((.*)\)\s*;")
 
     while (x := next(it, None)) is not None:
@@ -246,13 +248,6 @@ def parseHeader(api, header):
         if (match := handle_re.search(x)):
             struct_name = match.group(1)
             api.handles.append(HandleApi(name=struct_name))
-            continue
-
-        if (match := typedef_re.search(x)):
-            api.type_aliases.append(TypeAliasApi(
-                aliased_type=match.group(1),
-                wgpu_type=match.group(2),
-            ))
             continue
 
         if (match := procedure_re.search(x)):
@@ -273,8 +268,43 @@ def parseHeader(api, header):
             continue
 
         if (match := flag_enum_re.search(x)):
+            api.type_aliases.append(TypeAliasApi(
+                aliased_type="WGPUFlags",
+                wgpu_type=match.group(1) + "Flags",
+            ))
+            continue
+
+        if (match := new_flag_enum_re.search(x)):
             api.enumerations.append(EnumerationApi(
-                name=match.group(1) + "Flags",
+                name=match.group(1),
+            ))
+            continue
+
+        if (match := flag_value_re.search(x)):
+            enum_name = match.group(1)
+            enum_name2 = match.group(2)
+            entry = EnumerationEntryApi(
+                key=match.group(3),
+                value=match.group(4),
+            )
+            assert(enum_name == enum_name2)
+            found = False
+            for enum in api.enumerations:
+                if enum.name == enum_name:
+                    enum.entries.append(entry)
+                    found = True
+                    break
+            if not found:
+                api.enumerations.append(EnumerationApi(
+                    name=enum_name,
+                    entries=[ entry ]
+                ))
+            continue
+
+        if (match := typedef_re.search(x)):
+            api.type_aliases.append(TypeAliasApi(
+                aliased_type=match.group(1),
+                wgpu_type=match.group(2),
             ))
             continue
 
