@@ -779,6 +779,11 @@ END
 
 
 // Descriptors
+DESCRIPTOR(AdapterInfo)
+	void setDefault();
+	void freeMembers();
+END
+
 DESCRIPTOR(AdapterProperties)
 	void setDefault();
 	void freeMembers();
@@ -1030,6 +1035,7 @@ using ProcDeviceSetUncapturedErrorCallback = std::function<void(Device device, E
 // Handles detailed declarations
 HANDLE(Adapter)
 	size_t enumerateFeatures(FeatureName * features);
+	void getInfo(AdapterInfo * info);
 	Bool getLimits(SupportedLimits * limits);
 	void getProperties(AdapterProperties * properties);
 	Bool hasFeature(FeatureName feature);
@@ -1323,6 +1329,15 @@ void ChainedStruct::setDefault() {
 
 // Methods of ChainedStructOut
 void ChainedStructOut::setDefault() {
+}
+
+
+// Methods of AdapterInfo
+void AdapterInfo::setDefault() {
+	backendType = BackendType::Undefined;
+}
+void AdapterInfo::freeMembers() {
+	return wgpuAdapterInfoFreeMembers(*this);
 }
 
 
@@ -1851,6 +1866,9 @@ void RenderPipelineDescriptor::setDefault() {
 // Methods of Adapter
 size_t Adapter::enumerateFeatures(FeatureName * features) {
 	return wgpuAdapterEnumerateFeatures(m_raw, reinterpret_cast<WGPUFeatureName *>(features));
+}
+void Adapter::getInfo(AdapterInfo * info) {
+	return wgpuAdapterGetInfo(m_raw, info);
 }
 Bool Adapter::getLimits(SupportedLimits * limits) {
 	return wgpuAdapterGetLimits(m_raw, limits);

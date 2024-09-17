@@ -276,8 +276,8 @@ ENUM(CullMode)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(DeviceLostReason)
-	ENUM_ENTRY(Undefined, 0x00000000)
-	ENUM_ENTRY(Destroyed, 0x00000001)
+	ENUM_ENTRY(Unknown, 0x00000001)
+	ENUM_ENTRY(Destroyed, 0x00000002)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(ErrorFilter)
@@ -608,6 +608,14 @@ ENUM(VertexStepMode)
 	ENUM_ENTRY(VertexBufferNotUsed, 0x00000002)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
+ENUM(WGSLFeatureName)
+	ENUM_ENTRY(Undefined, 0x00000000)
+	ENUM_ENTRY(ReadonlyAndReadwriteStorageTextures, 0x00000001)
+	ENUM_ENTRY(Packed4x8IntegerDotProduct, 0x00000002)
+	ENUM_ENTRY(UnrestrictedPointerParameters, 0x00000003)
+	ENUM_ENTRY(PointerCompositeAccess, 0x00000004)
+	ENUM_ENTRY(Force32, 0x7FFFFFFF)
+END
 ENUM(BufferUsage)
 	ENUM_ENTRY(None, 0x00000000)
 	ENUM_ENTRY(MapRead, 0x00000001)
@@ -628,7 +636,7 @@ ENUM(ColorWriteMask)
 	ENUM_ENTRY(Green, 0x00000002)
 	ENUM_ENTRY(Blue, 0x00000004)
 	ENUM_ENTRY(Alpha, 0x00000008)
-	ENUM_ENTRY(All, 0x0000000F)
+	ENUM_ENTRY(All, WGPUColorWriteMask_None)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(MapMode)
@@ -677,6 +685,28 @@ ENUM(NativeFeature)
 	ENUM_ENTRY(PipelineStatisticsQuery, 0x00030008)
 	ENUM_ENTRY(StorageResourceBindingArray, 0x00030009)
 	ENUM_ENTRY(PartiallyBoundBindingArray, 0x0003000A)
+	ENUM_ENTRY(TextureFormat16bitNorm, 0x0003000B)
+	ENUM_ENTRY(TextureCompressionAstcHdr, 0x0003000C)
+	ENUM_ENTRY(TimestampQueryInsidePasses, 0x0003000D)
+	ENUM_ENTRY(MappablePrimaryBuffers, 0x0003000E)
+	ENUM_ENTRY(BufferBindingArray, 0x0003000F)
+	ENUM_ENTRY(UniformBufferAndStorageTextureArrayNonUniformIndexing, 0x00030010)
+	ENUM_ENTRY(AddressModeClampToZero, 0x00030011)
+	ENUM_ENTRY(AddressModeClampToBorder, 0x00030012)
+	ENUM_ENTRY(PolygonModeLine, 0x00030013)
+	ENUM_ENTRY(PolygonModePoint, 0x00030014)
+	ENUM_ENTRY(ConservativeRasterization, 0x00030015)
+	ENUM_ENTRY(ClearTexture, 0x00030016)
+	ENUM_ENTRY(SpirvShaderPassthrough, 0x00030017)
+	ENUM_ENTRY(Multiview, 0x00030018)
+	ENUM_ENTRY(VertexAttribute64bit, 0x00030019)
+	ENUM_ENTRY(TextureFormatNv12, 0x0003001A)
+	ENUM_ENTRY(RayTracingAccelerationStructure, 0x0003001B)
+	ENUM_ENTRY(RayQuery, 0x0003001C)
+	ENUM_ENTRY(ShaderF64, 0x0003001D)
+	ENUM_ENTRY(ShaderI16, 0x0003001E)
+	ENUM_ENTRY(ShaderPrimitiveIndex, 0x0003001F)
+	ENUM_ENTRY(ShaderEarlyDepthTest, 0x00030020)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
 END
 ENUM(LogLevel)
@@ -731,6 +761,15 @@ END
 ENUM(NativeQueryType)
 	ENUM_ENTRY(PipelineStatistics, 0x00030000)
 	ENUM_ENTRY(Force32, 0x7FFFFFFF)
+END
+ENUM(NativeTextureFormat)
+	ENUM_ENTRY(R16Unorm, 0x00030001)
+	ENUM_ENTRY(R16Snorm, 0x00030002)
+	ENUM_ENTRY(Rg16Unorm, 0x00030003)
+	ENUM_ENTRY(Rg16Snorm, 0x00030004)
+	ENUM_ENTRY(Rgba16Unorm, 0x00030005)
+	ENUM_ENTRY(Rgba16Snorm, 0x00030006)
+	ENUM_ENTRY(NV12, 0x00030007)
 END
 
 // Structs
@@ -911,8 +950,9 @@ END
 
 
 // Descriptors
-DESCRIPTOR(AdapterProperties)
+DESCRIPTOR(AdapterInfo)
 	void setDefault();
+	void freeMembers();
 END
 
 DESCRIPTOR(BindGroupEntry)
@@ -1017,6 +1057,10 @@ DESCRIPTOR(TextureDataLayout)
 END
 
 DESCRIPTOR(TextureViewDescriptor)
+	void setDefault();
+END
+
+DESCRIPTOR(UncapturedErrorCallbackInfo)
 	void setDefault();
 END
 
@@ -1134,25 +1178,24 @@ class Texture;
 class TextureView;
 
 // Callback types
-using BufferMapCallback = std::function<void(BufferMapAsyncStatus status)>;
-using CompilationInfoCallback = std::function<void(CompilationInfoRequestStatus status, const CompilationInfo& compilationInfo)>;
-using CreateComputePipelineAsyncCallback = std::function<void(CreatePipelineAsyncStatus status, ComputePipeline pipeline, char const * message)>;
-using CreateRenderPipelineAsyncCallback = std::function<void(CreatePipelineAsyncStatus status, RenderPipeline pipeline, char const * message)>;
 using DeviceLostCallback = std::function<void(DeviceLostReason reason, char const * message)>;
 using ErrorCallback = std::function<void(ErrorType type, char const * message)>;
-using QueueWorkDoneCallback = std::function<void(QueueWorkDoneStatus status)>;
-using RequestAdapterCallback = std::function<void(RequestAdapterStatus status, Adapter adapter, char const * message)>;
-using RequestDeviceCallback = std::function<void(RequestDeviceStatus status, Device device, char const * message)>;
-using ProcDeviceSetUncapturedErrorCallback = std::function<void(Device device, ErrorCallback&& callback)>;
+using AdapterRequestDeviceCallback = std::function<void(RequestDeviceStatus status, Device device, char const * message)>;
+using BufferMapAsyncCallback = std::function<void(BufferMapAsyncStatus status)>;
+using DeviceCreateComputePipelineAsyncCallback = std::function<void(CreatePipelineAsyncStatus status, ComputePipeline pipeline, char const * message)>;
+using DeviceCreateRenderPipelineAsyncCallback = std::function<void(CreatePipelineAsyncStatus status, RenderPipeline pipeline, char const * message)>;
+using InstanceRequestAdapterCallback = std::function<void(RequestAdapterStatus status, Adapter adapter, char const * message)>;
+using QueueOnSubmittedWorkDoneCallback = std::function<void(QueueWorkDoneStatus status)>;
+using ShaderModuleGetCompilationInfoCallback = std::function<void(CompilationInfoRequestStatus status, const CompilationInfo& compilationInfo)>;
 using LogCallback = std::function<void(LogLevel level, char const * message)>;
 
 // Handles detailed declarations
 HANDLE(Adapter)
 	size_t enumerateFeatures(FeatureName * features);
+	void getInfo(AdapterInfo * info);
 	Bool getLimits(SupportedLimits * limits);
-	void getProperties(AdapterProperties * properties);
 	Bool hasFeature(FeatureName feature);
-	NO_DISCARD std::unique_ptr<RequestDeviceCallback> requestDevice(const DeviceDescriptor& descriptor, RequestDeviceCallback&& callback);
+	NO_DISCARD std::unique_ptr<AdapterRequestDeviceCallback> requestDevice(const DeviceDescriptor& descriptor, AdapterRequestDeviceCallback&& callback);
 	void reference();
 	void release();
 	Device requestDevice(const DeviceDescriptor& descriptor);
@@ -1177,7 +1220,7 @@ HANDLE(Buffer)
 	void * getMappedRange(size_t offset, size_t size);
 	uint64_t getSize();
 	BufferUsageFlags getUsage();
-	NO_DISCARD std::unique_ptr<BufferMapCallback> mapAsync(MapModeFlags mode, size_t offset, size_t size, BufferMapCallback&& callback);
+	NO_DISCARD std::unique_ptr<BufferMapAsyncCallback> mapAsync(MapModeFlags mode, size_t offset, size_t size, BufferMapAsyncCallback&& callback);
 	void setLabel(char const * label);
 	void unmap();
 	void reference();
@@ -1243,12 +1286,12 @@ HANDLE(Device)
 	CommandEncoder createCommandEncoder(const CommandEncoderDescriptor& descriptor);
 	CommandEncoder createCommandEncoder();
 	ComputePipeline createComputePipeline(const ComputePipelineDescriptor& descriptor);
-	NO_DISCARD std::unique_ptr<CreateComputePipelineAsyncCallback> createComputePipelineAsync(const ComputePipelineDescriptor& descriptor, CreateComputePipelineAsyncCallback&& callback);
+	NO_DISCARD std::unique_ptr<DeviceCreateComputePipelineAsyncCallback> createComputePipelineAsync(const ComputePipelineDescriptor& descriptor, DeviceCreateComputePipelineAsyncCallback&& callback);
 	PipelineLayout createPipelineLayout(const PipelineLayoutDescriptor& descriptor);
 	QuerySet createQuerySet(const QuerySetDescriptor& descriptor);
 	RenderBundleEncoder createRenderBundleEncoder(const RenderBundleEncoderDescriptor& descriptor);
 	RenderPipeline createRenderPipeline(const RenderPipelineDescriptor& descriptor);
-	NO_DISCARD std::unique_ptr<CreateRenderPipelineAsyncCallback> createRenderPipelineAsync(const RenderPipelineDescriptor& descriptor, CreateRenderPipelineAsyncCallback&& callback);
+	NO_DISCARD std::unique_ptr<DeviceCreateRenderPipelineAsyncCallback> createRenderPipelineAsync(const RenderPipelineDescriptor& descriptor, DeviceCreateRenderPipelineAsyncCallback&& callback);
 	Sampler createSampler(const SamplerDescriptor& descriptor);
 	Sampler createSampler();
 	ShaderModule createShaderModule(const ShaderModuleDescriptor& descriptor);
@@ -1261,7 +1304,6 @@ HANDLE(Device)
 	NO_DISCARD std::unique_ptr<ErrorCallback> popErrorScope(ErrorCallback&& callback);
 	void pushErrorScope(ErrorFilter filter);
 	void setLabel(char const * label);
-	NO_DISCARD std::unique_ptr<ErrorCallback> setUncapturedErrorCallback(ErrorCallback&& callback);
 	void reference();
 	void release();
 	Bool poll(Bool wait, const WrappedSubmissionIndex& wrappedSubmissionIndex);
@@ -1270,8 +1312,9 @@ END
 
 HANDLE(Instance)
 	Surface createSurface(const SurfaceDescriptor& descriptor);
+	Bool hasWGSLLanguageFeature(WGSLFeatureName feature);
 	void processEvents();
-	NO_DISCARD std::unique_ptr<RequestAdapterCallback> requestAdapter(const RequestAdapterOptions& options, RequestAdapterCallback&& callback);
+	NO_DISCARD std::unique_ptr<InstanceRequestAdapterCallback> requestAdapter(const RequestAdapterOptions& options, InstanceRequestAdapterCallback&& callback);
 	void reference();
 	void release();
 	size_t enumerateAdapters(const InstanceEnumerateAdapterOptions& options, Adapter * adapters);
@@ -1294,7 +1337,7 @@ HANDLE(QuerySet)
 END
 
 HANDLE(Queue)
-	NO_DISCARD std::unique_ptr<QueueWorkDoneCallback> onSubmittedWorkDone(QueueWorkDoneCallback&& callback);
+	NO_DISCARD std::unique_ptr<QueueOnSubmittedWorkDoneCallback> onSubmittedWorkDone(QueueOnSubmittedWorkDoneCallback&& callback);
 	void setLabel(char const * label);
 	void submit(size_t commandCount, CommandBuffer const * commands);
 	void submit(const std::vector<WGPUCommandBuffer>& commands);
@@ -1385,7 +1428,7 @@ HANDLE(Sampler)
 END
 
 HANDLE(ShaderModule)
-	NO_DISCARD std::unique_ptr<CompilationInfoCallback> getCompilationInfo(CompilationInfoCallback&& callback);
+	NO_DISCARD std::unique_ptr<ShaderModuleGetCompilationInfoCallback> getCompilationInfo(ShaderModuleGetCompilationInfoCallback&& callback);
 	void setLabel(char const * label);
 	void reference();
 	void release();
@@ -1395,8 +1438,8 @@ HANDLE(Surface)
 	void configure(const SurfaceConfiguration& config);
 	void getCapabilities(Adapter adapter, SurfaceCapabilities * capabilities);
 	void getCurrentTexture(SurfaceTexture * surfaceTexture);
-	TextureFormat getPreferredFormat(Adapter adapter);
 	void present();
+	void setLabel(char const * label);
 	void unconfigure();
 	void reference();
 	void release();
@@ -1448,9 +1491,12 @@ void ChainedStructOut::setDefault() {
 }
 
 
-// Methods of AdapterProperties
-void AdapterProperties::setDefault() {
+// Methods of AdapterInfo
+void AdapterInfo::setDefault() {
 	backendType = BackendType::Undefined;
+}
+void AdapterInfo::freeMembers() {
+	return wgpuAdapterInfoFreeMembers(*this);
 }
 
 
@@ -1807,6 +1853,11 @@ void TextureViewDescriptor::setDefault() {
 }
 
 
+// Methods of UncapturedErrorCallbackInfo
+void UncapturedErrorCallbackInfo::setDefault() {
+}
+
+
 // Methods of VertexAttribute
 void VertexAttribute::setDefault() {
 	format = VertexFormat::Undefined;
@@ -1942,6 +1993,7 @@ void ComputePipelineDescriptor::setDefault() {
 // Methods of DeviceDescriptor
 void DeviceDescriptor::setDefault() {
 	((QueueDescriptor*)&defaultQueue)->setDefault();
+	((UncapturedErrorCallbackInfo*)&uncapturedErrorCallbackInfo)->setDefault();
 }
 
 
@@ -2107,19 +2159,19 @@ void SurfaceConfigurationExtras::setDefault() {
 size_t Adapter::enumerateFeatures(FeatureName * features) {
 	return wgpuAdapterEnumerateFeatures(m_raw, reinterpret_cast<WGPUFeatureName *>(features));
 }
+void Adapter::getInfo(AdapterInfo * info) {
+	return wgpuAdapterGetInfo(m_raw, info);
+}
 Bool Adapter::getLimits(SupportedLimits * limits) {
 	return wgpuAdapterGetLimits(m_raw, limits);
-}
-void Adapter::getProperties(AdapterProperties * properties) {
-	return wgpuAdapterGetProperties(m_raw, properties);
 }
 Bool Adapter::hasFeature(FeatureName feature) {
 	return wgpuAdapterHasFeature(m_raw, static_cast<WGPUFeatureName>(feature));
 }
-std::unique_ptr<RequestDeviceCallback> Adapter::requestDevice(const DeviceDescriptor& descriptor, RequestDeviceCallback&& callback) {
-	auto handle = std::make_unique<RequestDeviceCallback>(callback);
-	static auto cCallback = [](WGPURequestDeviceStatus status, WGPUDevice device, char const * message, void * userdata) -> void {
-		RequestDeviceCallback& callback = *reinterpret_cast<RequestDeviceCallback*>(userdata);
+std::unique_ptr<AdapterRequestDeviceCallback> Adapter::requestDevice(const DeviceDescriptor& descriptor, AdapterRequestDeviceCallback&& callback) {
+	auto handle = std::make_unique<AdapterRequestDeviceCallback>(callback);
+	static auto cCallback = [](WGPURequestDeviceStatus status, WGPUDevice device, char const * message, WGPU_NULLABLE void * userdata) -> void {
+		AdapterRequestDeviceCallback& callback = *reinterpret_cast<AdapterRequestDeviceCallback*>(userdata);
 		callback(static_cast<RequestDeviceStatus>(status), device, message);
 	};
 	wgpuAdapterRequestDevice(m_raw, &descriptor, cCallback, reinterpret_cast<void*>(handle.get()));
@@ -2176,10 +2228,10 @@ uint64_t Buffer::getSize() {
 BufferUsageFlags Buffer::getUsage() {
 	return wgpuBufferGetUsage(m_raw);
 }
-std::unique_ptr<BufferMapCallback> Buffer::mapAsync(MapModeFlags mode, size_t offset, size_t size, BufferMapCallback&& callback) {
-	auto handle = std::make_unique<BufferMapCallback>(callback);
-	static auto cCallback = [](WGPUBufferMapAsyncStatus status, void * userdata) -> void {
-		BufferMapCallback& callback = *reinterpret_cast<BufferMapCallback*>(userdata);
+std::unique_ptr<BufferMapAsyncCallback> Buffer::mapAsync(MapModeFlags mode, size_t offset, size_t size, BufferMapAsyncCallback&& callback) {
+	auto handle = std::make_unique<BufferMapAsyncCallback>(callback);
+	static auto cCallback = [](WGPUBufferMapAsyncStatus status, WGPU_NULLABLE void * userdata) -> void {
+		BufferMapAsyncCallback& callback = *reinterpret_cast<BufferMapAsyncCallback*>(userdata);
 		callback(static_cast<BufferMapAsyncStatus>(status));
 	};
 	wgpuBufferMapAsync(m_raw, mode, offset, size, cCallback, reinterpret_cast<void*>(handle.get()));
@@ -2350,10 +2402,10 @@ CommandEncoder Device::createCommandEncoder() {
 ComputePipeline Device::createComputePipeline(const ComputePipelineDescriptor& descriptor) {
 	return wgpuDeviceCreateComputePipeline(m_raw, &descriptor);
 }
-std::unique_ptr<CreateComputePipelineAsyncCallback> Device::createComputePipelineAsync(const ComputePipelineDescriptor& descriptor, CreateComputePipelineAsyncCallback&& callback) {
-	auto handle = std::make_unique<CreateComputePipelineAsyncCallback>(callback);
-	static auto cCallback = [](WGPUCreatePipelineAsyncStatus status, WGPUComputePipeline pipeline, char const * message, void * userdata) -> void {
-		CreateComputePipelineAsyncCallback& callback = *reinterpret_cast<CreateComputePipelineAsyncCallback*>(userdata);
+std::unique_ptr<DeviceCreateComputePipelineAsyncCallback> Device::createComputePipelineAsync(const ComputePipelineDescriptor& descriptor, DeviceCreateComputePipelineAsyncCallback&& callback) {
+	auto handle = std::make_unique<DeviceCreateComputePipelineAsyncCallback>(callback);
+	static auto cCallback = [](WGPUCreatePipelineAsyncStatus status, WGPUComputePipeline pipeline, char const * message, WGPU_NULLABLE void * userdata) -> void {
+		DeviceCreateComputePipelineAsyncCallback& callback = *reinterpret_cast<DeviceCreateComputePipelineAsyncCallback*>(userdata);
 		callback(static_cast<CreatePipelineAsyncStatus>(status), pipeline, message);
 	};
 	wgpuDeviceCreateComputePipelineAsync(m_raw, &descriptor, cCallback, reinterpret_cast<void*>(handle.get()));
@@ -2371,10 +2423,10 @@ RenderBundleEncoder Device::createRenderBundleEncoder(const RenderBundleEncoderD
 RenderPipeline Device::createRenderPipeline(const RenderPipelineDescriptor& descriptor) {
 	return wgpuDeviceCreateRenderPipeline(m_raw, &descriptor);
 }
-std::unique_ptr<CreateRenderPipelineAsyncCallback> Device::createRenderPipelineAsync(const RenderPipelineDescriptor& descriptor, CreateRenderPipelineAsyncCallback&& callback) {
-	auto handle = std::make_unique<CreateRenderPipelineAsyncCallback>(callback);
-	static auto cCallback = [](WGPUCreatePipelineAsyncStatus status, WGPURenderPipeline pipeline, char const * message, void * userdata) -> void {
-		CreateRenderPipelineAsyncCallback& callback = *reinterpret_cast<CreateRenderPipelineAsyncCallback*>(userdata);
+std::unique_ptr<DeviceCreateRenderPipelineAsyncCallback> Device::createRenderPipelineAsync(const RenderPipelineDescriptor& descriptor, DeviceCreateRenderPipelineAsyncCallback&& callback) {
+	auto handle = std::make_unique<DeviceCreateRenderPipelineAsyncCallback>(callback);
+	static auto cCallback = [](WGPUCreatePipelineAsyncStatus status, WGPURenderPipeline pipeline, char const * message, WGPU_NULLABLE void * userdata) -> void {
+		DeviceCreateRenderPipelineAsyncCallback& callback = *reinterpret_cast<DeviceCreateRenderPipelineAsyncCallback*>(userdata);
 		callback(static_cast<CreatePipelineAsyncStatus>(status), pipeline, message);
 	};
 	wgpuDeviceCreateRenderPipelineAsync(m_raw, &descriptor, cCallback, reinterpret_cast<void*>(handle.get()));
@@ -2422,15 +2474,6 @@ void Device::pushErrorScope(ErrorFilter filter) {
 void Device::setLabel(char const * label) {
 	return wgpuDeviceSetLabel(m_raw, label);
 }
-std::unique_ptr<ErrorCallback> Device::setUncapturedErrorCallback(ErrorCallback&& callback) {
-	auto handle = std::make_unique<ErrorCallback>(callback);
-	static auto cCallback = [](WGPUErrorType type, char const * message, void * userdata) -> void {
-		ErrorCallback& callback = *reinterpret_cast<ErrorCallback*>(userdata);
-		callback(static_cast<ErrorType>(type), message);
-	};
-	wgpuDeviceSetUncapturedErrorCallback(m_raw, cCallback, reinterpret_cast<void*>(handle.get()));
-	return handle;
-}
 void Device::reference() {
 	return wgpuDeviceReference(m_raw);
 }
@@ -2449,13 +2492,16 @@ Bool Device::poll(Bool wait) {
 Surface Instance::createSurface(const SurfaceDescriptor& descriptor) {
 	return wgpuInstanceCreateSurface(m_raw, &descriptor);
 }
+Bool Instance::hasWGSLLanguageFeature(WGSLFeatureName feature) {
+	return wgpuInstanceHasWGSLLanguageFeature(m_raw, static_cast<WGPUWGSLFeatureName>(feature));
+}
 void Instance::processEvents() {
 	return wgpuInstanceProcessEvents(m_raw);
 }
-std::unique_ptr<RequestAdapterCallback> Instance::requestAdapter(const RequestAdapterOptions& options, RequestAdapterCallback&& callback) {
-	auto handle = std::make_unique<RequestAdapterCallback>(callback);
-	static auto cCallback = [](WGPURequestAdapterStatus status, WGPUAdapter adapter, char const * message, void * userdata) -> void {
-		RequestAdapterCallback& callback = *reinterpret_cast<RequestAdapterCallback*>(userdata);
+std::unique_ptr<InstanceRequestAdapterCallback> Instance::requestAdapter(const RequestAdapterOptions& options, InstanceRequestAdapterCallback&& callback) {
+	auto handle = std::make_unique<InstanceRequestAdapterCallback>(callback);
+	static auto cCallback = [](WGPURequestAdapterStatus status, WGPUAdapter adapter, char const * message, WGPU_NULLABLE void * userdata) -> void {
+		InstanceRequestAdapterCallback& callback = *reinterpret_cast<InstanceRequestAdapterCallback*>(userdata);
 		callback(static_cast<RequestAdapterStatus>(status), adapter, message);
 	};
 	wgpuInstanceRequestAdapter(m_raw, &options, cCallback, reinterpret_cast<void*>(handle.get()));
@@ -2506,10 +2552,10 @@ void QuerySet::release() {
 
 
 // Methods of Queue
-std::unique_ptr<QueueWorkDoneCallback> Queue::onSubmittedWorkDone(QueueWorkDoneCallback&& callback) {
-	auto handle = std::make_unique<QueueWorkDoneCallback>(callback);
-	static auto cCallback = [](WGPUQueueWorkDoneStatus status, void * userdata) -> void {
-		QueueWorkDoneCallback& callback = *reinterpret_cast<QueueWorkDoneCallback*>(userdata);
+std::unique_ptr<QueueOnSubmittedWorkDoneCallback> Queue::onSubmittedWorkDone(QueueOnSubmittedWorkDoneCallback&& callback) {
+	auto handle = std::make_unique<QueueOnSubmittedWorkDoneCallback>(callback);
+	static auto cCallback = [](WGPUQueueWorkDoneStatus status, WGPU_NULLABLE void * userdata) -> void {
+		QueueOnSubmittedWorkDoneCallback& callback = *reinterpret_cast<QueueOnSubmittedWorkDoneCallback*>(userdata);
 		callback(static_cast<QueueWorkDoneStatus>(status));
 	};
 	wgpuQueueOnSubmittedWorkDone(m_raw, cCallback, reinterpret_cast<void*>(handle.get()));
@@ -2749,10 +2795,10 @@ void Sampler::release() {
 
 
 // Methods of ShaderModule
-std::unique_ptr<CompilationInfoCallback> ShaderModule::getCompilationInfo(CompilationInfoCallback&& callback) {
-	auto handle = std::make_unique<CompilationInfoCallback>(callback);
-	static auto cCallback = [](WGPUCompilationInfoRequestStatus status, struct WGPUCompilationInfo const * compilationInfo, void * userdata) -> void {
-		CompilationInfoCallback& callback = *reinterpret_cast<CompilationInfoCallback*>(userdata);
+std::unique_ptr<ShaderModuleGetCompilationInfoCallback> ShaderModule::getCompilationInfo(ShaderModuleGetCompilationInfoCallback&& callback) {
+	auto handle = std::make_unique<ShaderModuleGetCompilationInfoCallback>(callback);
+	static auto cCallback = [](WGPUCompilationInfoRequestStatus status, struct WGPUCompilationInfo const * compilationInfo, WGPU_NULLABLE void * userdata) -> void {
+		ShaderModuleGetCompilationInfoCallback& callback = *reinterpret_cast<ShaderModuleGetCompilationInfoCallback*>(userdata);
 		callback(static_cast<CompilationInfoRequestStatus>(status), *reinterpret_cast<CompilationInfo const *>(compilationInfo));
 	};
 	wgpuShaderModuleGetCompilationInfo(m_raw, cCallback, reinterpret_cast<void*>(handle.get()));
@@ -2779,11 +2825,11 @@ void Surface::getCapabilities(Adapter adapter, SurfaceCapabilities * capabilitie
 void Surface::getCurrentTexture(SurfaceTexture * surfaceTexture) {
 	return wgpuSurfaceGetCurrentTexture(m_raw, surfaceTexture);
 }
-TextureFormat Surface::getPreferredFormat(Adapter adapter) {
-	return static_cast<TextureFormat>(wgpuSurfaceGetPreferredFormat(m_raw, adapter));
-}
 void Surface::present() {
 	return wgpuSurfacePresent(m_raw);
+}
+void Surface::setLabel(char const * label) {
+	return wgpuSurfaceSetLabel(m_raw, label);
 }
 void Surface::unconfigure() {
 	return wgpuSurfaceUnconfigure(m_raw);
