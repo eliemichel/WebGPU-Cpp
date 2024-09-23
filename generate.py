@@ -333,15 +333,17 @@ def parseHeader(api, header):
     return api
 
 def parseEnum(name, it, stypes):
-    entry_re = re.compile(r"_(\w+) = (\w+),?")
+    entry_re = re.compile(r"^\s+WGPU(\w+)_(\w+) = ([^,]+),?")
     end_re = re.compile(".*}")
 
     api = EnumerationApi(name=name)
 
     while (x := next(it, None)) is not None:
         if (match := entry_re.search(x)):
-            key = match.group(1)
-            value = match.group(2)
+            prefix = match.group(1)
+            key = match.group(2)
+            #value = match.group(3)
+            value = f"WGPU{prefix}_{key}"
             api.entries.append(EnumerationEntryApi(key, value))
 
             if "WGPUSType_" in x:

@@ -93,6 +93,7 @@
 #define WGPU_LIMIT_U64_UNDEFINED UINT64_MAX
 #define WGPU_MIP_LEVEL_COUNT_UNDEFINED UINT32_MAX
 #define WGPU_QUERY_SET_INDEX_UNDEFINED UINT32_MAX
+#define WGPU_STRLEN SIZE_MAX
 #define WGPU_WHOLE_MAP_SIZE SIZE_MAX
 #define WGPU_WHOLE_SIZE UINT64_MAX
 
@@ -196,7 +197,6 @@ struct WGPUSamplerDescriptor;
 struct WGPUShaderModuleCompilationOptions;
 struct WGPUShaderModuleDescriptor;
 struct WGPUShaderSourceSPIRV;
-struct WGPUShaderSourceWGSL;
 struct WGPUSharedBufferMemoryBeginAccessDescriptor;
 struct WGPUSharedBufferMemoryDescriptor;
 struct WGPUSharedBufferMemoryEndAccessState;
@@ -272,6 +272,7 @@ struct WGPUProgrammableStageDescriptor;
 struct WGPURenderPassColorAttachment;
 struct WGPURenderPassStorageAttachment;
 struct WGPURequiredLimits;
+struct WGPUShaderSourceWGSL;
 struct WGPUSharedTextureMemoryAHardwareBufferProperties;
 struct WGPUSharedTextureMemoryDmaBufDescriptor;
 struct WGPUSharedTextureMemoryProperties;
@@ -1267,7 +1268,7 @@ typedef struct WGPUAdapterPropertiesD3D {
 } WGPUAdapterPropertiesD3D WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_ADAPTER_PROPERTIES_D3D_INIT WGPU_MAKE_INIT_STRUCT(WGPUAdapterPropertiesD3D, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_AdapterPropertiesD3D} WGPU_COMMA \
     /*.shaderModel=*/{} WGPU_COMMA \
 })
 
@@ -1278,7 +1279,7 @@ typedef struct WGPUAdapterPropertiesVk {
 } WGPUAdapterPropertiesVk WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_ADAPTER_PROPERTIES_VK_INIT WGPU_MAKE_INIT_STRUCT(WGPUAdapterPropertiesVk, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_AdapterPropertiesVk} WGPU_COMMA \
     /*.driverVersion=*/{} WGPU_COMMA \
 })
 
@@ -1353,7 +1354,7 @@ typedef struct WGPUBufferHostMappedPointer {
 } WGPUBufferHostMappedPointer WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_BUFFER_HOST_MAPPED_POINTER_INIT WGPU_MAKE_INIT_STRUCT(WGPUBufferHostMappedPointer, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_BufferHostMappedPointer} WGPU_COMMA \
     /*.pointer=*/{} WGPU_COMMA \
     /*.disposeCallback=*/{} WGPU_COMMA \
     /*.userdata=*/{} WGPU_COMMA \
@@ -1394,7 +1395,7 @@ typedef struct WGPUColorTargetStateExpandResolveTextureDawn {
 } WGPUColorTargetStateExpandResolveTextureDawn WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_COLOR_TARGET_STATE_EXPAND_RESOLVE_TEXTURE_DAWN_INIT WGPU_MAKE_INIT_STRUCT(WGPUColorTargetStateExpandResolveTextureDawn, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_ColorTargetStateExpandResolveTextureDawn} WGPU_COMMA \
     /*.enabled=*/false WGPU_COMMA \
 })
 
@@ -1542,7 +1543,7 @@ typedef struct WGPUDawnWGSLBlocklist {
 } WGPUDawnWGSLBlocklist WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_DAWN_WGSL_BLOCKLIST_INIT WGPU_MAKE_INIT_STRUCT(WGPUDawnWGSLBlocklist, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_DawnWGSLBlocklist} WGPU_COMMA \
     /*.blocklistedFeatureCount=*/0 WGPU_COMMA \
     /*.blocklistedFeatures=*/{} WGPU_COMMA \
 })
@@ -1554,7 +1555,7 @@ typedef struct WGPUDawnAdapterPropertiesPowerPreference {
 } WGPUDawnAdapterPropertiesPowerPreference WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_DAWN_ADAPTER_PROPERTIES_POWER_PREFERENCE_INIT WGPU_MAKE_INIT_STRUCT(WGPUDawnAdapterPropertiesPowerPreference, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_DawnAdapterPropertiesPowerPreference} WGPU_COMMA \
     /*.powerPreference=*/WGPUPowerPreference_Undefined WGPU_COMMA \
 })
 
@@ -1565,7 +1566,7 @@ typedef struct WGPUDawnBufferDescriptorErrorInfoFromWireClient {
 } WGPUDawnBufferDescriptorErrorInfoFromWireClient WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_DAWN_BUFFER_DESCRIPTOR_ERROR_INFO_FROM_WIRE_CLIENT_INIT WGPU_MAKE_INIT_STRUCT(WGPUDawnBufferDescriptorErrorInfoFromWireClient, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_DawnBufferDescriptorErrorInfoFromWireClient} WGPU_COMMA \
     /*.outOfMemory=*/false WGPU_COMMA \
 })
 
@@ -1579,7 +1580,7 @@ typedef struct WGPUDawnCacheDeviceDescriptor {
 } WGPUDawnCacheDeviceDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_DAWN_CACHE_DEVICE_DESCRIPTOR_INIT WGPU_MAKE_INIT_STRUCT(WGPUDawnCacheDeviceDescriptor, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_DawnCacheDeviceDescriptor} WGPU_COMMA \
     /*.isolationKey=*/"" WGPU_COMMA \
     /*.loadDataFunction=*/nullptr WGPU_COMMA \
     /*.storeDataFunction=*/nullptr WGPU_COMMA \
@@ -1593,7 +1594,7 @@ typedef struct WGPUDawnComputePipelineFullSubgroups {
 } WGPUDawnComputePipelineFullSubgroups WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_DAWN_COMPUTE_PIPELINE_FULL_SUBGROUPS_INIT WGPU_MAKE_INIT_STRUCT(WGPUDawnComputePipelineFullSubgroups, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_DawnComputePipelineFullSubgroups} WGPU_COMMA \
     /*.requiresFullSubgroups=*/false WGPU_COMMA \
 })
 
@@ -1604,7 +1605,7 @@ typedef struct WGPUDawnEncoderInternalUsageDescriptor {
 } WGPUDawnEncoderInternalUsageDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_DAWN_ENCODER_INTERNAL_USAGE_DESCRIPTOR_INIT WGPU_MAKE_INIT_STRUCT(WGPUDawnEncoderInternalUsageDescriptor, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_DawnEncoderInternalUsageDescriptor} WGPU_COMMA \
     /*.useInternalUsages=*/false WGPU_COMMA \
 })
 
@@ -1616,7 +1617,7 @@ typedef struct WGPUDawnExperimentalSubgroupLimits {
 } WGPUDawnExperimentalSubgroupLimits WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_DAWN_EXPERIMENTAL_SUBGROUP_LIMITS_INIT WGPU_MAKE_INIT_STRUCT(WGPUDawnExperimentalSubgroupLimits, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_DawnExperimentalSubgroupLimits} WGPU_COMMA \
     /*.minSubgroupSize=*/WGPU_LIMIT_U32_UNDEFINED WGPU_COMMA \
     /*.maxSubgroupSize=*/WGPU_LIMIT_U32_UNDEFINED WGPU_COMMA \
 })
@@ -1628,7 +1629,7 @@ typedef struct WGPUDawnRenderPassColorAttachmentRenderToSingleSampled {
 } WGPUDawnRenderPassColorAttachmentRenderToSingleSampled WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_DAWN_RENDER_PASS_COLOR_ATTACHMENT_RENDER_TO_SINGLE_SAMPLED_INIT WGPU_MAKE_INIT_STRUCT(WGPUDawnRenderPassColorAttachmentRenderToSingleSampled, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_DawnRenderPassColorAttachmentRenderToSingleSampled} WGPU_COMMA \
     /*.implicitSampleCount=*/1 WGPU_COMMA \
 })
 
@@ -1639,7 +1640,7 @@ typedef struct WGPUDawnShaderModuleSPIRVOptionsDescriptor {
 } WGPUDawnShaderModuleSPIRVOptionsDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_DAWN_SHADER_MODULE_SPIRV_OPTIONS_DESCRIPTOR_INIT WGPU_MAKE_INIT_STRUCT(WGPUDawnShaderModuleSPIRVOptionsDescriptor, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_DawnShaderModuleSPIRVOptionsDescriptor} WGPU_COMMA \
     /*.allowNonUniformDerivatives=*/false WGPU_COMMA \
 })
 
@@ -1650,7 +1651,7 @@ typedef struct WGPUDawnTextureInternalUsageDescriptor {
 } WGPUDawnTextureInternalUsageDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_DAWN_TEXTURE_INTERNAL_USAGE_DESCRIPTOR_INIT WGPU_MAKE_INIT_STRUCT(WGPUDawnTextureInternalUsageDescriptor, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_DawnTextureInternalUsageDescriptor} WGPU_COMMA \
     /*.internalUsage=*/WGPUTextureUsage_None WGPU_COMMA \
 })
 
@@ -1666,7 +1667,7 @@ typedef struct WGPUDawnTogglesDescriptor {
 } WGPUDawnTogglesDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_DAWN_TOGGLES_DESCRIPTOR_INIT WGPU_MAKE_INIT_STRUCT(WGPUDawnTogglesDescriptor, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_DawnTogglesDescriptor} WGPU_COMMA \
     /*.enabledToggleCount=*/0 WGPU_COMMA \
     /*.enabledToggles=*/{} WGPU_COMMA \
     /*.disabledToggleCount=*/0 WGPU_COMMA \
@@ -1682,7 +1683,7 @@ typedef struct WGPUDawnWireWGSLControl {
 } WGPUDawnWireWGSLControl WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_DAWN_WIRE_WGSL_CONTROL_INIT WGPU_MAKE_INIT_STRUCT(WGPUDawnWireWGSLControl, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_DawnWireWGSLControl} WGPU_COMMA \
     /*.enableExperimental=*/false WGPU_COMMA \
     /*.enableUnsafe=*/false WGPU_COMMA \
     /*.enableTesting=*/false WGPU_COMMA \
@@ -1741,7 +1742,7 @@ typedef struct WGPUExternalTextureBindingEntry {
 } WGPUExternalTextureBindingEntry WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_EXTERNAL_TEXTURE_BINDING_ENTRY_INIT WGPU_MAKE_INIT_STRUCT(WGPUExternalTextureBindingEntry, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_ExternalTextureBindingEntry} WGPU_COMMA \
     /*.externalTexture=*/{} WGPU_COMMA \
 })
 
@@ -1751,7 +1752,7 @@ typedef struct WGPUExternalTextureBindingLayout {
 } WGPUExternalTextureBindingLayout WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_EXTERNAL_TEXTURE_BINDING_LAYOUT_INIT WGPU_MAKE_INIT_STRUCT(WGPUExternalTextureBindingLayout, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_ExternalTextureBindingLayout} WGPU_COMMA \
 })
 
 typedef struct WGPUFormatCapabilities {
@@ -2062,7 +2063,7 @@ typedef struct WGPURenderPassDescriptorExpandResolveRect {
 } WGPURenderPassDescriptorExpandResolveRect WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_RENDER_PASS_DESCRIPTOR_EXPAND_RESOLVE_RECT_INIT WGPU_MAKE_INIT_STRUCT(WGPURenderPassDescriptorExpandResolveRect, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_RenderPassDescriptorExpandResolveRect} WGPU_COMMA \
     /*.x=*/{} WGPU_COMMA \
     /*.y=*/{} WGPU_COMMA \
     /*.width=*/{} WGPU_COMMA \
@@ -2076,7 +2077,7 @@ typedef struct WGPURenderPassMaxDrawCount {
 } WGPURenderPassMaxDrawCount WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_RENDER_PASS_MAX_DRAW_COUNT_INIT WGPU_MAKE_INIT_STRUCT(WGPURenderPassMaxDrawCount, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_RenderPassMaxDrawCount} WGPU_COMMA \
     /*.maxDrawCount=*/50000000 WGPU_COMMA \
 })
 
@@ -2185,7 +2186,7 @@ typedef struct WGPUShaderModuleCompilationOptions {
 } WGPUShaderModuleCompilationOptions WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SHADER_MODULE_COMPILATION_OPTIONS_INIT WGPU_MAKE_INIT_STRUCT(WGPUShaderModuleCompilationOptions, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_ShaderModuleCompilationOptions} WGPU_COMMA \
     /*.strictMath=*/{} WGPU_COMMA \
 })
 
@@ -2207,19 +2208,8 @@ typedef struct WGPUShaderSourceSPIRV {
 } WGPUShaderSourceSPIRV WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SHADER_SOURCE_SPIRV_INIT WGPU_MAKE_INIT_STRUCT(WGPUShaderSourceSPIRV, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_ShaderSourceSPIRV} WGPU_COMMA \
     /*.codeSize=*/{} WGPU_COMMA \
-    /*.code=*/{} WGPU_COMMA \
-})
-
-// Can be chained in WGPUShaderModuleDescriptor
-typedef struct WGPUShaderSourceWGSL {
-    WGPUChainedStruct chain;
-    char const * code;
-} WGPUShaderSourceWGSL WGPU_STRUCTURE_ATTRIBUTE;
-
-#define WGPU_SHADER_SOURCE_WGSL_INIT WGPU_MAKE_INIT_STRUCT(WGPUShaderSourceWGSL, { \
-    /*.chain=*/{} WGPU_COMMA \
     /*.code=*/{} WGPU_COMMA \
 })
 
@@ -2284,7 +2274,7 @@ typedef struct WGPUSharedFenceDXGISharedHandleDescriptor {
 } WGPUSharedFenceDXGISharedHandleDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SHARED_FENCE_DXGI_SHARED_HANDLE_DESCRIPTOR_INIT WGPU_MAKE_INIT_STRUCT(WGPUSharedFenceDXGISharedHandleDescriptor, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SharedFenceDXGISharedHandleDescriptor} WGPU_COMMA \
     /*.handle=*/{} WGPU_COMMA \
 })
 
@@ -2295,7 +2285,7 @@ typedef struct WGPUSharedFenceDXGISharedHandleExportInfo {
 } WGPUSharedFenceDXGISharedHandleExportInfo WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SHARED_FENCE_DXGI_SHARED_HANDLE_EXPORT_INFO_INIT WGPU_MAKE_INIT_STRUCT(WGPUSharedFenceDXGISharedHandleExportInfo, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SharedFenceDXGISharedHandleExportInfo} WGPU_COMMA \
     /*.handle=*/{} WGPU_COMMA \
 })
 
@@ -2306,7 +2296,7 @@ typedef struct WGPUSharedFenceMTLSharedEventDescriptor {
 } WGPUSharedFenceMTLSharedEventDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SHARED_FENCE_MTL_SHARED_EVENT_DESCRIPTOR_INIT WGPU_MAKE_INIT_STRUCT(WGPUSharedFenceMTLSharedEventDescriptor, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SharedFenceMTLSharedEventDescriptor} WGPU_COMMA \
     /*.sharedEvent=*/{} WGPU_COMMA \
 })
 
@@ -2317,7 +2307,7 @@ typedef struct WGPUSharedFenceMTLSharedEventExportInfo {
 } WGPUSharedFenceMTLSharedEventExportInfo WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SHARED_FENCE_MTL_SHARED_EVENT_EXPORT_INFO_INIT WGPU_MAKE_INIT_STRUCT(WGPUSharedFenceMTLSharedEventExportInfo, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SharedFenceMTLSharedEventExportInfo} WGPU_COMMA \
     /*.sharedEvent=*/{} WGPU_COMMA \
 })
 
@@ -2348,7 +2338,7 @@ typedef struct WGPUSharedFenceVkSemaphoreOpaqueFDDescriptor {
 } WGPUSharedFenceVkSemaphoreOpaqueFDDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SHARED_FENCE_VK_SEMAPHORE_OPAQUE_FD_DESCRIPTOR_INIT WGPU_MAKE_INIT_STRUCT(WGPUSharedFenceVkSemaphoreOpaqueFDDescriptor, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SharedFenceVkSemaphoreOpaqueFDDescriptor} WGPU_COMMA \
     /*.handle=*/{} WGPU_COMMA \
 })
 
@@ -2359,7 +2349,7 @@ typedef struct WGPUSharedFenceVkSemaphoreOpaqueFDExportInfo {
 } WGPUSharedFenceVkSemaphoreOpaqueFDExportInfo WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SHARED_FENCE_VK_SEMAPHORE_OPAQUE_FD_EXPORT_INFO_INIT WGPU_MAKE_INIT_STRUCT(WGPUSharedFenceVkSemaphoreOpaqueFDExportInfo, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SharedFenceVkSemaphoreOpaqueFDExportInfo} WGPU_COMMA \
     /*.handle=*/{} WGPU_COMMA \
 })
 
@@ -2370,7 +2360,7 @@ typedef struct WGPUSharedFenceVkSemaphoreSyncFDDescriptor {
 } WGPUSharedFenceVkSemaphoreSyncFDDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SHARED_FENCE_VK_SEMAPHORE_SYNC_FD_DESCRIPTOR_INIT WGPU_MAKE_INIT_STRUCT(WGPUSharedFenceVkSemaphoreSyncFDDescriptor, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SharedFenceVkSemaphoreSyncFDDescriptor} WGPU_COMMA \
     /*.handle=*/{} WGPU_COMMA \
 })
 
@@ -2381,7 +2371,7 @@ typedef struct WGPUSharedFenceVkSemaphoreSyncFDExportInfo {
 } WGPUSharedFenceVkSemaphoreSyncFDExportInfo WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SHARED_FENCE_VK_SEMAPHORE_SYNC_FD_EXPORT_INFO_INIT WGPU_MAKE_INIT_STRUCT(WGPUSharedFenceVkSemaphoreSyncFDExportInfo, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SharedFenceVkSemaphoreSyncFDExportInfo} WGPU_COMMA \
     /*.handle=*/{} WGPU_COMMA \
 })
 
@@ -2392,7 +2382,7 @@ typedef struct WGPUSharedFenceVkSemaphoreZirconHandleDescriptor {
 } WGPUSharedFenceVkSemaphoreZirconHandleDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SHARED_FENCE_VK_SEMAPHORE_ZIRCON_HANDLE_DESCRIPTOR_INIT WGPU_MAKE_INIT_STRUCT(WGPUSharedFenceVkSemaphoreZirconHandleDescriptor, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SharedFenceVkSemaphoreZirconHandleDescriptor} WGPU_COMMA \
     /*.handle=*/{} WGPU_COMMA \
 })
 
@@ -2403,7 +2393,7 @@ typedef struct WGPUSharedFenceVkSemaphoreZirconHandleExportInfo {
 } WGPUSharedFenceVkSemaphoreZirconHandleExportInfo WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SHARED_FENCE_VK_SEMAPHORE_ZIRCON_HANDLE_EXPORT_INFO_INIT WGPU_MAKE_INIT_STRUCT(WGPUSharedFenceVkSemaphoreZirconHandleExportInfo, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SharedFenceVkSemaphoreZirconHandleExportInfo} WGPU_COMMA \
     /*.handle=*/{} WGPU_COMMA \
 })
 
@@ -2414,7 +2404,7 @@ typedef struct WGPUSharedTextureMemoryD3DSwapchainBeginState {
 } WGPUSharedTextureMemoryD3DSwapchainBeginState WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SHARED_TEXTURE_MEMORY_D3D_SWAPCHAIN_BEGIN_STATE_INIT WGPU_MAKE_INIT_STRUCT(WGPUSharedTextureMemoryD3DSwapchainBeginState, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SharedTextureMemoryD3DSwapchainBeginState} WGPU_COMMA \
     /*.isSwapchain=*/false WGPU_COMMA \
 })
 
@@ -2426,7 +2416,7 @@ typedef struct WGPUSharedTextureMemoryDXGISharedHandleDescriptor {
 } WGPUSharedTextureMemoryDXGISharedHandleDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SHARED_TEXTURE_MEMORY_DXGI_SHARED_HANDLE_DESCRIPTOR_INIT WGPU_MAKE_INIT_STRUCT(WGPUSharedTextureMemoryDXGISharedHandleDescriptor, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SharedTextureMemoryDXGISharedHandleDescriptor} WGPU_COMMA \
     /*.handle=*/{} WGPU_COMMA \
     /*.useKeyedMutex=*/{} WGPU_COMMA \
 })
@@ -2438,7 +2428,7 @@ typedef struct WGPUSharedTextureMemoryEGLImageDescriptor {
 } WGPUSharedTextureMemoryEGLImageDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SHARED_TEXTURE_MEMORY_EGL_IMAGE_DESCRIPTOR_INIT WGPU_MAKE_INIT_STRUCT(WGPUSharedTextureMemoryEGLImageDescriptor, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SharedTextureMemoryEGLImageDescriptor} WGPU_COMMA \
     /*.image=*/{} WGPU_COMMA \
 })
 
@@ -2449,7 +2439,7 @@ typedef struct WGPUSharedTextureMemoryIOSurfaceDescriptor {
 } WGPUSharedTextureMemoryIOSurfaceDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SHARED_TEXTURE_MEMORY_IO_SURFACE_DESCRIPTOR_INIT WGPU_MAKE_INIT_STRUCT(WGPUSharedTextureMemoryIOSurfaceDescriptor, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SharedTextureMemoryIOSurfaceDescriptor} WGPU_COMMA \
     /*.ioSurface=*/{} WGPU_COMMA \
 })
 
@@ -2461,7 +2451,7 @@ typedef struct WGPUSharedTextureMemoryAHardwareBufferDescriptor {
 } WGPUSharedTextureMemoryAHardwareBufferDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SHARED_TEXTURE_MEMORY_A_HARDWARE_BUFFER_DESCRIPTOR_INIT WGPU_MAKE_INIT_STRUCT(WGPUSharedTextureMemoryAHardwareBufferDescriptor, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SharedTextureMemoryAHardwareBufferDescriptor} WGPU_COMMA \
     /*.handle=*/{} WGPU_COMMA \
     /*.useExternalFormat=*/{} WGPU_COMMA \
 })
@@ -2533,7 +2523,7 @@ typedef struct WGPUSharedTextureMemoryOpaqueFDDescriptor {
 } WGPUSharedTextureMemoryOpaqueFDDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SHARED_TEXTURE_MEMORY_OPAQUE_FD_DESCRIPTOR_INIT WGPU_MAKE_INIT_STRUCT(WGPUSharedTextureMemoryOpaqueFDDescriptor, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SharedTextureMemoryOpaqueFDDescriptor} WGPU_COMMA \
     /*.vkImageCreateInfo=*/{} WGPU_COMMA \
     /*.memoryFD=*/{} WGPU_COMMA \
     /*.memoryTypeIndex=*/{} WGPU_COMMA \
@@ -2548,7 +2538,7 @@ typedef struct WGPUSharedTextureMemoryVkDedicatedAllocationDescriptor {
 } WGPUSharedTextureMemoryVkDedicatedAllocationDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SHARED_TEXTURE_MEMORY_VK_DEDICATED_ALLOCATION_DESCRIPTOR_INIT WGPU_MAKE_INIT_STRUCT(WGPUSharedTextureMemoryVkDedicatedAllocationDescriptor, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SharedTextureMemoryVkDedicatedAllocationDescriptor} WGPU_COMMA \
     /*.dedicatedAllocation=*/{} WGPU_COMMA \
 })
 
@@ -2560,7 +2550,7 @@ typedef struct WGPUSharedTextureMemoryVkImageLayoutBeginState {
 } WGPUSharedTextureMemoryVkImageLayoutBeginState WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SHARED_TEXTURE_MEMORY_VK_IMAGE_LAYOUT_BEGIN_STATE_INIT WGPU_MAKE_INIT_STRUCT(WGPUSharedTextureMemoryVkImageLayoutBeginState, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SharedTextureMemoryVkImageLayoutBeginState} WGPU_COMMA \
     /*.oldLayout=*/{} WGPU_COMMA \
     /*.newLayout=*/{} WGPU_COMMA \
 })
@@ -2573,7 +2563,7 @@ typedef struct WGPUSharedTextureMemoryVkImageLayoutEndState {
 } WGPUSharedTextureMemoryVkImageLayoutEndState WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SHARED_TEXTURE_MEMORY_VK_IMAGE_LAYOUT_END_STATE_INIT WGPU_MAKE_INIT_STRUCT(WGPUSharedTextureMemoryVkImageLayoutEndState, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SharedTextureMemoryVkImageLayoutEndState} WGPU_COMMA \
     /*.oldLayout=*/{} WGPU_COMMA \
     /*.newLayout=*/{} WGPU_COMMA \
 })
@@ -2586,7 +2576,7 @@ typedef struct WGPUSharedTextureMemoryZirconHandleDescriptor {
 } WGPUSharedTextureMemoryZirconHandleDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SHARED_TEXTURE_MEMORY_ZIRCON_HANDLE_DESCRIPTOR_INIT WGPU_MAKE_INIT_STRUCT(WGPUSharedTextureMemoryZirconHandleDescriptor, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SharedTextureMemoryZirconHandleDescriptor} WGPU_COMMA \
     /*.memoryFD=*/{} WGPU_COMMA \
     /*.allocationSize=*/{} WGPU_COMMA \
 })
@@ -2599,7 +2589,7 @@ typedef struct WGPUStaticSamplerBindingLayout {
 } WGPUStaticSamplerBindingLayout WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_STATIC_SAMPLER_BINDING_LAYOUT_INIT WGPU_MAKE_INIT_STRUCT(WGPUStaticSamplerBindingLayout, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_StaticSamplerBindingLayout} WGPU_COMMA \
     /*.sampler=*/{} WGPU_COMMA \
     /*.sampledTextureBinding=*/WGPU_LIMIT_U32_UNDEFINED WGPU_COMMA \
 })
@@ -2639,7 +2629,7 @@ typedef struct WGPUStringView {
 
 #define WGPU_STRING_VIEW_INIT WGPU_MAKE_INIT_STRUCT(WGPUStringView, { \
     /*.data=*/nullptr WGPU_COMMA \
-    /*.length=*/SIZE_MAX WGPU_COMMA \
+    /*.length=*/WGPU_STRLEN WGPU_COMMA \
 })
 
 typedef struct WGPUSurfaceCapabilities {
@@ -2707,7 +2697,7 @@ typedef struct WGPUSurfaceDescriptorFromWindowsCoreWindow {
 } WGPUSurfaceDescriptorFromWindowsCoreWindow WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SURFACE_DESCRIPTOR_FROM_WINDOWS_CORE_WINDOW_INIT WGPU_MAKE_INIT_STRUCT(WGPUSurfaceDescriptorFromWindowsCoreWindow, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SurfaceDescriptorFromWindowsCoreWindow} WGPU_COMMA \
     /*.coreWindow=*/{} WGPU_COMMA \
 })
 
@@ -2718,7 +2708,7 @@ typedef struct WGPUSurfaceDescriptorFromWindowsSwapChainPanel {
 } WGPUSurfaceDescriptorFromWindowsSwapChainPanel WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SURFACE_DESCRIPTOR_FROM_WINDOWS_SWAP_CHAIN_PANEL_INIT WGPU_MAKE_INIT_STRUCT(WGPUSurfaceDescriptorFromWindowsSwapChainPanel, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SurfaceDescriptorFromWindowsSwapChainPanel} WGPU_COMMA \
     /*.swapChainPanel=*/{} WGPU_COMMA \
 })
 
@@ -2730,7 +2720,7 @@ typedef struct WGPUSurfaceSourceXCBWindow {
 } WGPUSurfaceSourceXCBWindow WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SURFACE_SOURCE_XCB_WINDOW_INIT WGPU_MAKE_INIT_STRUCT(WGPUSurfaceSourceXCBWindow, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SurfaceSourceXCBWindow} WGPU_COMMA \
     /*.connection=*/{} WGPU_COMMA \
     /*.window=*/{} WGPU_COMMA \
 })
@@ -2742,7 +2732,7 @@ typedef struct WGPUSurfaceSourceAndroidNativeWindow {
 } WGPUSurfaceSourceAndroidNativeWindow WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SURFACE_SOURCE_ANDROID_NATIVE_WINDOW_INIT WGPU_MAKE_INIT_STRUCT(WGPUSurfaceSourceAndroidNativeWindow, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SurfaceSourceAndroidNativeWindow} WGPU_COMMA \
     /*.window=*/{} WGPU_COMMA \
 })
 
@@ -2753,7 +2743,7 @@ typedef struct WGPUSurfaceSourceCanvasHTMLSelector_Emscripten {
 } WGPUSurfaceSourceCanvasHTMLSelector_Emscripten WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SURFACE_SOURCE_CANVAS_HTML_SELECTOR__EMSCRIPTEN_INIT WGPU_MAKE_INIT_STRUCT(WGPUSurfaceSourceCanvasHTMLSelector_Emscripten, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SurfaceSourceCanvasHTMLSelector_Emscripten} WGPU_COMMA \
     /*.selector=*/{} WGPU_COMMA \
 })
 
@@ -2764,7 +2754,7 @@ typedef struct WGPUSurfaceSourceMetalLayer {
 } WGPUSurfaceSourceMetalLayer WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SURFACE_SOURCE_METAL_LAYER_INIT WGPU_MAKE_INIT_STRUCT(WGPUSurfaceSourceMetalLayer, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SurfaceSourceMetalLayer} WGPU_COMMA \
     /*.layer=*/{} WGPU_COMMA \
 })
 
@@ -2776,7 +2766,7 @@ typedef struct WGPUSurfaceSourceWaylandSurface {
 } WGPUSurfaceSourceWaylandSurface WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SURFACE_SOURCE_WAYLAND_SURFACE_INIT WGPU_MAKE_INIT_STRUCT(WGPUSurfaceSourceWaylandSurface, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SurfaceSourceWaylandSurface} WGPU_COMMA \
     /*.display=*/{} WGPU_COMMA \
     /*.surface=*/{} WGPU_COMMA \
 })
@@ -2789,7 +2779,7 @@ typedef struct WGPUSurfaceSourceWindowsHWND {
 } WGPUSurfaceSourceWindowsHWND WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SURFACE_SOURCE_WINDOWS_HWND_INIT WGPU_MAKE_INIT_STRUCT(WGPUSurfaceSourceWindowsHWND, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SurfaceSourceWindowsHWND} WGPU_COMMA \
     /*.hinstance=*/{} WGPU_COMMA \
     /*.hwnd=*/{} WGPU_COMMA \
 })
@@ -2802,7 +2792,7 @@ typedef struct WGPUSurfaceSourceXlibWindow {
 } WGPUSurfaceSourceXlibWindow WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SURFACE_SOURCE_XLIB_WINDOW_INIT WGPU_MAKE_INIT_STRUCT(WGPUSurfaceSourceXlibWindow, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SurfaceSourceXlibWindow} WGPU_COMMA \
     /*.display=*/{} WGPU_COMMA \
     /*.window=*/{} WGPU_COMMA \
 })
@@ -2860,7 +2850,7 @@ typedef struct WGPUTextureBindingViewDimensionDescriptor {
 } WGPUTextureBindingViewDimensionDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_TEXTURE_BINDING_VIEW_DIMENSION_DESCRIPTOR_INIT WGPU_MAKE_INIT_STRUCT(WGPUTextureBindingViewDimensionDescriptor, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_TextureBindingViewDimensionDescriptor} WGPU_COMMA \
     /*.textureBindingViewDimension=*/WGPUTextureViewDimension_Undefined WGPU_COMMA \
 })
 
@@ -2945,7 +2935,7 @@ typedef struct WGPUYCbCrVkDescriptor {
 } WGPUYCbCrVkDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_Y_CB_CR_VK_DESCRIPTOR_INIT WGPU_MAKE_INIT_STRUCT(WGPUYCbCrVkDescriptor, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_YCbCrVkDescriptor} WGPU_COMMA \
     /*.vkFormat=*/0 WGPU_COMMA \
     /*.vkYCbCrModel=*/0 WGPU_COMMA \
     /*.vkYCbCrRange=*/0 WGPU_COMMA \
@@ -2976,7 +2966,7 @@ typedef struct WGPUAdapterPropertiesMemoryHeaps {
 } WGPUAdapterPropertiesMemoryHeaps WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_ADAPTER_PROPERTIES_MEMORY_HEAPS_INIT WGPU_MAKE_INIT_STRUCT(WGPUAdapterPropertiesMemoryHeaps, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_AdapterPropertiesMemoryHeaps} WGPU_COMMA \
     /*.heapCount=*/{} WGPU_COMMA \
     /*.heapInfo=*/{} WGPU_COMMA \
 })
@@ -3087,7 +3077,7 @@ typedef struct WGPUDrmFormatCapabilities {
 } WGPUDrmFormatCapabilities WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_DRM_FORMAT_CAPABILITIES_INIT WGPU_MAKE_INIT_STRUCT(WGPUDrmFormatCapabilities, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_DrmFormatCapabilities} WGPU_COMMA \
     /*.propertiesCount=*/{} WGPU_COMMA \
     /*.properties=*/{} WGPU_COMMA \
 })
@@ -3191,7 +3181,7 @@ typedef struct WGPUPipelineLayoutPixelLocalStorage {
 } WGPUPipelineLayoutPixelLocalStorage WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_PIPELINE_LAYOUT_PIXEL_LOCAL_STORAGE_INIT WGPU_MAKE_INIT_STRUCT(WGPUPipelineLayoutPixelLocalStorage, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_PipelineLayoutPixelLocalStorage} WGPU_COMMA \
     /*.totalPixelLocalStorageSize=*/{} WGPU_COMMA \
     /*.storageAttachmentCount=*/0 WGPU_COMMA \
     /*.storageAttachments=*/{} WGPU_COMMA \
@@ -3261,6 +3251,17 @@ typedef struct WGPURequiredLimits {
     /*.limits=*/WGPU_LIMITS_INIT WGPU_COMMA \
 })
 
+// Can be chained in WGPUShaderModuleDescriptor
+typedef struct WGPUShaderSourceWGSL {
+    WGPUChainedStruct chain;
+    WGPUStringView code;
+} WGPUShaderSourceWGSL WGPU_STRUCTURE_ATTRIBUTE;
+
+#define WGPU_SHADER_SOURCE_WGSL_INIT WGPU_MAKE_INIT_STRUCT(WGPUShaderSourceWGSL, { \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_ShaderSourceWGSL} WGPU_COMMA \
+    /*.code=*/WGPU_STRING_VIEW_INIT WGPU_COMMA \
+})
+
 // Can be chained in WGPUSharedTextureMemoryProperties
 typedef struct WGPUSharedTextureMemoryAHardwareBufferProperties {
     WGPUChainedStructOut chain;
@@ -3268,7 +3269,7 @@ typedef struct WGPUSharedTextureMemoryAHardwareBufferProperties {
 } WGPUSharedTextureMemoryAHardwareBufferProperties WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SHARED_TEXTURE_MEMORY_A_HARDWARE_BUFFER_PROPERTIES_INIT WGPU_MAKE_INIT_STRUCT(WGPUSharedTextureMemoryAHardwareBufferProperties, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SharedTextureMemoryAHardwareBufferProperties} WGPU_COMMA \
     /*.yCbCrInfo=*/WGPU_Y_CB_CR_VK_DESCRIPTOR_INIT WGPU_COMMA \
 })
 
@@ -3283,7 +3284,7 @@ typedef struct WGPUSharedTextureMemoryDmaBufDescriptor {
 } WGPUSharedTextureMemoryDmaBufDescriptor WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_SHARED_TEXTURE_MEMORY_DMA_BUF_DESCRIPTOR_INIT WGPU_MAKE_INIT_STRUCT(WGPUSharedTextureMemoryDmaBufDescriptor, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_SharedTextureMemoryDmaBufDescriptor} WGPU_COMMA \
     /*.size=*/WGPU_EXTENT_3D_INIT WGPU_COMMA \
     /*.drmFormat=*/{} WGPU_COMMA \
     /*.drmModifier=*/{} WGPU_COMMA \
@@ -3456,7 +3457,7 @@ typedef struct WGPURenderPassPixelLocalStorage {
 } WGPURenderPassPixelLocalStorage WGPU_STRUCTURE_ATTRIBUTE;
 
 #define WGPU_RENDER_PASS_PIXEL_LOCAL_STORAGE_INIT WGPU_MAKE_INIT_STRUCT(WGPURenderPassPixelLocalStorage, { \
-    /*.chain=*/{} WGPU_COMMA \
+    /*.chain=*/{/*.nextInChain*/nullptr WGPU_COMMA /*.sType*/WGPUSType_RenderPassPixelLocalStorage} WGPU_COMMA \
     /*.totalPixelLocalStorageSize=*/{} WGPU_COMMA \
     /*.storageAttachmentCount=*/0 WGPU_COMMA \
     /*.storageAttachments=*/{} WGPU_COMMA \

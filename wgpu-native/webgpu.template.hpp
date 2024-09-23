@@ -3,7 +3,7 @@
  *   https://github.com/eliemichel/LearnWebGPU
  *
  * MIT License
- * Copyright (c) 2022 Elie Michel
+ * Copyright (c) 2022-2024 Elie Michel
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +35,7 @@
 #pragma once
 
 #include <webgpu/webgpu.h>
-#include <webgpu/wgpu.h>
+#include <wgpu/wgpu.h>  // NB: Will soon revert to webgpu/wgpu.h
 
 #include <iostream>
 #include <vector>
@@ -134,7 +134,7 @@ private: \
 public:
 
 #define ENUM_ENTRY(Name, Value) \
-	static constexpr W Name = (W)Value;
+	static constexpr W Name = (W)(Value);
 
 #define END };
 
