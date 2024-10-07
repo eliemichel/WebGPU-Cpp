@@ -127,7 +127,7 @@ public: \
 	typedef Type S; /* S == Self */ \
 	typedef WGPU ## Type W; /* W == WGPU Type */ \
 	Type(const W& w) : m_raw(w) {} \
-	operator W() { return m_raw; } \
+	operator W() const { return m_raw; } \
 private: \
 	W m_raw; \
 public:
