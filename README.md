@@ -64,7 +64,7 @@ The easiest route is to use the Web service: [https://eliemichel.github.io/WebGP
 #include "webgpu/webgpu.hpp"
 ```
 
- 3. In **exactly one** of your source files, add `#define WEBGPU_CPP_IMPLEMENTATION` before including webgpu.cpp:
+ 3. In **exactly one** of your source files, add `#define WEBGPU_CPP_IMPLEMENTATION` before including webgpu.hpp:
 
 ```C++
 #define WEBGPU_CPP_IMPLEMENTATION
@@ -91,10 +91,12 @@ becomes with namespaces:
 ```C++
 // C++ style
 wgpu::InstanceDescriptor desc = {};
-wgpu::Instance instance = wgpu::createInstance(&desc);
+wgpu::Instance instance = wgpu::createInstance(desc);
 ```
 
-And of course you can start your source file with `using namespace wgpu;` to avoid spelling out `wgpu::` everywhere.
+Note that `wgpu::createInstance` accepts a reference to `desc`, where `wgpuCreateInstance` accepted a pointer.
+
+And of course you can start your source file with `using namespace wgpu;` to avoid spelling out `wgpu::` everywhere (although broad use of `using namespace` is not usually considered good practice).
 
 #### Default descriptor values
 
