@@ -235,7 +235,7 @@ def parseHeader(api, header):
     enum_re = re.compile(r"typedef enum WGPU(\w+) {")
     flag_enum_re = re.compile(r"typedef WGPUFlags WGPU(\w+)Flags\s*;")
     new_flag_enum_re = re.compile(r"typedef WGPUFlags WGPU(\w+)\s*;")
-    flag_value_re = re.compile(r"static const WGPU(\w+) WGPU(\w+)_(\w+) = (\w+);")
+    flag_value_re = re.compile(r"static const WGPU(\w+) WGPU(\w+)_(\w+) = (\w+)( /\*(.*)\*/)?;")
     typedef_re = re.compile(r"typedef (\w+) WGPU(\w+)\s*;")
     callback_re = re.compile(r"typedef void \(\*WGPU(\w+)Callback\)\((.*)\)\s*;")
 
