@@ -182,9 +182,14 @@ END
 // Non-member procedures
 {{procedures}}
 
+Instance createInstance();
 Instance createInstance(const InstanceDescriptor& descriptor);
 
 #ifdef WEBGPU_CPP_IMPLEMENTATION
+
+Instance createInstance() {
+	return wgpuCreateInstance(nullptr);
+}
 
 Instance createInstance(const InstanceDescriptor& descriptor) {
 	return wgpuCreateInstance(&descriptor);
