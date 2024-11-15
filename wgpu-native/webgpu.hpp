@@ -35,7 +35,7 @@
 #pragma once
 
 #include <webgpu/webgpu.h>
-#include <wgpu/wgpu.h>  // NB: Will soon revert to webgpu/wgpu.h
+#include <webgpu/wgpu.h>
 
 #include <iostream>
 #include <vector>
