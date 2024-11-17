@@ -144,6 +144,8 @@ using Bool = uint32_t;
 using RenderPassDescriptorMaxDrawCount = WGPURenderPassMaxDrawCount;
 using ShaderModuleSPIRVDescriptor = WGPUShaderSourceSPIRV;
 using ShaderModuleWGSLDescriptor = WGPUShaderSourceWGSL;
+using SharedFenceVkSemaphoreSyncFDDescriptor = WGPUSharedFenceSyncFDDescriptor;
+using SharedFenceVkSemaphoreSyncFDExportInfo = WGPUSharedFenceSyncFDExportInfo;
 using SurfaceDescriptorFromAndroidNativeWindow = WGPUSurfaceSourceAndroidNativeWindow;
 using SurfaceDescriptorFromCanvasHTMLSelector = WGPUSurfaceSourceCanvasHTMLSelector_Emscripten;
 using SurfaceDescriptorFromMetalLayer = WGPUSurfaceSourceMetalLayer;
@@ -399,7 +401,7 @@ ENUM(FeatureName)
 	ENUM_ENTRY(SharedTextureMemoryIOSurface, WGPUFeatureName_SharedTextureMemoryIOSurface)
 	ENUM_ENTRY(SharedTextureMemoryEGLImage, WGPUFeatureName_SharedTextureMemoryEGLImage)
 	ENUM_ENTRY(SharedFenceVkSemaphoreOpaqueFD, WGPUFeatureName_SharedFenceVkSemaphoreOpaqueFD)
-	ENUM_ENTRY(SharedFenceVkSemaphoreSyncFD, WGPUFeatureName_SharedFenceVkSemaphoreSyncFD)
+	ENUM_ENTRY(SharedFenceSyncFD, WGPUFeatureName_SharedFenceSyncFD)
 	ENUM_ENTRY(SharedFenceVkSemaphoreZirconHandle, WGPUFeatureName_SharedFenceVkSemaphoreZirconHandle)
 	ENUM_ENTRY(SharedFenceDXGISharedHandle, WGPUFeatureName_SharedFenceDXGISharedHandle)
 	ENUM_ENTRY(SharedFenceMTLSharedEvent, WGPUFeatureName_SharedFenceMTLSharedEvent)
@@ -411,6 +413,7 @@ ENUM(FeatureName)
 	ENUM_ENTRY(DawnPartialLoadResolveTexture, WGPUFeatureName_DawnPartialLoadResolveTexture)
 	ENUM_ENTRY(MultiDrawIndirect, WGPUFeatureName_MultiDrawIndirect)
 	ENUM_ENTRY(ClipDistances, WGPUFeatureName_ClipDistances)
+	ENUM_ENTRY(SharedFenceVkSemaphoreSyncFD, WGPUFeatureName_SharedFenceVkSemaphoreSyncFD)
 	ENUM_ENTRY(Force32, WGPUFeatureName_Force32)
 END
 ENUM(FilterMode)
@@ -578,8 +581,8 @@ ENUM(SType)
 	ENUM_ENTRY(SharedTextureMemoryD3DSwapchainBeginState, WGPUSType_SharedTextureMemoryD3DSwapchainBeginState)
 	ENUM_ENTRY(SharedFenceVkSemaphoreOpaqueFDDescriptor, WGPUSType_SharedFenceVkSemaphoreOpaqueFDDescriptor)
 	ENUM_ENTRY(SharedFenceVkSemaphoreOpaqueFDExportInfo, WGPUSType_SharedFenceVkSemaphoreOpaqueFDExportInfo)
-	ENUM_ENTRY(SharedFenceVkSemaphoreSyncFDDescriptor, WGPUSType_SharedFenceVkSemaphoreSyncFDDescriptor)
-	ENUM_ENTRY(SharedFenceVkSemaphoreSyncFDExportInfo, WGPUSType_SharedFenceVkSemaphoreSyncFDExportInfo)
+	ENUM_ENTRY(SharedFenceSyncFDDescriptor, WGPUSType_SharedFenceSyncFDDescriptor)
+	ENUM_ENTRY(SharedFenceSyncFDExportInfo, WGPUSType_SharedFenceSyncFDExportInfo)
 	ENUM_ENTRY(SharedFenceVkSemaphoreZirconHandleDescriptor, WGPUSType_SharedFenceVkSemaphoreZirconHandleDescriptor)
 	ENUM_ENTRY(SharedFenceVkSemaphoreZirconHandleExportInfo, WGPUSType_SharedFenceVkSemaphoreZirconHandleExportInfo)
 	ENUM_ENTRY(SharedFenceDXGISharedHandleDescriptor, WGPUSType_SharedFenceDXGISharedHandleDescriptor)
@@ -603,7 +606,7 @@ ENUM(SamplerBindingType)
 END
 ENUM(SharedFenceType)
 	ENUM_ENTRY(VkSemaphoreOpaqueFD, WGPUSharedFenceType_VkSemaphoreOpaqueFD)
-	ENUM_ENTRY(VkSemaphoreSyncFD, WGPUSharedFenceType_VkSemaphoreSyncFD)
+	ENUM_ENTRY(SyncFD, WGPUSharedFenceType_SyncFD)
 	ENUM_ENTRY(VkSemaphoreZirconHandle, WGPUSharedFenceType_VkSemaphoreZirconHandle)
 	ENUM_ENTRY(DXGISharedHandle, WGPUSharedFenceType_DXGISharedHandle)
 	ENUM_ENTRY(MTLSharedEvent, WGPUSharedFenceType_MTLSharedEvent)
@@ -799,22 +802,31 @@ ENUM(TextureViewDimension)
 	ENUM_ENTRY(Force32, WGPUTextureViewDimension_Force32)
 END
 ENUM(VertexFormat)
+	ENUM_ENTRY(Uint8, WGPUVertexFormat_Uint8)
 	ENUM_ENTRY(Uint8x2, WGPUVertexFormat_Uint8x2)
 	ENUM_ENTRY(Uint8x4, WGPUVertexFormat_Uint8x4)
+	ENUM_ENTRY(Sint8, WGPUVertexFormat_Sint8)
 	ENUM_ENTRY(Sint8x2, WGPUVertexFormat_Sint8x2)
 	ENUM_ENTRY(Sint8x4, WGPUVertexFormat_Sint8x4)
+	ENUM_ENTRY(Unorm8, WGPUVertexFormat_Unorm8)
 	ENUM_ENTRY(Unorm8x2, WGPUVertexFormat_Unorm8x2)
 	ENUM_ENTRY(Unorm8x4, WGPUVertexFormat_Unorm8x4)
+	ENUM_ENTRY(Snorm8, WGPUVertexFormat_Snorm8)
 	ENUM_ENTRY(Snorm8x2, WGPUVertexFormat_Snorm8x2)
 	ENUM_ENTRY(Snorm8x4, WGPUVertexFormat_Snorm8x4)
+	ENUM_ENTRY(Uint16, WGPUVertexFormat_Uint16)
 	ENUM_ENTRY(Uint16x2, WGPUVertexFormat_Uint16x2)
 	ENUM_ENTRY(Uint16x4, WGPUVertexFormat_Uint16x4)
+	ENUM_ENTRY(Sint16, WGPUVertexFormat_Sint16)
 	ENUM_ENTRY(Sint16x2, WGPUVertexFormat_Sint16x2)
 	ENUM_ENTRY(Sint16x4, WGPUVertexFormat_Sint16x4)
+	ENUM_ENTRY(Unorm16, WGPUVertexFormat_Unorm16)
 	ENUM_ENTRY(Unorm16x2, WGPUVertexFormat_Unorm16x2)
 	ENUM_ENTRY(Unorm16x4, WGPUVertexFormat_Unorm16x4)
+	ENUM_ENTRY(Snorm16, WGPUVertexFormat_Snorm16)
 	ENUM_ENTRY(Snorm16x2, WGPUVertexFormat_Snorm16x2)
 	ENUM_ENTRY(Snorm16x4, WGPUVertexFormat_Snorm16x4)
+	ENUM_ENTRY(Float16, WGPUVertexFormat_Float16)
 	ENUM_ENTRY(Float16x2, WGPUVertexFormat_Float16x2)
 	ENUM_ENTRY(Float16x4, WGPUVertexFormat_Float16x4)
 	ENUM_ENTRY(Float32, WGPUVertexFormat_Float32)
@@ -830,6 +842,7 @@ ENUM(VertexFormat)
 	ENUM_ENTRY(Sint32x3, WGPUVertexFormat_Sint32x3)
 	ENUM_ENTRY(Sint32x4, WGPUVertexFormat_Sint32x4)
 	ENUM_ENTRY(_2, WGPUVertexFormat_Unorm10_10_10_2)
+	ENUM_ENTRY(Unorm8x4BGRA, WGPUVertexFormat_Unorm8x4BGRA)
 	ENUM_ENTRY(Force32, WGPUVertexFormat_Force32)
 END
 ENUM(VertexStepMode)
@@ -1070,19 +1083,19 @@ STRUCT(SharedFenceMTLSharedEventExportInfo)
 	void setDefault();
 END
 
+STRUCT(SharedFenceSyncFDDescriptor)
+	void setDefault();
+END
+
+STRUCT(SharedFenceSyncFDExportInfo)
+	void setDefault();
+END
+
 STRUCT(SharedFenceVkSemaphoreOpaqueFDDescriptor)
 	void setDefault();
 END
 
 STRUCT(SharedFenceVkSemaphoreOpaqueFDExportInfo)
-	void setDefault();
-END
-
-STRUCT(SharedFenceVkSemaphoreSyncFDDescriptor)
-	void setDefault();
-END
-
-STRUCT(SharedFenceVkSemaphoreSyncFDExportInfo)
 	void setDefault();
 END
 
@@ -1148,6 +1161,11 @@ END
 
 STRUCT(StringView)
 	void setDefault();
+END
+
+STRUCT(SupportedFeatures)
+	void setDefault();
+	void freeMembers();
 END
 
 STRUCT(SurfaceDescriptorFromWindowsCoreWindow)
@@ -1645,6 +1663,7 @@ HANDLE(Adapter)
 	Device createDevice(const DeviceDescriptor& descriptor);
 	Device createDevice();
 	size_t enumerateFeatures(FeatureName * features);
+	void getFeatures(SupportedFeatures * features);
 	Status getFormatCapabilities(TextureFormat format, FormatCapabilities * capabilities);
 	Status getInfo(AdapterInfo * info);
 	Instance getInstance();
@@ -1770,7 +1789,10 @@ HANDLE(Device)
 	void forceLoss(DeviceLostReason type, StringView message);
 	Status getAHardwareBufferProperties(void * handle, AHardwareBufferProperties * properties);
 	Adapter getAdapter();
+	Status getAdapterInfo(AdapterInfo * adapterInfo);
+	void getFeatures(SupportedFeatures * features);
 	Status getLimits(SupportedLimits * limits);
+	Future getLostFuture();
 	Queue getQueue();
 	Bool hasFeature(FeatureName feature);
 	SharedBufferMemory importSharedBufferMemory(const SharedBufferMemoryDescriptor& descriptor);
@@ -2505,6 +2527,20 @@ void SharedFenceExportInfo::setDefault() {
 }
 
 
+// Methods of SharedFenceSyncFDDescriptor
+void SharedFenceSyncFDDescriptor::setDefault() {
+	((ChainedStruct*)&chain)->setDefault();
+	chain.sType = SType::SharedFenceSyncFDDescriptor;
+}
+
+
+// Methods of SharedFenceSyncFDExportInfo
+void SharedFenceSyncFDExportInfo::setDefault() {
+	((ChainedStructOut*)&chain)->setDefault();
+	chain.sType = SType::SharedFenceSyncFDExportInfo;
+}
+
+
 // Methods of SharedFenceVkSemaphoreOpaqueFDDescriptor
 void SharedFenceVkSemaphoreOpaqueFDDescriptor::setDefault() {
 	((ChainedStruct*)&chain)->setDefault();
@@ -2516,20 +2552,6 @@ void SharedFenceVkSemaphoreOpaqueFDDescriptor::setDefault() {
 void SharedFenceVkSemaphoreOpaqueFDExportInfo::setDefault() {
 	((ChainedStructOut*)&chain)->setDefault();
 	chain.sType = SType::SharedFenceVkSemaphoreOpaqueFDExportInfo;
-}
-
-
-// Methods of SharedFenceVkSemaphoreSyncFDDescriptor
-void SharedFenceVkSemaphoreSyncFDDescriptor::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
-	chain.sType = SType::SharedFenceVkSemaphoreSyncFDDescriptor;
-}
-
-
-// Methods of SharedFenceVkSemaphoreSyncFDExportInfo
-void SharedFenceVkSemaphoreSyncFDExportInfo::setDefault() {
-	((ChainedStructOut*)&chain)->setDefault();
-	chain.sType = SType::SharedFenceVkSemaphoreSyncFDExportInfo;
 }
 
 
@@ -2661,6 +2683,14 @@ void StorageTextureBindingLayout::setDefault() {
 
 // Methods of StringView
 void StringView::setDefault() {
+}
+
+
+// Methods of SupportedFeatures
+void SupportedFeatures::setDefault() {
+}
+void SupportedFeatures::freeMembers() {
+	return wgpuSupportedFeaturesFreeMembers(*this);
 }
 
 
@@ -2908,6 +2938,9 @@ void ExternalTextureDescriptor::setDefault() {
 	((StringView*)&label)->setDefault();
 	((Origin2D*)&visibleOrigin)->setDefault();
 	((Extent2D*)&visibleSize)->setDefault();
+	((Origin2D*)&cropOrigin)->setDefault();
+	((Extent2D*)&cropSize)->setDefault();
+	((Extent2D*)&apparentSize)->setDefault();
 }
 
 
@@ -3208,6 +3241,9 @@ Device Adapter::createDevice() {
 }
 size_t Adapter::enumerateFeatures(FeatureName * features) {
 	return wgpuAdapterEnumerateFeatures(m_raw, reinterpret_cast<WGPUFeatureName *>(features));
+}
+void Adapter::getFeatures(SupportedFeatures * features) {
+	return wgpuAdapterGetFeatures(m_raw, features);
 }
 Status Adapter::getFormatCapabilities(TextureFormat format, FormatCapabilities * capabilities) {
 	return static_cast<Status>(wgpuAdapterGetFormatCapabilities(m_raw, static_cast<WGPUTextureFormat>(format), capabilities));
@@ -3557,8 +3593,17 @@ Status Device::getAHardwareBufferProperties(void * handle, AHardwareBufferProper
 Adapter Device::getAdapter() {
 	return wgpuDeviceGetAdapter(m_raw);
 }
+Status Device::getAdapterInfo(AdapterInfo * adapterInfo) {
+	return static_cast<Status>(wgpuDeviceGetAdapterInfo(m_raw, adapterInfo));
+}
+void Device::getFeatures(SupportedFeatures * features) {
+	return wgpuDeviceGetFeatures(m_raw, features);
+}
 Status Device::getLimits(SupportedLimits * limits) {
 	return static_cast<Status>(wgpuDeviceGetLimits(m_raw, limits));
+}
+Future Device::getLostFuture() {
+	return wgpuDeviceGetLostFuture(m_raw);
 }
 Queue Device::getQueue() {
 	return wgpuDeviceGetQueue(m_raw);
