@@ -120,7 +120,7 @@ public:
 
 #define STRUCT(Type) \
 STRUCT_NO_OSTREAM(Type) \
-	friend auto operator<<(std::ostream &stream, const S& self) -> std::ostream & { \
+	friend auto operator<<(std::ostream &stream, const S&) -> std::ostream & { \
 		return stream << "<wgpu::" << #Type << ">"; \
 	} \
 public:
@@ -921,10 +921,6 @@ STRUCT(ChainedStruct)
 END
 
 STRUCT(ChainedStructOut)
-	void setDefault();
-END
-
-STRUCT(INTERNAL__HAVE_EMDAWNWEBGPU_HEADER)
 	void setDefault();
 END
 
@@ -1801,7 +1797,6 @@ HANDLE(Device)
 	Status getAdapterInfo(AdapterInfo * adapterInfo) const;
 	void getFeatures(SupportedFeatures * features) const;
 	Status getLimits(SupportedLimits * limits) const;
-	Future getLostFuture() const;
 	Queue getQueue() const;
 	Bool hasFeature(FeatureName feature) const;
 	SharedBufferMemory importSharedBufferMemory(const SharedBufferMemoryDescriptor& descriptor) const;
@@ -2044,454 +2039,453 @@ Instance createInstance(const InstanceDescriptor& descriptor) {
 // Handles members implementation
 // Methods of ChainedStruct
 void ChainedStruct::setDefault() {
+	*this = WGPUChainedStruct {};
 }
 
 
 // Methods of ChainedStructOut
 void ChainedStructOut::setDefault() {
+	*this = WGPUChainedStructOut {};
 }
 
 
 // Methods of BufferMapCallbackInfo2
 void BufferMapCallbackInfo2::setDefault() {
+	*this = WGPUBufferMapCallbackInfo2 WGPU_BUFFER_MAP_CALLBACK_INFO_2_INIT;
 }
 
 
 // Methods of CompilationInfoCallbackInfo2
 void CompilationInfoCallbackInfo2::setDefault() {
+	*this = WGPUCompilationInfoCallbackInfo2 WGPU_COMPILATION_INFO_CALLBACK_INFO_2_INIT;
 }
 
 
 // Methods of CreateComputePipelineAsyncCallbackInfo2
 void CreateComputePipelineAsyncCallbackInfo2::setDefault() {
+	*this = WGPUCreateComputePipelineAsyncCallbackInfo2 WGPU_CREATE_COMPUTE_PIPELINE_ASYNC_CALLBACK_INFO_2_INIT;
 }
 
 
 // Methods of CreateRenderPipelineAsyncCallbackInfo2
 void CreateRenderPipelineAsyncCallbackInfo2::setDefault() {
+	*this = WGPUCreateRenderPipelineAsyncCallbackInfo2 WGPU_CREATE_RENDER_PIPELINE_ASYNC_CALLBACK_INFO_2_INIT;
 }
 
 
 // Methods of DeviceLostCallbackInfo2
 void DeviceLostCallbackInfo2::setDefault() {
+	*this = WGPUDeviceLostCallbackInfo2 WGPU_DEVICE_LOST_CALLBACK_INFO_2_INIT;
 }
 
 
 // Methods of PopErrorScopeCallbackInfo2
 void PopErrorScopeCallbackInfo2::setDefault() {
+	*this = WGPUPopErrorScopeCallbackInfo2 WGPU_POP_ERROR_SCOPE_CALLBACK_INFO_2_INIT;
 }
 
 
 // Methods of QueueWorkDoneCallbackInfo2
 void QueueWorkDoneCallbackInfo2::setDefault() {
+	*this = WGPUQueueWorkDoneCallbackInfo2 WGPU_QUEUE_WORK_DONE_CALLBACK_INFO_2_INIT;
 }
 
 
 // Methods of RequestAdapterCallbackInfo2
 void RequestAdapterCallbackInfo2::setDefault() {
+	*this = WGPURequestAdapterCallbackInfo2 WGPU_REQUEST_ADAPTER_CALLBACK_INFO_2_INIT;
 }
 
 
 // Methods of RequestDeviceCallbackInfo2
 void RequestDeviceCallbackInfo2::setDefault() {
+	*this = WGPURequestDeviceCallbackInfo2 WGPU_REQUEST_DEVICE_CALLBACK_INFO_2_INIT;
 }
 
 
 // Methods of UncapturedErrorCallbackInfo2
 void UncapturedErrorCallbackInfo2::setDefault() {
-}
-
-
-// Methods of INTERNAL__HAVE_EMDAWNWEBGPU_HEADER
-void INTERNAL__HAVE_EMDAWNWEBGPU_HEADER::setDefault() {
+	*this = WGPUUncapturedErrorCallbackInfo2 WGPU_UNCAPTURED_ERROR_CALLBACK_INFO_2_INIT;
 }
 
 
 // Methods of AdapterPropertiesD3D
 void AdapterPropertiesD3D::setDefault() {
-	((ChainedStructOut*)&chain)->setDefault();
+	*this = WGPUAdapterPropertiesD3D WGPU_ADAPTER_PROPERTIES_D3D_INIT;
 	chain.sType = SType::AdapterPropertiesD3D;
+	chain.next = nullptr;
 }
 
 
 // Methods of AdapterPropertiesVk
 void AdapterPropertiesVk::setDefault() {
-	((ChainedStructOut*)&chain)->setDefault();
+	*this = WGPUAdapterPropertiesVk WGPU_ADAPTER_PROPERTIES_VK_INIT;
 	chain.sType = SType::AdapterPropertiesVk;
+	chain.next = nullptr;
 }
 
 
 // Methods of BindGroupEntry
 void BindGroupEntry::setDefault() {
-	offset = 0;
+	*this = WGPUBindGroupEntry WGPU_BIND_GROUP_ENTRY_INIT;
 }
 
 
 // Methods of BlendComponent
 void BlendComponent::setDefault() {
-	operation = BlendOperation::Add;
-	srcFactor = BlendFactor::One;
-	dstFactor = BlendFactor::Zero;
+	*this = WGPUBlendComponent WGPU_BLEND_COMPONENT_INIT;
 }
 
 
 // Methods of BufferBindingLayout
 void BufferBindingLayout::setDefault() {
-	type = BufferBindingType::Uniform;
-	hasDynamicOffset = false;
-	minBindingSize = 0;
+	*this = WGPUBufferBindingLayout WGPU_BUFFER_BINDING_LAYOUT_INIT;
 }
 
 
 // Methods of BufferHostMappedPointer
 void BufferHostMappedPointer::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUBufferHostMappedPointer WGPU_BUFFER_HOST_MAPPED_POINTER_INIT;
 	chain.sType = SType::BufferHostMappedPointer;
+	chain.next = nullptr;
 }
 
 
 // Methods of BufferMapCallbackInfo
 void BufferMapCallbackInfo::setDefault() {
+	*this = WGPUBufferMapCallbackInfo WGPU_BUFFER_MAP_CALLBACK_INFO_INIT;
 }
 
 
 // Methods of Color
 void Color::setDefault() {
+	*this = WGPUColor WGPU_COLOR_INIT;
 }
 
 
 // Methods of ColorTargetStateExpandResolveTextureDawn
 void ColorTargetStateExpandResolveTextureDawn::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUColorTargetStateExpandResolveTextureDawn WGPU_COLOR_TARGET_STATE_EXPAND_RESOLVE_TEXTURE_DAWN_INIT;
 	chain.sType = SType::ColorTargetStateExpandResolveTextureDawn;
+	chain.next = nullptr;
 }
 
 
 // Methods of CompilationInfoCallbackInfo
 void CompilationInfoCallbackInfo::setDefault() {
+	*this = WGPUCompilationInfoCallbackInfo WGPU_COMPILATION_INFO_CALLBACK_INFO_INIT;
 }
 
 
 // Methods of ComputePassTimestampWrites
 void ComputePassTimestampWrites::setDefault() {
+	*this = WGPUComputePassTimestampWrites WGPU_COMPUTE_PASS_TIMESTAMP_WRITES_INIT;
 }
 
 
 // Methods of CopyTextureForBrowserOptions
 void CopyTextureForBrowserOptions::setDefault() {
+	*this = WGPUCopyTextureForBrowserOptions WGPU_COPY_TEXTURE_FOR_BROWSER_OPTIONS_INIT;
 }
 
 
 // Methods of CreateComputePipelineAsyncCallbackInfo
 void CreateComputePipelineAsyncCallbackInfo::setDefault() {
+	*this = WGPUCreateComputePipelineAsyncCallbackInfo WGPU_CREATE_COMPUTE_PIPELINE_ASYNC_CALLBACK_INFO_INIT;
 }
 
 
 // Methods of CreateRenderPipelineAsyncCallbackInfo
 void CreateRenderPipelineAsyncCallbackInfo::setDefault() {
+	*this = WGPUCreateRenderPipelineAsyncCallbackInfo WGPU_CREATE_RENDER_PIPELINE_ASYNC_CALLBACK_INFO_INIT;
 }
 
 
 // Methods of DawnWGSLBlocklist
 void DawnWGSLBlocklist::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUDawnWGSLBlocklist WGPU_DAWN_WGSL_BLOCKLIST_INIT;
 	chain.sType = SType::DawnWGSLBlocklist;
+	chain.next = nullptr;
 }
 
 
 // Methods of DawnAdapterPropertiesPowerPreference
 void DawnAdapterPropertiesPowerPreference::setDefault() {
-	powerPreference = PowerPreference::Undefined;
-	((ChainedStructOut*)&chain)->setDefault();
+	*this = WGPUDawnAdapterPropertiesPowerPreference WGPU_DAWN_ADAPTER_PROPERTIES_POWER_PREFERENCE_INIT;
 	chain.sType = SType::DawnAdapterPropertiesPowerPreference;
+	chain.next = nullptr;
 }
 
 
 // Methods of DawnBufferDescriptorErrorInfoFromWireClient
 void DawnBufferDescriptorErrorInfoFromWireClient::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUDawnBufferDescriptorErrorInfoFromWireClient WGPU_DAWN_BUFFER_DESCRIPTOR_ERROR_INFO_FROM_WIRE_CLIENT_INIT;
 	chain.sType = SType::DawnBufferDescriptorErrorInfoFromWireClient;
+	chain.next = nullptr;
 }
 
 
 // Methods of DawnComputePipelineFullSubgroups
 void DawnComputePipelineFullSubgroups::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUDawnComputePipelineFullSubgroups WGPU_DAWN_COMPUTE_PIPELINE_FULL_SUBGROUPS_INIT;
 	chain.sType = SType::DawnComputePipelineFullSubgroups;
+	chain.next = nullptr;
 }
 
 
 // Methods of DawnEncoderInternalUsageDescriptor
 void DawnEncoderInternalUsageDescriptor::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUDawnEncoderInternalUsageDescriptor WGPU_DAWN_ENCODER_INTERNAL_USAGE_DESCRIPTOR_INIT;
 	chain.sType = SType::DawnEncoderInternalUsageDescriptor;
+	chain.next = nullptr;
 }
 
 
 // Methods of DawnExperimentalImmediateDataLimits
 void DawnExperimentalImmediateDataLimits::setDefault() {
-	((ChainedStructOut*)&chain)->setDefault();
+	*this = WGPUDawnExperimentalImmediateDataLimits WGPU_DAWN_EXPERIMENTAL_IMMEDIATE_DATA_LIMITS_INIT;
 	chain.sType = SType::DawnExperimentalImmediateDataLimits;
+	chain.next = nullptr;
 }
 
 
 // Methods of DawnExperimentalSubgroupLimits
 void DawnExperimentalSubgroupLimits::setDefault() {
-	((ChainedStructOut*)&chain)->setDefault();
+	*this = WGPUDawnExperimentalSubgroupLimits WGPU_DAWN_EXPERIMENTAL_SUBGROUP_LIMITS_INIT;
 	chain.sType = SType::DawnExperimentalSubgroupLimits;
+	chain.next = nullptr;
 }
 
 
 // Methods of DawnRenderPassColorAttachmentRenderToSingleSampled
 void DawnRenderPassColorAttachmentRenderToSingleSampled::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUDawnRenderPassColorAttachmentRenderToSingleSampled WGPU_DAWN_RENDER_PASS_COLOR_ATTACHMENT_RENDER_TO_SINGLE_SAMPLED_INIT;
 	chain.sType = SType::DawnRenderPassColorAttachmentRenderToSingleSampled;
+	chain.next = nullptr;
 }
 
 
 // Methods of DawnShaderModuleSPIRVOptionsDescriptor
 void DawnShaderModuleSPIRVOptionsDescriptor::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUDawnShaderModuleSPIRVOptionsDescriptor WGPU_DAWN_SHADER_MODULE_SPIRV_OPTIONS_DESCRIPTOR_INIT;
 	chain.sType = SType::DawnShaderModuleSPIRVOptionsDescriptor;
+	chain.next = nullptr;
 }
 
 
 // Methods of DawnTextureInternalUsageDescriptor
 void DawnTextureInternalUsageDescriptor::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUDawnTextureInternalUsageDescriptor WGPU_DAWN_TEXTURE_INTERNAL_USAGE_DESCRIPTOR_INIT;
 	chain.sType = SType::DawnTextureInternalUsageDescriptor;
+	chain.next = nullptr;
 }
 
 
 // Methods of DawnTogglesDescriptor
 void DawnTogglesDescriptor::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUDawnTogglesDescriptor WGPU_DAWN_TOGGLES_DESCRIPTOR_INIT;
 	chain.sType = SType::DawnTogglesDescriptor;
+	chain.next = nullptr;
 }
 
 
 // Methods of DawnWireWGSLControl
 void DawnWireWGSLControl::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUDawnWireWGSLControl WGPU_DAWN_WIRE_WGSL_CONTROL_INIT;
 	chain.sType = SType::DawnWireWGSLControl;
+	chain.next = nullptr;
 }
 
 
 // Methods of DeviceLostCallbackInfo
 void DeviceLostCallbackInfo::setDefault() {
+	*this = WGPUDeviceLostCallbackInfo WGPU_DEVICE_LOST_CALLBACK_INFO_INIT;
 }
 
 
 // Methods of DrmFormatProperties
 void DrmFormatProperties::setDefault() {
+	*this = WGPUDrmFormatProperties WGPU_DRM_FORMAT_PROPERTIES_INIT;
 }
 
 
 // Methods of Extent2D
 void Extent2D::setDefault() {
+	*this = WGPUExtent2D WGPU_EXTENT_2D_INIT;
 }
 
 
 // Methods of Extent3D
 void Extent3D::setDefault() {
-	height = 1;
-	depthOrArrayLayers = 1;
+	*this = WGPUExtent3D WGPU_EXTENT_3D_INIT;
 }
 
 
 // Methods of ExternalTextureBindingEntry
 void ExternalTextureBindingEntry::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUExternalTextureBindingEntry WGPU_EXTERNAL_TEXTURE_BINDING_ENTRY_INIT;
 	chain.sType = SType::ExternalTextureBindingEntry;
+	chain.next = nullptr;
 }
 
 
 // Methods of ExternalTextureBindingLayout
 void ExternalTextureBindingLayout::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUExternalTextureBindingLayout WGPU_EXTERNAL_TEXTURE_BINDING_LAYOUT_INIT;
 	chain.sType = SType::ExternalTextureBindingLayout;
+	chain.next = nullptr;
 }
 
 
 // Methods of FormatCapabilities
 void FormatCapabilities::setDefault() {
+	*this = WGPUFormatCapabilities WGPU_FORMAT_CAPABILITIES_INIT;
 }
 
 
 // Methods of Future
 void Future::setDefault() {
+	*this = WGPUFuture WGPU_FUTURE_INIT;
 }
 
 
 // Methods of InstanceFeatures
 void InstanceFeatures::setDefault() {
+	*this = WGPUInstanceFeatures WGPU_INSTANCE_FEATURES_INIT;
 }
 
 
 // Methods of Limits
 void Limits::setDefault() {
-	maxTextureDimension1D = WGPU_LIMIT_U32_UNDEFINED;
-	maxTextureDimension2D = WGPU_LIMIT_U32_UNDEFINED;
-	maxTextureDimension3D = WGPU_LIMIT_U32_UNDEFINED;
-	maxTextureArrayLayers = WGPU_LIMIT_U32_UNDEFINED;
-	maxBindGroups = WGPU_LIMIT_U32_UNDEFINED;
-	maxBindGroupsPlusVertexBuffers = WGPU_LIMIT_U32_UNDEFINED;
-	maxBindingsPerBindGroup = WGPU_LIMIT_U32_UNDEFINED;
-	maxDynamicUniformBuffersPerPipelineLayout = WGPU_LIMIT_U32_UNDEFINED;
-	maxDynamicStorageBuffersPerPipelineLayout = WGPU_LIMIT_U32_UNDEFINED;
-	maxSampledTexturesPerShaderStage = WGPU_LIMIT_U32_UNDEFINED;
-	maxSamplersPerShaderStage = WGPU_LIMIT_U32_UNDEFINED;
-	maxStorageBuffersPerShaderStage = WGPU_LIMIT_U32_UNDEFINED;
-	maxStorageTexturesPerShaderStage = WGPU_LIMIT_U32_UNDEFINED;
-	maxUniformBuffersPerShaderStage = WGPU_LIMIT_U32_UNDEFINED;
-	maxUniformBufferBindingSize = WGPU_LIMIT_U64_UNDEFINED;
-	maxStorageBufferBindingSize = WGPU_LIMIT_U64_UNDEFINED;
-	minUniformBufferOffsetAlignment = WGPU_LIMIT_U32_UNDEFINED;
-	minStorageBufferOffsetAlignment = WGPU_LIMIT_U32_UNDEFINED;
-	maxVertexBuffers = WGPU_LIMIT_U32_UNDEFINED;
-	maxBufferSize = WGPU_LIMIT_U64_UNDEFINED;
-	maxVertexAttributes = WGPU_LIMIT_U32_UNDEFINED;
-	maxVertexBufferArrayStride = WGPU_LIMIT_U32_UNDEFINED;
-	maxInterStageShaderComponents = WGPU_LIMIT_U32_UNDEFINED;
-	maxInterStageShaderVariables = WGPU_LIMIT_U32_UNDEFINED;
-	maxColorAttachments = WGPU_LIMIT_U32_UNDEFINED;
-	maxColorAttachmentBytesPerSample = WGPU_LIMIT_U32_UNDEFINED;
-	maxComputeWorkgroupStorageSize = WGPU_LIMIT_U32_UNDEFINED;
-	maxComputeInvocationsPerWorkgroup = WGPU_LIMIT_U32_UNDEFINED;
-	maxComputeWorkgroupSizeX = WGPU_LIMIT_U32_UNDEFINED;
-	maxComputeWorkgroupSizeY = WGPU_LIMIT_U32_UNDEFINED;
-	maxComputeWorkgroupSizeZ = WGPU_LIMIT_U32_UNDEFINED;
-	maxComputeWorkgroupsPerDimension = WGPU_LIMIT_U32_UNDEFINED;
+	*this = WGPULimits WGPU_LIMITS_INIT;
 }
 
 
 // Methods of MemoryHeapInfo
 void MemoryHeapInfo::setDefault() {
+	*this = WGPUMemoryHeapInfo WGPU_MEMORY_HEAP_INFO_INIT;
 }
 
 
 // Methods of MultisampleState
 void MultisampleState::setDefault() {
-	count = 1;
-	mask = 0xFFFFFFFF;
-	alphaToCoverageEnabled = false;
+	*this = WGPUMultisampleState WGPU_MULTISAMPLE_STATE_INIT;
 }
 
 
 // Methods of Origin2D
 void Origin2D::setDefault() {
+	*this = WGPUOrigin2D WGPU_ORIGIN_2D_INIT;
 }
 
 
 // Methods of Origin3D
 void Origin3D::setDefault() {
-	x = 0;
-	y = 0;
-	z = 0;
+	*this = WGPUOrigin3D WGPU_ORIGIN_3D_INIT;
 }
 
 
 // Methods of PipelineLayoutStorageAttachment
 void PipelineLayoutStorageAttachment::setDefault() {
-	format = TextureFormat::Undefined;
+	*this = WGPUPipelineLayoutStorageAttachment WGPU_PIPELINE_LAYOUT_STORAGE_ATTACHMENT_INIT;
 }
 
 
 // Methods of PopErrorScopeCallbackInfo
 void PopErrorScopeCallbackInfo::setDefault() {
+	*this = WGPUPopErrorScopeCallbackInfo WGPU_POP_ERROR_SCOPE_CALLBACK_INFO_INIT;
 }
 
 
 // Methods of PrimitiveState
 void PrimitiveState::setDefault() {
-	topology = PrimitiveTopology::TriangleList;
-	stripIndexFormat = IndexFormat::Undefined;
-	frontFace = FrontFace::CCW;
-	cullMode = CullMode::None;
+	*this = WGPUPrimitiveState WGPU_PRIMITIVE_STATE_INIT;
 }
 
 
 // Methods of QueueWorkDoneCallbackInfo
 void QueueWorkDoneCallbackInfo::setDefault() {
+	*this = WGPUQueueWorkDoneCallbackInfo WGPU_QUEUE_WORK_DONE_CALLBACK_INFO_INIT;
 }
 
 
 // Methods of RenderPassDepthStencilAttachment
 void RenderPassDepthStencilAttachment::setDefault() {
-	depthLoadOp = LoadOp::Undefined;
-	depthStoreOp = StoreOp::Undefined;
-	depthReadOnly = false;
-	stencilLoadOp = LoadOp::Undefined;
-	stencilStoreOp = StoreOp::Undefined;
-	stencilClearValue = 0;
-	stencilReadOnly = false;
+	*this = WGPURenderPassDepthStencilAttachment WGPU_RENDER_PASS_DEPTH_STENCIL_ATTACHMENT_INIT;
 }
 
 
 // Methods of RenderPassDescriptorExpandResolveRect
 void RenderPassDescriptorExpandResolveRect::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPURenderPassDescriptorExpandResolveRect WGPU_RENDER_PASS_DESCRIPTOR_EXPAND_RESOLVE_RECT_INIT;
 	chain.sType = SType::RenderPassDescriptorExpandResolveRect;
+	chain.next = nullptr;
 }
 
 
 // Methods of RenderPassMaxDrawCount
 void RenderPassMaxDrawCount::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPURenderPassMaxDrawCount WGPU_RENDER_PASS_MAX_DRAW_COUNT_INIT;
 	chain.sType = SType::RenderPassMaxDrawCount;
+	chain.next = nullptr;
 }
 
 
 // Methods of RenderPassTimestampWrites
 void RenderPassTimestampWrites::setDefault() {
+	*this = WGPURenderPassTimestampWrites WGPU_RENDER_PASS_TIMESTAMP_WRITES_INIT;
 }
 
 
 // Methods of RequestAdapterCallbackInfo
 void RequestAdapterCallbackInfo::setDefault() {
+	*this = WGPURequestAdapterCallbackInfo WGPU_REQUEST_ADAPTER_CALLBACK_INFO_INIT;
 }
 
 
 // Methods of RequestAdapterOptions
 void RequestAdapterOptions::setDefault() {
-	powerPreference = PowerPreference::Undefined;
-	backendType = BackendType::Undefined;
-	forceFallbackAdapter = false;
+	*this = WGPURequestAdapterOptions WGPU_REQUEST_ADAPTER_OPTIONS_INIT;
 }
 
 
 // Methods of RequestDeviceCallbackInfo
 void RequestDeviceCallbackInfo::setDefault() {
+	*this = WGPURequestDeviceCallbackInfo WGPU_REQUEST_DEVICE_CALLBACK_INFO_INIT;
 }
 
 
 // Methods of SamplerBindingLayout
 void SamplerBindingLayout::setDefault() {
-	type = SamplerBindingType::Filtering;
+	*this = WGPUSamplerBindingLayout WGPU_SAMPLER_BINDING_LAYOUT_INIT;
 }
 
 
 // Methods of ShaderModuleCompilationOptions
 void ShaderModuleCompilationOptions::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUShaderModuleCompilationOptions WGPU_SHADER_MODULE_COMPILATION_OPTIONS_INIT;
 	chain.sType = SType::ShaderModuleCompilationOptions;
+	chain.next = nullptr;
 }
 
 
 // Methods of ShaderSourceSPIRV
 void ShaderSourceSPIRV::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUShaderSourceSPIRV WGPU_SHADER_SOURCE_SPIRV_INIT;
 	chain.sType = SType::ShaderSourceSPIRV;
+	chain.next = nullptr;
 }
 
 
 // Methods of SharedBufferMemoryBeginAccessDescriptor
 void SharedBufferMemoryBeginAccessDescriptor::setDefault() {
+	*this = WGPUSharedBufferMemoryBeginAccessDescriptor WGPU_SHARED_BUFFER_MEMORY_BEGIN_ACCESS_DESCRIPTOR_INIT;
 }
 
 
 // Methods of SharedBufferMemoryEndAccessState
 void SharedBufferMemoryEndAccessState::setDefault() {
+	*this = WGPUSharedBufferMemoryEndAccessState WGPU_SHARED_BUFFER_MEMORY_END_ACCESS_STATE_INIT;
 }
 void SharedBufferMemoryEndAccessState::freeMembers() {
 	return wgpuSharedBufferMemoryEndAccessStateFreeMembers(*this);
@@ -2500,131 +2494,151 @@ void SharedBufferMemoryEndAccessState::freeMembers() {
 
 // Methods of SharedBufferMemoryProperties
 void SharedBufferMemoryProperties::setDefault() {
+	*this = WGPUSharedBufferMemoryProperties WGPU_SHARED_BUFFER_MEMORY_PROPERTIES_INIT;
 }
 
 
 // Methods of SharedFenceDXGISharedHandleDescriptor
 void SharedFenceDXGISharedHandleDescriptor::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUSharedFenceDXGISharedHandleDescriptor WGPU_SHARED_FENCE_DXGI_SHARED_HANDLE_DESCRIPTOR_INIT;
 	chain.sType = SType::SharedFenceDXGISharedHandleDescriptor;
+	chain.next = nullptr;
 }
 
 
 // Methods of SharedFenceDXGISharedHandleExportInfo
 void SharedFenceDXGISharedHandleExportInfo::setDefault() {
-	((ChainedStructOut*)&chain)->setDefault();
+	*this = WGPUSharedFenceDXGISharedHandleExportInfo WGPU_SHARED_FENCE_DXGI_SHARED_HANDLE_EXPORT_INFO_INIT;
 	chain.sType = SType::SharedFenceDXGISharedHandleExportInfo;
+	chain.next = nullptr;
 }
 
 
 // Methods of SharedFenceMTLSharedEventDescriptor
 void SharedFenceMTLSharedEventDescriptor::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUSharedFenceMTLSharedEventDescriptor WGPU_SHARED_FENCE_MTL_SHARED_EVENT_DESCRIPTOR_INIT;
 	chain.sType = SType::SharedFenceMTLSharedEventDescriptor;
+	chain.next = nullptr;
 }
 
 
 // Methods of SharedFenceMTLSharedEventExportInfo
 void SharedFenceMTLSharedEventExportInfo::setDefault() {
-	((ChainedStructOut*)&chain)->setDefault();
+	*this = WGPUSharedFenceMTLSharedEventExportInfo WGPU_SHARED_FENCE_MTL_SHARED_EVENT_EXPORT_INFO_INIT;
 	chain.sType = SType::SharedFenceMTLSharedEventExportInfo;
+	chain.next = nullptr;
 }
 
 
 // Methods of SharedFenceExportInfo
 void SharedFenceExportInfo::setDefault() {
+	*this = WGPUSharedFenceExportInfo WGPU_SHARED_FENCE_EXPORT_INFO_INIT;
 }
 
 
 // Methods of SharedFenceSyncFDDescriptor
 void SharedFenceSyncFDDescriptor::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUSharedFenceSyncFDDescriptor WGPU_SHARED_FENCE_SYNC_FD_DESCRIPTOR_INIT;
 	chain.sType = SType::SharedFenceSyncFDDescriptor;
+	chain.next = nullptr;
 }
 
 
 // Methods of SharedFenceSyncFDExportInfo
 void SharedFenceSyncFDExportInfo::setDefault() {
-	((ChainedStructOut*)&chain)->setDefault();
+	*this = WGPUSharedFenceSyncFDExportInfo WGPU_SHARED_FENCE_SYNC_FD_EXPORT_INFO_INIT;
 	chain.sType = SType::SharedFenceSyncFDExportInfo;
+	chain.next = nullptr;
 }
 
 
 // Methods of SharedFenceVkSemaphoreOpaqueFDDescriptor
 void SharedFenceVkSemaphoreOpaqueFDDescriptor::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUSharedFenceVkSemaphoreOpaqueFDDescriptor WGPU_SHARED_FENCE_VK_SEMAPHORE_OPAQUE_FD_DESCRIPTOR_INIT;
 	chain.sType = SType::SharedFenceVkSemaphoreOpaqueFDDescriptor;
+	chain.next = nullptr;
 }
 
 
 // Methods of SharedFenceVkSemaphoreOpaqueFDExportInfo
 void SharedFenceVkSemaphoreOpaqueFDExportInfo::setDefault() {
-	((ChainedStructOut*)&chain)->setDefault();
+	*this = WGPUSharedFenceVkSemaphoreOpaqueFDExportInfo WGPU_SHARED_FENCE_VK_SEMAPHORE_OPAQUE_FD_EXPORT_INFO_INIT;
 	chain.sType = SType::SharedFenceVkSemaphoreOpaqueFDExportInfo;
+	chain.next = nullptr;
 }
 
 
 // Methods of SharedFenceVkSemaphoreZirconHandleDescriptor
 void SharedFenceVkSemaphoreZirconHandleDescriptor::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUSharedFenceVkSemaphoreZirconHandleDescriptor WGPU_SHARED_FENCE_VK_SEMAPHORE_ZIRCON_HANDLE_DESCRIPTOR_INIT;
 	chain.sType = SType::SharedFenceVkSemaphoreZirconHandleDescriptor;
+	chain.next = nullptr;
 }
 
 
 // Methods of SharedFenceVkSemaphoreZirconHandleExportInfo
 void SharedFenceVkSemaphoreZirconHandleExportInfo::setDefault() {
-	((ChainedStructOut*)&chain)->setDefault();
+	*this = WGPUSharedFenceVkSemaphoreZirconHandleExportInfo WGPU_SHARED_FENCE_VK_SEMAPHORE_ZIRCON_HANDLE_EXPORT_INFO_INIT;
 	chain.sType = SType::SharedFenceVkSemaphoreZirconHandleExportInfo;
+	chain.next = nullptr;
 }
 
 
 // Methods of SharedTextureMemoryD3DSwapchainBeginState
 void SharedTextureMemoryD3DSwapchainBeginState::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUSharedTextureMemoryD3DSwapchainBeginState WGPU_SHARED_TEXTURE_MEMORY_D3D_SWAPCHAIN_BEGIN_STATE_INIT;
 	chain.sType = SType::SharedTextureMemoryD3DSwapchainBeginState;
+	chain.next = nullptr;
 }
 
 
 // Methods of SharedTextureMemoryDXGISharedHandleDescriptor
 void SharedTextureMemoryDXGISharedHandleDescriptor::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUSharedTextureMemoryDXGISharedHandleDescriptor WGPU_SHARED_TEXTURE_MEMORY_DXGI_SHARED_HANDLE_DESCRIPTOR_INIT;
 	chain.sType = SType::SharedTextureMemoryDXGISharedHandleDescriptor;
+	chain.next = nullptr;
 }
 
 
 // Methods of SharedTextureMemoryEGLImageDescriptor
 void SharedTextureMemoryEGLImageDescriptor::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUSharedTextureMemoryEGLImageDescriptor WGPU_SHARED_TEXTURE_MEMORY_EGL_IMAGE_DESCRIPTOR_INIT;
 	chain.sType = SType::SharedTextureMemoryEGLImageDescriptor;
+	chain.next = nullptr;
 }
 
 
 // Methods of SharedTextureMemoryIOSurfaceDescriptor
 void SharedTextureMemoryIOSurfaceDescriptor::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUSharedTextureMemoryIOSurfaceDescriptor WGPU_SHARED_TEXTURE_MEMORY_IO_SURFACE_DESCRIPTOR_INIT;
 	chain.sType = SType::SharedTextureMemoryIOSurfaceDescriptor;
+	chain.next = nullptr;
 }
 
 
 // Methods of SharedTextureMemoryAHardwareBufferDescriptor
 void SharedTextureMemoryAHardwareBufferDescriptor::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUSharedTextureMemoryAHardwareBufferDescriptor WGPU_SHARED_TEXTURE_MEMORY_A_HARDWARE_BUFFER_DESCRIPTOR_INIT;
 	chain.sType = SType::SharedTextureMemoryAHardwareBufferDescriptor;
+	chain.next = nullptr;
 }
 
 
 // Methods of SharedTextureMemoryBeginAccessDescriptor
 void SharedTextureMemoryBeginAccessDescriptor::setDefault() {
+	*this = WGPUSharedTextureMemoryBeginAccessDescriptor WGPU_SHARED_TEXTURE_MEMORY_BEGIN_ACCESS_DESCRIPTOR_INIT;
 }
 
 
 // Methods of SharedTextureMemoryDmaBufPlane
 void SharedTextureMemoryDmaBufPlane::setDefault() {
+	*this = WGPUSharedTextureMemoryDmaBufPlane WGPU_SHARED_TEXTURE_MEMORY_DMA_BUF_PLANE_INIT;
 }
 
 
 // Methods of SharedTextureMemoryEndAccessState
 void SharedTextureMemoryEndAccessState::setDefault() {
+	*this = WGPUSharedTextureMemoryEndAccessState WGPU_SHARED_TEXTURE_MEMORY_END_ACCESS_STATE_INIT;
 }
 void SharedTextureMemoryEndAccessState::freeMembers() {
 	return wgpuSharedTextureMemoryEndAccessStateFreeMembers(*this);
@@ -2633,70 +2647,73 @@ void SharedTextureMemoryEndAccessState::freeMembers() {
 
 // Methods of SharedTextureMemoryOpaqueFDDescriptor
 void SharedTextureMemoryOpaqueFDDescriptor::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUSharedTextureMemoryOpaqueFDDescriptor WGPU_SHARED_TEXTURE_MEMORY_OPAQUE_FD_DESCRIPTOR_INIT;
 	chain.sType = SType::SharedTextureMemoryOpaqueFDDescriptor;
+	chain.next = nullptr;
 }
 
 
 // Methods of SharedTextureMemoryVkDedicatedAllocationDescriptor
 void SharedTextureMemoryVkDedicatedAllocationDescriptor::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUSharedTextureMemoryVkDedicatedAllocationDescriptor WGPU_SHARED_TEXTURE_MEMORY_VK_DEDICATED_ALLOCATION_DESCRIPTOR_INIT;
 	chain.sType = SType::SharedTextureMemoryVkDedicatedAllocationDescriptor;
+	chain.next = nullptr;
 }
 
 
 // Methods of SharedTextureMemoryVkImageLayoutBeginState
 void SharedTextureMemoryVkImageLayoutBeginState::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUSharedTextureMemoryVkImageLayoutBeginState WGPU_SHARED_TEXTURE_MEMORY_VK_IMAGE_LAYOUT_BEGIN_STATE_INIT;
 	chain.sType = SType::SharedTextureMemoryVkImageLayoutBeginState;
+	chain.next = nullptr;
 }
 
 
 // Methods of SharedTextureMemoryVkImageLayoutEndState
 void SharedTextureMemoryVkImageLayoutEndState::setDefault() {
-	((ChainedStructOut*)&chain)->setDefault();
+	*this = WGPUSharedTextureMemoryVkImageLayoutEndState WGPU_SHARED_TEXTURE_MEMORY_VK_IMAGE_LAYOUT_END_STATE_INIT;
 	chain.sType = SType::SharedTextureMemoryVkImageLayoutEndState;
+	chain.next = nullptr;
 }
 
 
 // Methods of SharedTextureMemoryZirconHandleDescriptor
 void SharedTextureMemoryZirconHandleDescriptor::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUSharedTextureMemoryZirconHandleDescriptor WGPU_SHARED_TEXTURE_MEMORY_ZIRCON_HANDLE_DESCRIPTOR_INIT;
 	chain.sType = SType::SharedTextureMemoryZirconHandleDescriptor;
+	chain.next = nullptr;
 }
 
 
 // Methods of StaticSamplerBindingLayout
 void StaticSamplerBindingLayout::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUStaticSamplerBindingLayout WGPU_STATIC_SAMPLER_BINDING_LAYOUT_INIT;
 	chain.sType = SType::StaticSamplerBindingLayout;
+	chain.next = nullptr;
 }
 
 
 // Methods of StencilFaceState
 void StencilFaceState::setDefault() {
-	compare = CompareFunction::Always;
-	failOp = StencilOperation::Keep;
-	depthFailOp = StencilOperation::Keep;
-	passOp = StencilOperation::Keep;
+	*this = WGPUStencilFaceState WGPU_STENCIL_FACE_STATE_INIT;
 }
 
 
 // Methods of StorageTextureBindingLayout
 void StorageTextureBindingLayout::setDefault() {
-	access = StorageTextureAccess::WriteOnly;
-	format = TextureFormat::Undefined;
-	viewDimension = TextureViewDimension::_2D;
+	*this = WGPUStorageTextureBindingLayout WGPU_STORAGE_TEXTURE_BINDING_LAYOUT_INIT;
 }
 
 
 // Methods of StringView
 void StringView::setDefault() {
+	*this = WGPUStringView WGPU_STRING_VIEW_INIT;
 }
 
 
 // Methods of SupportedFeatures
 void SupportedFeatures::setDefault() {
+	*this = WGPUSupportedFeatures WGPU_SUPPORTED_FEATURES_INIT;
 }
 void SupportedFeatures::freeMembers() {
 	return wgpuSupportedFeaturesFreeMembers(*this);
@@ -2705,6 +2722,7 @@ void SupportedFeatures::freeMembers() {
 
 // Methods of SurfaceCapabilities
 void SurfaceCapabilities::setDefault() {
+	*this = WGPUSurfaceCapabilities WGPU_SURFACE_CAPABILITIES_INIT;
 }
 void SurfaceCapabilities::freeMembers() {
 	return wgpuSurfaceCapabilitiesFreeMembers(*this);
@@ -2713,123 +2731,129 @@ void SurfaceCapabilities::freeMembers() {
 
 // Methods of SurfaceConfiguration
 void SurfaceConfiguration::setDefault() {
-	format = TextureFormat::Undefined;
+	*this = WGPUSurfaceConfiguration WGPU_SURFACE_CONFIGURATION_INIT;
 }
 
 
 // Methods of SurfaceDescriptorFromWindowsCoreWindow
 void SurfaceDescriptorFromWindowsCoreWindow::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUSurfaceDescriptorFromWindowsCoreWindow WGPU_SURFACE_DESCRIPTOR_FROM_WINDOWS_CORE_WINDOW_INIT;
 	chain.sType = SType::SurfaceDescriptorFromWindowsCoreWindow;
+	chain.next = nullptr;
 }
 
 
 // Methods of SurfaceDescriptorFromWindowsSwapChainPanel
 void SurfaceDescriptorFromWindowsSwapChainPanel::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUSurfaceDescriptorFromWindowsSwapChainPanel WGPU_SURFACE_DESCRIPTOR_FROM_WINDOWS_SWAP_CHAIN_PANEL_INIT;
 	chain.sType = SType::SurfaceDescriptorFromWindowsSwapChainPanel;
+	chain.next = nullptr;
 }
 
 
 // Methods of SurfaceSourceXCBWindow
 void SurfaceSourceXCBWindow::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUSurfaceSourceXCBWindow WGPU_SURFACE_SOURCE_XCB_WINDOW_INIT;
 	chain.sType = SType::SurfaceSourceXCBWindow;
+	chain.next = nullptr;
 }
 
 
 // Methods of SurfaceSourceAndroidNativeWindow
 void SurfaceSourceAndroidNativeWindow::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUSurfaceSourceAndroidNativeWindow WGPU_SURFACE_SOURCE_ANDROID_NATIVE_WINDOW_INIT;
 	chain.sType = SType::SurfaceSourceAndroidNativeWindow;
+	chain.next = nullptr;
 }
 
 
 // Methods of SurfaceSourceMetalLayer
 void SurfaceSourceMetalLayer::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUSurfaceSourceMetalLayer WGPU_SURFACE_SOURCE_METAL_LAYER_INIT;
 	chain.sType = SType::SurfaceSourceMetalLayer;
+	chain.next = nullptr;
 }
 
 
 // Methods of SurfaceSourceWaylandSurface
 void SurfaceSourceWaylandSurface::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUSurfaceSourceWaylandSurface WGPU_SURFACE_SOURCE_WAYLAND_SURFACE_INIT;
 	chain.sType = SType::SurfaceSourceWaylandSurface;
+	chain.next = nullptr;
 }
 
 
 // Methods of SurfaceSourceWindowsHWND
 void SurfaceSourceWindowsHWND::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUSurfaceSourceWindowsHWND WGPU_SURFACE_SOURCE_WINDOWS_HWND_INIT;
 	chain.sType = SType::SurfaceSourceWindowsHWND;
+	chain.next = nullptr;
 }
 
 
 // Methods of SurfaceSourceXlibWindow
 void SurfaceSourceXlibWindow::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUSurfaceSourceXlibWindow WGPU_SURFACE_SOURCE_XLIB_WINDOW_INIT;
 	chain.sType = SType::SurfaceSourceXlibWindow;
+	chain.next = nullptr;
 }
 
 
 // Methods of SurfaceTexture
 void SurfaceTexture::setDefault() {
+	*this = WGPUSurfaceTexture WGPU_SURFACE_TEXTURE_INIT;
 }
 
 
 // Methods of TextureBindingLayout
 void TextureBindingLayout::setDefault() {
-	sampleType = TextureSampleType::Float;
-	viewDimension = TextureViewDimension::_2D;
-	multisampled = false;
+	*this = WGPUTextureBindingLayout WGPU_TEXTURE_BINDING_LAYOUT_INIT;
 }
 
 
 // Methods of TextureBindingViewDimensionDescriptor
 void TextureBindingViewDimensionDescriptor::setDefault() {
-	textureBindingViewDimension = TextureViewDimension::Undefined;
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUTextureBindingViewDimensionDescriptor WGPU_TEXTURE_BINDING_VIEW_DIMENSION_DESCRIPTOR_INIT;
 	chain.sType = SType::TextureBindingViewDimensionDescriptor;
+	chain.next = nullptr;
 }
 
 
 // Methods of TextureDataLayout
 void TextureDataLayout::setDefault() {
+	*this = WGPUTextureDataLayout WGPU_TEXTURE_DATA_LAYOUT_INIT;
 }
 
 
 // Methods of UncapturedErrorCallbackInfo
 void UncapturedErrorCallbackInfo::setDefault() {
+	*this = WGPUUncapturedErrorCallbackInfo WGPU_UNCAPTURED_ERROR_CALLBACK_INFO_INIT;
 }
 
 
 // Methods of VertexAttribute
 void VertexAttribute::setDefault() {
+	*this = WGPUVertexAttribute WGPU_VERTEX_ATTRIBUTE_INIT;
 }
 
 
 // Methods of YCbCrVkDescriptor
 void YCbCrVkDescriptor::setDefault() {
-	vkChromaFilter = FilterMode::Undefined;
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUYCbCrVkDescriptor WGPU_Y_CB_CR_VK_DESCRIPTOR_INIT;
 	chain.sType = SType::YCbCrVkDescriptor;
+	chain.next = nullptr;
 }
 
 
 // Methods of AHardwareBufferProperties
 void AHardwareBufferProperties::setDefault() {
-	((YCbCrVkDescriptor*)&yCbCrInfo)->setDefault();
+	*this = WGPUAHardwareBufferProperties WGPU_A_HARDWARE_BUFFER_PROPERTIES_INIT;
 }
 
 
 // Methods of AdapterInfo
 void AdapterInfo::setDefault() {
-	backendType = BackendType::Undefined;
-	((StringView*)&vendor)->setDefault();
-	((StringView*)&architecture)->setDefault();
-	((StringView*)&device)->setDefault();
-	((StringView*)&description)->setDefault();
+	*this = WGPUAdapterInfo WGPU_ADAPTER_INFO_INIT;
 }
 void AdapterInfo::freeMembers() {
 	return wgpuAdapterInfoFreeMembers(*this);
@@ -2838,8 +2862,9 @@ void AdapterInfo::freeMembers() {
 
 // Methods of AdapterPropertiesMemoryHeaps
 void AdapterPropertiesMemoryHeaps::setDefault() {
-	((ChainedStructOut*)&chain)->setDefault();
+	*this = WGPUAdapterPropertiesMemoryHeaps WGPU_ADAPTER_PROPERTIES_MEMORY_HEAPS_INIT;
 	chain.sType = SType::AdapterPropertiesMemoryHeaps;
+	chain.next = nullptr;
 }
 void AdapterPropertiesMemoryHeaps::freeMembers() {
 	return wgpuAdapterPropertiesMemoryHeapsFreeMembers(*this);
@@ -2848,94 +2873,77 @@ void AdapterPropertiesMemoryHeaps::freeMembers() {
 
 // Methods of BindGroupDescriptor
 void BindGroupDescriptor::setDefault() {
-	((StringView*)&label)->setDefault();
+	*this = WGPUBindGroupDescriptor WGPU_BIND_GROUP_DESCRIPTOR_INIT;
 }
 
 
 // Methods of BindGroupLayoutEntry
 void BindGroupLayoutEntry::setDefault() {
-	((BufferBindingLayout*)&buffer)->setDefault();
-	((SamplerBindingLayout*)&sampler)->setDefault();
-	((TextureBindingLayout*)&texture)->setDefault();
-	((StorageTextureBindingLayout*)&storageTexture)->setDefault();
-	buffer.type = BufferBindingType::Undefined;
-	sampler.type = SamplerBindingType::Undefined;
-	storageTexture.access = StorageTextureAccess::Undefined;
-	texture.sampleType = TextureSampleType::Undefined;
+	*this = WGPUBindGroupLayoutEntry WGPU_BIND_GROUP_LAYOUT_ENTRY_INIT;
 }
 
 
 // Methods of BlendState
 void BlendState::setDefault() {
-	((BlendComponent*)&color)->setDefault();
-	((BlendComponent*)&alpha)->setDefault();
+	*this = WGPUBlendState WGPU_BLEND_STATE_INIT;
 }
 
 
 // Methods of BufferDescriptor
 void BufferDescriptor::setDefault() {
-	mappedAtCreation = false;
-	((StringView*)&label)->setDefault();
+	*this = WGPUBufferDescriptor WGPU_BUFFER_DESCRIPTOR_INIT;
 }
 
 
 // Methods of CommandBufferDescriptor
 void CommandBufferDescriptor::setDefault() {
-	((StringView*)&label)->setDefault();
+	*this = WGPUCommandBufferDescriptor WGPU_COMMAND_BUFFER_DESCRIPTOR_INIT;
 }
 
 
 // Methods of CommandEncoderDescriptor
 void CommandEncoderDescriptor::setDefault() {
-	((StringView*)&label)->setDefault();
+	*this = WGPUCommandEncoderDescriptor WGPU_COMMAND_ENCODER_DESCRIPTOR_INIT;
 }
 
 
 // Methods of CompilationMessage
 void CompilationMessage::setDefault() {
-	((StringView*)&message)->setDefault();
+	*this = WGPUCompilationMessage WGPU_COMPILATION_MESSAGE_INIT;
 }
 
 
 // Methods of ComputePassDescriptor
 void ComputePassDescriptor::setDefault() {
-	((StringView*)&label)->setDefault();
+	*this = WGPUComputePassDescriptor WGPU_COMPUTE_PASS_DESCRIPTOR_INIT;
 }
 
 
 // Methods of ConstantEntry
 void ConstantEntry::setDefault() {
-	((StringView*)&key)->setDefault();
+	*this = WGPUConstantEntry WGPU_CONSTANT_ENTRY_INIT;
 }
 
 
 // Methods of DawnCacheDeviceDescriptor
 void DawnCacheDeviceDescriptor::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
-	((StringView*)&isolationKey)->setDefault();
+	*this = WGPUDawnCacheDeviceDescriptor WGPU_DAWN_CACHE_DEVICE_DESCRIPTOR_INIT;
 	chain.sType = SType::DawnCacheDeviceDescriptor;
+	chain.next = nullptr;
 }
 
 
 // Methods of DepthStencilState
 void DepthStencilState::setDefault() {
-	format = TextureFormat::Undefined;
-	depthWriteEnabled = OptionalBool::Undefined;
-	depthCompare = CompareFunction::Undefined;
-	stencilReadMask = 0xFFFFFFFF;
-	stencilWriteMask = 0xFFFFFFFF;
-	depthBias = 0;
-	depthBiasSlopeScale = 0;
-	depthBiasClamp = 0;
-	((StencilFaceState*)&stencilFront)->setDefault();
-	((StencilFaceState*)&stencilBack)->setDefault();
+	*this = WGPUDepthStencilState WGPU_DEPTH_STENCIL_STATE_INIT;
 }
 
 
 // Methods of DrmFormatCapabilities
 void DrmFormatCapabilities::setDefault() {
-	((ChainedStructOut*)&chain)->setDefault();
+	*this = WGPUDrmFormatCapabilities WGPU_DRM_FORMAT_CAPABILITIES_INIT;
 	chain.sType = SType::DrmFormatCapabilities;
+	chain.next = nullptr;
 }
 void DrmFormatCapabilities::freeMembers() {
 	return wgpuDrmFormatCapabilitiesFreeMembers(*this);
@@ -2944,300 +2952,257 @@ void DrmFormatCapabilities::freeMembers() {
 
 // Methods of ExternalTextureDescriptor
 void ExternalTextureDescriptor::setDefault() {
-	((StringView*)&label)->setDefault();
-	((Origin2D*)&visibleOrigin)->setDefault();
-	((Extent2D*)&visibleSize)->setDefault();
-	((Origin2D*)&cropOrigin)->setDefault();
-	((Extent2D*)&cropSize)->setDefault();
-	((Extent2D*)&apparentSize)->setDefault();
+	*this = WGPUExternalTextureDescriptor WGPU_EXTERNAL_TEXTURE_DESCRIPTOR_INIT;
 }
 
 
 // Methods of FutureWaitInfo
 void FutureWaitInfo::setDefault() {
-	((Future*)&future)->setDefault();
+	*this = WGPUFutureWaitInfo WGPU_FUTURE_WAIT_INFO_INIT;
 }
 
 
 // Methods of ImageCopyBuffer
 void ImageCopyBuffer::setDefault() {
-	((TextureDataLayout*)&layout)->setDefault();
+	*this = WGPUImageCopyBuffer WGPU_IMAGE_COPY_BUFFER_INIT;
 }
 
 
 // Methods of ImageCopyExternalTexture
 void ImageCopyExternalTexture::setDefault() {
-	((Origin3D*)&origin)->setDefault();
-	((Extent2D*)&naturalSize)->setDefault();
+	*this = WGPUImageCopyExternalTexture WGPU_IMAGE_COPY_EXTERNAL_TEXTURE_INIT;
 }
 
 
 // Methods of ImageCopyTexture
 void ImageCopyTexture::setDefault() {
-	mipLevel = 0;
-	aspect = TextureAspect::All;
-	((Origin3D*)&origin)->setDefault();
+	*this = WGPUImageCopyTexture WGPU_IMAGE_COPY_TEXTURE_INIT;
 }
 
 
 // Methods of InstanceDescriptor
 void InstanceDescriptor::setDefault() {
-	((InstanceFeatures*)&features)->setDefault();
+	*this = WGPUInstanceDescriptor WGPU_INSTANCE_DESCRIPTOR_INIT;
 }
 
 
 // Methods of PipelineLayoutDescriptor
 void PipelineLayoutDescriptor::setDefault() {
-	((StringView*)&label)->setDefault();
+	*this = WGPUPipelineLayoutDescriptor WGPU_PIPELINE_LAYOUT_DESCRIPTOR_INIT;
 }
 
 
 // Methods of PipelineLayoutPixelLocalStorage
 void PipelineLayoutPixelLocalStorage::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPUPipelineLayoutPixelLocalStorage WGPU_PIPELINE_LAYOUT_PIXEL_LOCAL_STORAGE_INIT;
 	chain.sType = SType::PipelineLayoutPixelLocalStorage;
+	chain.next = nullptr;
 }
 
 
 // Methods of QuerySetDescriptor
 void QuerySetDescriptor::setDefault() {
-	((StringView*)&label)->setDefault();
+	*this = WGPUQuerySetDescriptor WGPU_QUERY_SET_DESCRIPTOR_INIT;
 }
 
 
 // Methods of QueueDescriptor
 void QueueDescriptor::setDefault() {
-	((StringView*)&label)->setDefault();
+	*this = WGPUQueueDescriptor WGPU_QUEUE_DESCRIPTOR_INIT;
 }
 
 
 // Methods of RenderBundleDescriptor
 void RenderBundleDescriptor::setDefault() {
-	((StringView*)&label)->setDefault();
+	*this = WGPURenderBundleDescriptor WGPU_RENDER_BUNDLE_DESCRIPTOR_INIT;
 }
 
 
 // Methods of RenderBundleEncoderDescriptor
 void RenderBundleEncoderDescriptor::setDefault() {
-	depthStencilFormat = TextureFormat::Undefined;
-	depthReadOnly = false;
-	stencilReadOnly = false;
-	sampleCount = 1;
-	((StringView*)&label)->setDefault();
+	*this = WGPURenderBundleEncoderDescriptor WGPU_RENDER_BUNDLE_ENCODER_DESCRIPTOR_INIT;
 }
 
 
 // Methods of RenderPassColorAttachment
 void RenderPassColorAttachment::setDefault() {
-	loadOp = LoadOp::Undefined;
-	storeOp = StoreOp::Undefined;
-	((Color*)&clearValue)->setDefault();
+	*this = WGPURenderPassColorAttachment WGPU_RENDER_PASS_COLOR_ATTACHMENT_INIT;
 }
 
 
 // Methods of RenderPassStorageAttachment
 void RenderPassStorageAttachment::setDefault() {
-	loadOp = LoadOp::Undefined;
-	storeOp = StoreOp::Undefined;
-	((Color*)&clearValue)->setDefault();
+	*this = WGPURenderPassStorageAttachment WGPU_RENDER_PASS_STORAGE_ATTACHMENT_INIT;
 }
 
 
 // Methods of RequiredLimits
 void RequiredLimits::setDefault() {
-	((Limits*)&limits)->setDefault();
+	*this = WGPURequiredLimits WGPU_REQUIRED_LIMITS_INIT;
 }
 
 
 // Methods of SamplerDescriptor
 void SamplerDescriptor::setDefault() {
-	addressModeU = AddressMode::ClampToEdge;
-	addressModeV = AddressMode::ClampToEdge;
-	addressModeW = AddressMode::ClampToEdge;
-	magFilter = FilterMode::Nearest;
-	minFilter = FilterMode::Nearest;
-	mipmapFilter = MipmapFilterMode::Nearest;
-	lodMinClamp = 0;
-	lodMaxClamp = 32;
-	compare = CompareFunction::Undefined;
-	((StringView*)&label)->setDefault();
+	*this = WGPUSamplerDescriptor WGPU_SAMPLER_DESCRIPTOR_INIT;
 }
 
 
 // Methods of ShaderModuleDescriptor
 void ShaderModuleDescriptor::setDefault() {
-	((StringView*)&label)->setDefault();
+	*this = WGPUShaderModuleDescriptor WGPU_SHADER_MODULE_DESCRIPTOR_INIT;
 }
 
 
 // Methods of ShaderSourceWGSL
 void ShaderSourceWGSL::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
-	((StringView*)&code)->setDefault();
+	*this = WGPUShaderSourceWGSL WGPU_SHADER_SOURCE_WGSL_INIT;
 	chain.sType = SType::ShaderSourceWGSL;
+	chain.next = nullptr;
 }
 
 
 // Methods of SharedBufferMemoryDescriptor
 void SharedBufferMemoryDescriptor::setDefault() {
-	((StringView*)&label)->setDefault();
+	*this = WGPUSharedBufferMemoryDescriptor WGPU_SHARED_BUFFER_MEMORY_DESCRIPTOR_INIT;
 }
 
 
 // Methods of SharedFenceDescriptor
 void SharedFenceDescriptor::setDefault() {
-	((StringView*)&label)->setDefault();
+	*this = WGPUSharedFenceDescriptor WGPU_SHARED_FENCE_DESCRIPTOR_INIT;
 }
 
 
 // Methods of SharedTextureMemoryAHardwareBufferProperties
 void SharedTextureMemoryAHardwareBufferProperties::setDefault() {
-	((ChainedStructOut*)&chain)->setDefault();
-	((YCbCrVkDescriptor*)&yCbCrInfo)->setDefault();
+	*this = WGPUSharedTextureMemoryAHardwareBufferProperties WGPU_SHARED_TEXTURE_MEMORY_A_HARDWARE_BUFFER_PROPERTIES_INIT;
 	chain.sType = SType::SharedTextureMemoryAHardwareBufferProperties;
+	chain.next = nullptr;
 }
 
 
 // Methods of SharedTextureMemoryDescriptor
 void SharedTextureMemoryDescriptor::setDefault() {
-	((StringView*)&label)->setDefault();
+	*this = WGPUSharedTextureMemoryDescriptor WGPU_SHARED_TEXTURE_MEMORY_DESCRIPTOR_INIT;
 }
 
 
 // Methods of SharedTextureMemoryDmaBufDescriptor
 void SharedTextureMemoryDmaBufDescriptor::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
-	((Extent3D*)&size)->setDefault();
+	*this = WGPUSharedTextureMemoryDmaBufDescriptor WGPU_SHARED_TEXTURE_MEMORY_DMA_BUF_DESCRIPTOR_INIT;
 	chain.sType = SType::SharedTextureMemoryDmaBufDescriptor;
+	chain.next = nullptr;
 }
 
 
 // Methods of SharedTextureMemoryProperties
 void SharedTextureMemoryProperties::setDefault() {
-	format = TextureFormat::Undefined;
-	((Extent3D*)&size)->setDefault();
+	*this = WGPUSharedTextureMemoryProperties WGPU_SHARED_TEXTURE_MEMORY_PROPERTIES_INIT;
 }
 
 
 // Methods of SupportedLimits
 void SupportedLimits::setDefault() {
-	((Limits*)&limits)->setDefault();
+	*this = WGPUSupportedLimits WGPU_SUPPORTED_LIMITS_INIT;
 }
 
 
 // Methods of SurfaceDescriptor
 void SurfaceDescriptor::setDefault() {
-	((StringView*)&label)->setDefault();
+	*this = WGPUSurfaceDescriptor WGPU_SURFACE_DESCRIPTOR_INIT;
 }
 
 
 // Methods of SurfaceSourceCanvasHTMLSelector_Emscripten
 void SurfaceSourceCanvasHTMLSelector_Emscripten::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
-	((StringView*)&selector)->setDefault();
+	*this = WGPUSurfaceSourceCanvasHTMLSelector_Emscripten WGPU_SURFACE_SOURCE_CANVAS_HTML_SELECTOR__EMSCRIPTEN_INIT;
 }
 
 
 // Methods of TextureDescriptor
 void TextureDescriptor::setDefault() {
-	dimension = TextureDimension::_2D;
-	format = TextureFormat::Undefined;
-	mipLevelCount = 1;
-	sampleCount = 1;
-	((StringView*)&label)->setDefault();
-	((Extent3D*)&size)->setDefault();
+	*this = WGPUTextureDescriptor WGPU_TEXTURE_DESCRIPTOR_INIT;
 }
 
 
 // Methods of TextureViewDescriptor
 void TextureViewDescriptor::setDefault() {
-	format = TextureFormat::Undefined;
-	dimension = TextureViewDimension::Undefined;
-	baseMipLevel = 0;
-	baseArrayLayer = 0;
-	aspect = TextureAspect::All;
-	((StringView*)&label)->setDefault();
+	*this = WGPUTextureViewDescriptor WGPU_TEXTURE_VIEW_DESCRIPTOR_INIT;
 }
 
 
 // Methods of VertexBufferLayout
 void VertexBufferLayout::setDefault() {
-	stepMode = VertexStepMode::Vertex;
+	*this = WGPUVertexBufferLayout WGPU_VERTEX_BUFFER_LAYOUT_INIT;
 }
 
 
 // Methods of BindGroupLayoutDescriptor
 void BindGroupLayoutDescriptor::setDefault() {
-	((StringView*)&label)->setDefault();
+	*this = WGPUBindGroupLayoutDescriptor WGPU_BIND_GROUP_LAYOUT_DESCRIPTOR_INIT;
 }
 
 
 // Methods of ColorTargetState
 void ColorTargetState::setDefault() {
-	format = TextureFormat::Undefined;
+	*this = WGPUColorTargetState WGPU_COLOR_TARGET_STATE_INIT;
 }
 
 
 // Methods of CompilationInfo
 void CompilationInfo::setDefault() {
+	*this = WGPUCompilationInfo WGPU_COMPILATION_INFO_INIT;
 }
 
 
 // Methods of DeviceDescriptor
 void DeviceDescriptor::setDefault() {
-	((StringView*)&label)->setDefault();
-	((QueueDescriptor*)&defaultQueue)->setDefault();
-	((DeviceLostCallbackInfo*)&deviceLostCallbackInfo)->setDefault();
-	((UncapturedErrorCallbackInfo*)&uncapturedErrorCallbackInfo)->setDefault();
-	((DeviceLostCallbackInfo2*)&deviceLostCallbackInfo2)->setDefault();
-	((UncapturedErrorCallbackInfo2*)&uncapturedErrorCallbackInfo2)->setDefault();
+	*this = WGPUDeviceDescriptor WGPU_DEVICE_DESCRIPTOR_INIT;
 }
 
 
 // Methods of ProgrammableStageDescriptor
 void ProgrammableStageDescriptor::setDefault() {
-	((StringView*)&entryPoint)->setDefault();
+	*this = WGPUProgrammableStageDescriptor WGPU_PROGRAMMABLE_STAGE_DESCRIPTOR_INIT;
 }
 
 
 // Methods of RenderPassDescriptor
 void RenderPassDescriptor::setDefault() {
-	((StringView*)&label)->setDefault();
+	*this = WGPURenderPassDescriptor WGPU_RENDER_PASS_DESCRIPTOR_INIT;
 }
 
 
 // Methods of RenderPassPixelLocalStorage
 void RenderPassPixelLocalStorage::setDefault() {
-	((ChainedStruct*)&chain)->setDefault();
+	*this = WGPURenderPassPixelLocalStorage WGPU_RENDER_PASS_PIXEL_LOCAL_STORAGE_INIT;
 	chain.sType = SType::RenderPassPixelLocalStorage;
+	chain.next = nullptr;
 }
 
 
 // Methods of VertexState
 void VertexState::setDefault() {
-	((StringView*)&entryPoint)->setDefault();
+	*this = WGPUVertexState WGPU_VERTEX_STATE_INIT;
 }
 
 
 // Methods of ComputePipelineDescriptor
 void ComputePipelineDescriptor::setDefault() {
-	((StringView*)&label)->setDefault();
-	((ProgrammableStageDescriptor*)&compute)->setDefault();
+	*this = WGPUComputePipelineDescriptor WGPU_COMPUTE_PIPELINE_DESCRIPTOR_INIT;
 }
 
 
 // Methods of FragmentState
 void FragmentState::setDefault() {
-	((StringView*)&entryPoint)->setDefault();
+	*this = WGPUFragmentState WGPU_FRAGMENT_STATE_INIT;
 }
 
 
 // Methods of RenderPipelineDescriptor
 void RenderPipelineDescriptor::setDefault() {
-	((StringView*)&label)->setDefault();
-	((VertexState*)&vertex)->setDefault();
-	((PrimitiveState*)&primitive)->setDefault();
-	((MultisampleState*)&multisample)->setDefault();
+	*this = WGPURenderPipelineDescriptor WGPU_RENDER_PIPELINE_DESCRIPTOR_INIT;
 }
 
 
@@ -3610,9 +3575,6 @@ void Device::getFeatures(SupportedFeatures * features) const {
 }
 Status Device::getLimits(SupportedLimits * limits) const {
 	return static_cast<Status>(wgpuDeviceGetLimits(m_raw, limits));
-}
-Future Device::getLostFuture() const {
-	return wgpuDeviceGetLostFuture(m_raw);
 }
 Queue Device::getQueue() const {
 	return wgpuDeviceGetQueue(m_raw);
@@ -4222,7 +4184,7 @@ Adapter Instance::requestAdapter(const RequestAdapterOptions& options) {
 	};
 	Context context;
 
-	RequestAdapterCallbackInfo callbackInfo;
+	RequestAdapterCallbackInfo2 callbackInfo;
 	callbackInfo.nextInChain = nullptr;
 	callbackInfo.userdata1 = &context;
 	callbackInfo.callback = [](
@@ -4242,7 +4204,7 @@ Adapter Instance::requestAdapter(const RequestAdapterOptions& options) {
 		context.requestEnded = true;
 	};
 	callbackInfo.mode = CallbackMode::AllowSpontaneous;
-	requestAdapter(options, callbackInfo);
+	requestAdapter2(options, callbackInfo);
 
 #if __EMSCRIPTEN__
 	while (!context.requestEnded) {
@@ -4261,7 +4223,7 @@ Device Adapter::requestDevice(const DeviceDescriptor& descriptor) {
 	};
 	Context context;
 
-	RequestDeviceCallbackInfo callbackInfo;
+	RequestDeviceCallbackInfo2 callbackInfo;
 	callbackInfo.nextInChain = nullptr;
 	callbackInfo.userdata1 = &context;
 	callbackInfo.callback = [](
@@ -4281,7 +4243,7 @@ Device Adapter::requestDevice(const DeviceDescriptor& descriptor) {
 		context.requestEnded = true;
 	};
 	callbackInfo.mode = CallbackMode::AllowSpontaneous;
-	requestDevice(descriptor, callbackInfo);
+	requestDevice2(descriptor, callbackInfo);
 
 #if __EMSCRIPTEN__
 	while (!context.requestEnded) {

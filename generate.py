@@ -70,7 +70,18 @@ def makeArgParser():
 
     parser.add_argument("-d", "--defaults", action='append',
                         default=[],
-                        help="File listing default values for descriptor fields. This argument can be provided multiple times, the last ones override the previous values.")
+                        help="""
+                        File listing default values for descriptor fields. This argument can
+                        be provided multiple times, the last ones override the previous values.
+                        """)
+
+    parser.add_argument("--ext-suffix",
+                        default="",
+                        help="""
+                        Extension number needed for Dawn, which uses them to maintain backward
+                        compatibility of their API (might get removed once version 1 is out).
+                        Set to "2" when using dawn and leave to the empty default with wgpu-native.
+                        """)
 
     # Advanced options
 
@@ -85,6 +96,9 @@ def makeArgParser():
 
     parser.add_argument("--no-const", action='store_false', dest="use_const",
                         help="By default, all methods of opaque handle types are const. This option makes them all non-const.")
+
+    parser.add_argument("--use-init-macros", action='store_true',
+                        help="Use initialization macros provided by webgpu.h instead of writing custom setDefaults methods.")
 
     return parser
 
@@ -212,6 +226,7 @@ class WebGpuApi:
     callbacks: list[CallbackApi] = field(default_factory=list)
     type_aliases: list[TypeAliasApi] = field(default_factory=list)
     stypes: dict[str,str] = field(default_factory=dict) # Name => SType::Name
+    init_macros: list[str] = field(default_factory=list)
 
 def parseHeader(api, header):
     """
@@ -236,6 +251,7 @@ def parseHeader(api, header):
     flag_value_re = re.compile(r"static const WGPU(\w+) WGPU(\w+)_(\w+) = (\w+)( /\*(.*)\*/)?;")
     typedef_re = re.compile(r"typedef (\w+) WGPU(\w+)\s*;")
     callback_re = re.compile(r"typedef void \(\*WGPU(\w+)Callback\)\((.*)\)\s*;")
+    init_macro_re = re.compile(r"#define (WGPU_[A-Z0-9_]+_INIT)")
 
     while (x := next(it, None)) is not None:
         if (match := struct_re.search(x)):
@@ -312,6 +328,10 @@ def parseHeader(api, header):
                 arguments=parseProcArgs(match.group(2)),
                 raw_arguments=match.group(2),
             ))
+            continue
+
+        if (match := init_macro_re.search(x)):
+            api.init_macros.append(match.group(1))
             continue
 
     # Post process: find parent of each method
@@ -422,7 +442,8 @@ def produceBinding(args, api, meta):
         "enums": [],
         "callbacks": [],
         "procedures": [],
-        "type_aliases": []
+        "type_aliases": [],
+        "ext_suffix": args.ext_suffix,
     }
 
     for url in args.header_url:
@@ -503,6 +524,9 @@ def produceBinding(args, api, meta):
             namespace_impl = "handles_impl"
             argument_self = "m_raw"
             use_const = args.use_const
+
+        if entry_name.startswith("INTERNAL__"):
+            continue
         
         decls = []
         implems = []
@@ -514,23 +538,33 @@ def produceBinding(args, api, meta):
             cls_api = handle_or_class
             prop_names = [f"{p.name}" for p in cls_api.properties]
 
-            prop_defaults = [
-                f"\t{prop.name} = {prop.default_value};\n"
-                for prop in cls_api.properties
-                if prop.default_value is not None
-            ] + [
-                f"\t(({prop.type[4:]}*)&{prop.name})->setDefault();\n"
-                for prop in cls_api.properties
-                if prop.type in class_names
-            ] + [
-                f"\t{subprop} = {default_value};\n"
-                for subprop, default_value in cls_api.default_overrides
-            ]
+            if args.use_init_macros:
+                init_macro = f"WGPU_{to_constant_case(entry_name)}_INIT"
+                if init_macro not in api.init_macros:
+                    logging.warning(f"Initialization macro '{init_macro}' was not found, falling back to empty initializer '{{}}'.")
+                    init_macro = "{}"
+                prop_defaults = [
+                    f"\t*this = WGPU{entry_name} {init_macro};\n",
+                ]
+            else:
+                prop_defaults = [
+                    f"\t{prop.name} = {prop.default_value};\n"
+                    for prop in cls_api.properties
+                    if prop.default_value is not None
+                ] + [
+                    f"\t(({prop.type[4:]}*)&{prop.name})->setDefault();\n"
+                    for prop in cls_api.properties
+                    if prop.type in class_names
+                ] + [
+                    f"\t{subprop} = {default_value};\n"
+                    for subprop, default_value in cls_api.default_overrides
+                ]
             if "chain" in prop_names:
                 if entry_name in api.stypes:
-                    prop_defaults.append(
-                        f"\tchain.sType = {api.stypes[entry_name]};\n"
-                    )
+                    prop_defaults.extend([
+                        f"\tchain.sType = {api.stypes[entry_name]};\n",
+                        f"\tchain.next = nullptr;\n",
+                    ])
                 else:
                     logging.warning(f"Type {entry_name} starts with a 'chain' field but has no apparent associated SType.")
             implems.append(
@@ -929,9 +963,28 @@ def format_enum_value(value):
     else:
         return value
 
+def to_constant_case(caml_case):
+    naive = ''.join(['_'+c if c.isupper() or c.isnumeric() else c for c in caml_case]).lstrip('_').upper()
+    # We then regroup isolated characters together (because they correspond to acronyms):
+    current_acronym = None
+    tokens = []
+    for tok in naive.split("_"):
+        if len(tok) == 1:
+            if current_acronym is None:
+                current_acronym = ""
+            current_acronym += tok
+        else:
+            if current_acronym is not None:
+                tokens.append(current_acronym)
+            tokens.append(tok)
+            current_acronym = None
+    if current_acronym is not None:
+        tokens.append(current_acronym)
+    return "_".join(tokens)
+
 # -----------------------------------------------------------------------------
 
 if __name__ == "__main__":
-    args = makeArgParser().parse_args() 
+    args = makeArgParser().parse_args()
     main(args)
     

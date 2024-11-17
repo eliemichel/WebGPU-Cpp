@@ -120,7 +120,7 @@ public:
 
 #define STRUCT(Type) \
 STRUCT_NO_OSTREAM(Type) \
-	friend auto operator<<(std::ostream &stream, const S& self) -> std::ostream & { \
+	friend auto operator<<(std::ostream &stream, const S&) -> std::ostream & { \
 		return stream << "<wgpu::" << #Type << ">"; \
 	} \
 public:
@@ -166,6 +166,7 @@ END
 {{end-inject}}
 
 {{begin-blacklist}}
+wgpuDeviceGetLostFuture
 {{end-blacklist}}
 
 // Other type aliases
@@ -216,7 +217,7 @@ Adapter Instance::requestAdapter(const RequestAdapterOptions& options) {
 	};
 	Context context;
 
-	RequestAdapterCallbackInfo callbackInfo;
+	RequestAdapterCallbackInfo{{ext_suffix}} callbackInfo;
 	callbackInfo.nextInChain = nullptr;
 	callbackInfo.userdata1 = &context;
 	callbackInfo.callback = [](
@@ -236,7 +237,7 @@ Adapter Instance::requestAdapter(const RequestAdapterOptions& options) {
 		context.requestEnded = true;
 	};
 	callbackInfo.mode = CallbackMode::AllowSpontaneous;
-	requestAdapter(options, callbackInfo);
+	requestAdapter{{ext_suffix}}(options, callbackInfo);
 
 #if __EMSCRIPTEN__
 	while (!context.requestEnded) {
@@ -255,7 +256,7 @@ Device Adapter::requestDevice(const DeviceDescriptor& descriptor) {
 	};
 	Context context;
 
-	RequestDeviceCallbackInfo callbackInfo;
+	RequestDeviceCallbackInfo{{ext_suffix}} callbackInfo;
 	callbackInfo.nextInChain = nullptr;
 	callbackInfo.userdata1 = &context;
 	callbackInfo.callback = [](
@@ -275,7 +276,7 @@ Device Adapter::requestDevice(const DeviceDescriptor& descriptor) {
 		context.requestEnded = true;
 	};
 	callbackInfo.mode = CallbackMode::AllowSpontaneous;
-	requestDevice(descriptor, callbackInfo);
+	requestDevice{{ext_suffix}}(descriptor, callbackInfo);
 
 #if __EMSCRIPTEN__
 	while (!context.requestEnded) {
