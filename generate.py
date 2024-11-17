@@ -436,9 +436,11 @@ def produceBinding(args, api, meta):
         "descriptors": [],
         "structs": [],
         "class_impl": [],
+        "class_oneliner": [],
         "handles_decl": [],
         "handles": [],
         "handles_impl": [],
+        "handles_oneliner": [],
         "enums": [],
         "callbacks": [],
         "procedures": [],
@@ -515,6 +517,7 @@ def produceBinding(args, api, meta):
             macro = "DESCRIPTOR" if handle_or_class.is_descriptor else "STRUCT"
             namespace = "descriptors" if handle_or_class.is_descriptor else "structs"
             namespace_impl = "class_impl"
+            namespace_oneliner = "class_oneliner"
             argument_self = "*this"
             use_const = False
         elif entry_type == 'HANDLE':
@@ -522,6 +525,7 @@ def produceBinding(args, api, meta):
             macro = "HANDLE"
             namespace = "handles"
             namespace_impl = "handles_impl"
+            namespace_oneliner = "handles_oneliner"
             argument_self = "m_raw"
             use_const = args.use_const
 
@@ -701,6 +705,10 @@ def produceBinding(args, api, meta):
             f"{macro}({entry_name})\n"
             + "".join(decls + injected_decls)
             + "END\n"
+        )
+
+        binding[namespace_oneliner].append(
+            f"{macro}({entry_name});"
         )
 
         binding[namespace_impl].append(

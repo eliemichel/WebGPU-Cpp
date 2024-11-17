@@ -45,6 +45,8 @@ The C++ wrapper is automatically generated from the official [webgpu.h](https://
  - Capturing closures
  - Scoped enumerations
 
+There is also an extra `webgpu-raii.hpp` file generated alongside `webgpu.hpp`, which provides a [RAII](https://en.cppreference.com/w/cpp/language/raii) wrapper around WebGPU objects, so that lifetime is automatically managed. This is kept in a separate file, because the core `webgpu.hpp` is meant not to introduce any behavior compared to using the raw C API. More info in [WebGPU-raii](https://github.com/eliemichel/WebGPU-raii).
+
 Quick Start
 -----------
 
@@ -280,14 +282,6 @@ Between `{{begin-inject}}` and `{{end-inject}}`, you can specify extra methods t
 
 You must then declare the body of this method at the end of the file, between `#ifdef WEBGPU_CPP_IMPLEMENTATION` and `#endif // WEBGPU_CPP_IMPLEMENTATION`
 
-#### PpluX
-
-This generator was inspired by [PpluX' wgpu.hpp](https://github.com/pplux/wgpu.hpp), and it can actually generate the very same headers:
-
-```bash
-python generate.py -t wgpu-pplux.template.hpp -o wgpu-pplux.hpp --pplux
-```
-
 ### Default values
 
 Default values for descriptors and structs are not provided in the `webgpu.h` native header. They are however specified in [the official WebGPU specification](https://www.w3.org/TR/webgpu), so we provide a script that downloads and scraps this document to extract the default values.
@@ -330,6 +324,19 @@ python generate.py -u dawn/webgpu.h -t webgpu.template.hpp -o dawn/webgpu.hpp -d
 
 # emscripten
 python generate.py -u emscripten/webgpu.h -t emscripten/webgpu.template.hpp -o emscripten/webgpu.hpp -d defaults.txt -d extra-defaults.txt
+```
+
+And the RAII wrappers were generated with the following commands:
+
+```
+# wgpu-native
+python generate.py -u wgpu-native/webgpu.h -u wgpu-native/wgpu.h -t webgpu-raii.template.hpp -o wgpu-native/webgpu-raii.hpp
+
+# Dawn
+python generate.py -u dawn/webgpu.h -t webgpu-raii.template.hpp -o dawn/webgpu-raii.hpp
+
+# emscripten
+python generate.py -u emscripten/webgpu.h -t webgpu-raii.template.hpp -o emscripten/webgpu-raii.hpp
 ```
 
 ### See also
