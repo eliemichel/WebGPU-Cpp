@@ -74,9 +74,6 @@ def makeArgParser():
                         default=[],
                         help="File listing default values for descriptor fields. This argument can be provided multiple times, the last ones override the previous values.")
 
-    parser.add_argument("--pplux", action='store_true',
-                        help="Generate a binding compatible with https://github.com/pplux/wgpu.hpp (requires the use of pplux.template.h as the template)")
-
     # Advanced options
 
     parser.add_argument("--no-scoped-enums", action='store_false', dest="use_scoped_enums",
@@ -101,10 +98,7 @@ def main(args):
         parseHeader(api, header)
     loadDefaults(args, api)
 
-    if args.pplux:
-        binding = producePpluxBinding(api)
-    else:
-        binding = produceBinding(args, api, meta)
+    binding = produceBinding(args, api, meta)
     
     generateOutput(args.output, template, binding)
 
@@ -414,7 +408,7 @@ def parseProcArgs(line):
 # -----------------------------------------------------------------------------
 
 def produceBinding(args, api, meta):
-    """Produce binding compatible with PpluX' wgpu.hpp"""
+    """Produce C++ binding"""
     binding = {
         "webgpu_includes": [],
         "descriptors": [],
@@ -925,41 +919,6 @@ def format_enum_value(value):
         return '_' + value
     else:
         return value
-
-# -----------------------------------------------------------------------------
-# Extension reproducing PpluX binding
-
-def producePpluxClass(api):
-    if api.parent is not None:
-        out = f"    SUBCLASS({api.name}, {api.parent})\n"
-    elif api.is_descriptor:
-        out = f"    DESCRIPTOR({api.name})\n"
-    else:
-        out = f"    CLASS({api.name})\n"
-
-    for prop in api.properties:
-        if prop.counter is None:
-            out += f"        PROP({prop.name})\n"
-        else:
-            out += f"        LIST({prop.name},{prop.counter})\n"
-    out += "    END\n\n"
-    return out
-
-def producePpluxBinding(api):
-    """Produce binding compatible with PpluX' wgpu.hpp"""
-    result = ""
-    for cls_api in api.classes:
-        cls_result = producePpluxClass(cls_api)
-        result += cls_result
-
-    typedefs = ""
-    for handle_api in api.handles:
-        typedefs += f"    typedef WGPU{handle_api.name} {handle_api.name};\n"
-
-    return { "content": typedefs + "\n" + result }
-
-def unzip(l):
-    return tuple(map(list, zip(*l)))
 
 # -----------------------------------------------------------------------------
 
