@@ -100,6 +100,9 @@ def makeArgParser():
     parser.add_argument("--use-init-macros", action='store_true',
                         help="Use initialization macros provided by webgpu.h instead of writing custom setDefaults methods.")
 
+    parser.add_argument("--use-inline", action='store_true', dest="use_inline",
+                        help="Make all methods inlined (seems to have an effect with clang, but MSVC fails at linking in that case).")
+
     return parser
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
@@ -506,6 +509,7 @@ def produceBinding(args, api, meta):
 
         return sig_cpp, arg_c, arg_cpp, skip_next
 
+    maybe_inline = "inline " if args.use_inline else ""
     class_names = [f"WGPU{c.name}" for c in api.classes]
     classes_and_handles = (
         [ ('CLASS', cls_api) for cls_api in api.classes ] +
@@ -537,7 +541,7 @@ def produceBinding(args, api, meta):
 
         # Auto-generate setDefault
         if entry_type == 'CLASS':
-            decls.append("\tvoid setDefault();\n")
+            decls.append(f"\t{maybe_inline}void setDefault();\n")
 
             cls_api = handle_or_class
             prop_names = [f"{p.name}" for p in cls_api.properties]
@@ -572,7 +576,7 @@ def produceBinding(args, api, meta):
                 else:
                     logging.warning(f"Type {entry_name} starts with a 'chain' field but has no apparent associated SType.")
             implems.append(
-                f"void {entry_name}::setDefault() " + "{\n"
+                f"{maybe_inline}void {entry_name}::setDefault() " + "{\n"
                 + "".join(prop_defaults)
                 + "}\n"
             )
@@ -633,9 +637,9 @@ def produceBinding(args, api, meta):
             wrapped_call = f"{begin_cast}wgpu{entry_name}{proc.name}({argument_names_str}){end_cast}"
             maybe_const = " const" if use_const else ""
             name_and_args = f"{method_name}({', '.join(arguments)}){maybe_const}"
-            decls.append(f"\t{maybe_no_discard}{return_type} {name_and_args};\n")
+            decls.append(f"\t{maybe_inline}{maybe_no_discard}{return_type} {name_and_args};\n")
             implems.append(
-                f"{return_type} {entry_name}::{name_and_args} {{\n"
+                f"{maybe_inline}{return_type} {entry_name}::{name_and_args} {{\n"
                 + body.replace("{wrapped_call}", wrapped_call)
                 + "}\n"
             )
@@ -670,7 +674,7 @@ def produceBinding(args, api, meta):
                             maybe_const = " const" if use_const else ""
 
                             name_and_args = f"{method_name}({', '.join(alt_arguments)}){maybe_const}"
-                            decls.append(f"\t{return_type} {name_and_args};\n")
+                            decls.append(f"\t{maybe_inline}{return_type} {name_and_args};\n")
                             implems.append(
                                 f"{return_type} {entry_name}::{name_and_args} {{\n"
                                 + body.replace("{wrapped_call}", wrapped_call)
@@ -691,9 +695,9 @@ def produceBinding(args, api, meta):
                     maybe_const = " const" if use_const else ""
 
                     name_and_args = f"{method_name}({', '.join(alt_arguments)}){maybe_const}"
-                    decls.append(f"\t{return_type} {name_and_args};\n")
+                    decls.append(f"\t{maybe_inline}{return_type} {name_and_args};\n")
                     implems.append(
-                        f"{return_type} {entry_name}::{name_and_args} {{\n"
+                        f"{maybe_inline}{return_type} {entry_name}::{name_and_args} {{\n"
                         + body.replace("{wrapped_call}", wrapped_call)
                         + "}\n"
                     )
