@@ -107,7 +107,7 @@ public: \
 	} \
 public:
 
-#define STRUCT(Type) \
+#define STRUCT_NO_OSTREAM(Type) \
 struct Type : public WGPU ## Type { \
 public: \
 	typedef Type S; /* S == Self */ \
@@ -116,7 +116,11 @@ public: \
 	Type(const W &other) : W(other) {} \
 	Type(const DefaultFlag &) : W() { setDefault(); } \
 	Type& operator=(const DefaultFlag &) { setDefault(); return *this; } \
-	friend auto operator<<(std::ostream &stream, const S&) -> std::ostream & { \
+public:
+
+#define STRUCT(Type) \
+STRUCT_NO_OSTREAM(Type) \
+	friend auto operator<<(std::ostream &stream, const S& self) -> std::ostream & { \
 		return stream << "<wgpu::" << #Type << ">"; \
 	} \
 public:
@@ -132,7 +136,7 @@ public: \
 	W m_raw; /* Ideally, this would be private, but then types generated with this macro would not be structural. */
 
 #define ENUM_ENTRY(Name, Value) \
-	static constexpr W Name = (W)Value;
+	static constexpr W Name = (W)(Value);
 
 #define END };
 
@@ -1159,8 +1163,13 @@ STRUCT(StencilFaceState)
 	void setDefault();
 END
 
-STRUCT(StringView)
+STRUCT_NO_OSTREAM(StringView)
 	void setDefault();
+	StringView(const std::string_view& cpp) : WGPUStringView{ cpp.data(), cpp.length() } {}
+	operator std::string_view() const;
+	friend auto operator<<(std::ostream& stream, const S& self) -> std::ostream& {
+		return stream << std::string_view(self);
+	}
 END
 
 STRUCT(SupportedFeatures)
@@ -4207,53 +4216,88 @@ void TextureView::release() {
 
 // Extra implementations
 Adapter Instance::requestAdapter(const RequestAdapterOptions& options) {
-	Adapter adapter = nullptr;
-	bool requestEnded = false;
-	
-	auto onAdapterRequestEnded = [&adapter, &requestEnded](RequestAdapterStatus status, Adapter _adapter, StringView message) {
-		if (status == RequestAdapterStatus::Success) {
-			adapter = _adapter;
-		} else {
-			std::cout << "Could not get WebGPU adapter: " << std::string(message.data, message.length) << std::endl;
-		}
-		requestEnded = true;
+	struct Context {
+		Adapter adapter = nullptr;
+		bool requestEnded = false;
 	};
+	Context context;
 
-	auto h = requestAdapter(options, onAdapterRequestEnded);
-	
+	RequestAdapterCallbackInfo callbackInfo;
+	callbackInfo.nextInChain = nullptr;
+	callbackInfo.userdata1 = &context;
+	callbackInfo.callback = [](
+		WGPURequestAdapterStatus status,
+		WGPUAdapter adapter,
+		WGPUStringView message,
+		void* userdata1,
+		[[maybe_unused]] void* userdata2
+	) {
+		Context& context = *reinterpret_cast<Context*>(userdata1);
+		if (status == RequestAdapterStatus::Success) {
+			context.adapter = adapter;
+		}
+		else {
+			std::cout << "Could not get WebGPU adapter: " << StringView(message) << std::endl;
+		}
+		context.requestEnded = true;
+	};
+	callbackInfo.mode = CallbackMode::AllowSpontaneous;
+	requestAdapter(options, callbackInfo);
+
 #if __EMSCRIPTEN__
-	while (!requestEnded) {
-		emscripten_sleep(100);
+	while (!context.requestEnded) {
+		emscripten_sleep(50);
 	}
 #endif
 
-	assert(requestEnded);
-	return adapter;
+	assert(context.requestEnded);
+	return context.adapter;
 }
 
 Device Adapter::requestDevice(const DeviceDescriptor& descriptor) {
-	WGPUDevice device = nullptr;
-	bool requestEnded = false;
-
-	auto onDeviceRequestEnded = [&device, &requestEnded](RequestDeviceStatus status, Device _device, StringView message) {
-		if (status == RequestDeviceStatus::Success) {
-			device = _device;
-		} else {
-			std::cout << "Could not get WebGPU adapter: " << std::string(message.data, message.length) << std::endl;
-		}
-		requestEnded = true;
+	struct Context {
+		Device device = nullptr;
+		bool requestEnded = false;
 	};
+	Context context;
 
-	auto h = requestDevice(descriptor, onDeviceRequestEnded);
+	RequestDeviceCallbackInfo callbackInfo;
+	callbackInfo.nextInChain = nullptr;
+	callbackInfo.userdata1 = &context;
+	callbackInfo.callback = [](
+		WGPURequestDeviceStatus status,
+		WGPUDevice device,
+		WGPUStringView message,
+		void* userdata1,
+		[[maybe_unused]] void* userdata2
+	) {
+		Context& context = *reinterpret_cast<Context*>(userdata1);
+		if (status == RequestDeviceStatus::Success) {
+			context.device = device;
+		}
+		else {
+			std::cout << "Could not get WebGPU device: " << StringView(message) << std::endl;
+		}
+		context.requestEnded = true;
+	};
+	callbackInfo.mode = CallbackMode::AllowSpontaneous;
+	requestDevice(descriptor, callbackInfo);
 
 #if __EMSCRIPTEN__
-	while (!requestEnded) {
-		emscripten_sleep(100);
+	while (!context.requestEnded) {
+		emscripten_sleep(50);
 	}
 #endif
 
-	assert(requestEnded);
-	return device;
+	assert(context.requestEnded);
+	return context.device;
+}
+
+StringView::operator std::string_view() const {
+	return
+		length == WGPU_STRLEN
+		? std::string_view(data)
+		: std::string_view(data, length);
 }
 
 #endif // WEBGPU_CPP_IMPLEMENTATION

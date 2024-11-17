@@ -30,6 +30,7 @@
 import re
 from dataclasses import dataclass, field
 from collections import defaultdict
+import os
 from os.path import dirname, isfile, join
 from typing import Dict, List
 import logging
@@ -415,6 +416,7 @@ def parseProcArgs(line):
 def produceBinding(args, api, meta):
     """Produce binding compatible with PpluX' wgpu.hpp"""
     binding = {
+        "webgpu_includes": [],
         "descriptors": [],
         "structs": [],
         "class_impl": [],
@@ -426,6 +428,10 @@ def produceBinding(args, api, meta):
         "procedures": [],
         "type_aliases": []
     }
+
+    for url in args.header_url:
+        filename = os.path.split(url)[1]
+        binding["webgpu_includes"].append(f"#include <webgpu/{filename}>")
 
     # Cached variables for format_arg
     handle_names = [ h.name for h in api.handles ]

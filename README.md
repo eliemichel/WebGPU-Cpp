@@ -317,10 +317,10 @@ The examples provided in this repository were generated as follows:
 
 ```
 # wgpu-native
-python generate.py -u wgpu-native/webgpu.h -u wgpu-native/wgpu.h -t wgpu-native/webgpu.template.hpp -o wgpu-native/webgpu.hpp -d defaults.txt -d extra-defaults.txt
+python generate.py -u wgpu-native/webgpu.h -u wgpu-native/wgpu.h -t webgpu.template.hpp -o wgpu-native/webgpu.hpp -d defaults.txt -d extra-defaults.txt
 
 # Dawn
-python generate.py -u dawn/webgpu.h -t dawn/webgpu.template.hpp -o dawn/webgpu.hpp -d defaults.txt -d extra-defaults.txt
+python generate.py -u dawn/webgpu.h -t webgpu.template.hpp -o dawn/webgpu.hpp -d defaults.txt -d extra-defaults.txt
 
 # emscripten
 python generate.py -u emscripten/webgpu.h -t emscripten/webgpu.template.hpp -o emscripten/webgpu.hpp -d defaults.txt -d extra-defaults.txt
