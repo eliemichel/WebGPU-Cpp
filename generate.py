@@ -47,8 +47,6 @@ def makeArgParser():
     This generates a webgpu.hpp file that you can include in your project.
     Exactly one of your source files must #define WEBGPU_CPP_IMPLEMENTATION
     before including this header.
-
-    TODO: Add some const qualifiers?
     """)
 
     parser.add_argument("-t", "--template", type=str,
@@ -84,6 +82,9 @@ def makeArgParser():
 
     parser.add_argument("--use-non-member-procedures", action='store_true',
                         help="Include WebGPU methods that are not members of any WebGPU object")
+
+    parser.add_argument("--no-const", action='store_false', dest="use_const",
+                        help="By default, all methods of opaque handle types are const. This option makes them all non-const.")
 
     return parser
 
@@ -144,6 +145,7 @@ def isfileVfs(filename):
 
 # -----------------------------------------------------------------------------
 # Parser, for analyzing webgpu.h
+# The output of parsing is a WebGpuApi object
 
 @dataclass
 class PropertyApi:
@@ -493,12 +495,14 @@ def produceBinding(args, api, meta):
             namespace = "descriptors" if handle_or_class.is_descriptor else "structs"
             namespace_impl = "class_impl"
             argument_self = "*this"
+            use_const = False
         elif entry_type == 'HANDLE':
             binding["handles_decl"].append(f"class {entry_name};")
             macro = "HANDLE"
             namespace = "handles"
             namespace_impl = "handles_impl"
             argument_self = "m_raw"
+            use_const = args.use_const
         
         decls = []
         implems = []
@@ -588,9 +592,10 @@ def produceBinding(args, api, meta):
                     begin_cast = f"static_cast<{return_type}>("
                     end_cast = ")"
             
-            name_and_args = f"{method_name}({', '.join(arguments)})"
-            decls.append(f"\t{maybe_no_discard}{return_type} {name_and_args};\n")
             wrapped_call = f"{begin_cast}wgpu{entry_name}{proc.name}({argument_names_str}){end_cast}"
+            maybe_const = " const" if use_const else ""
+            name_and_args = f"{method_name}({', '.join(arguments)}){maybe_const}"
+            decls.append(f"\t{maybe_no_discard}{return_type} {name_and_args};\n")
             implems.append(
                 f"{return_type} {entry_name}::{name_and_args} {{\n"
                 + body.replace("{wrapped_call}", wrapped_call)
@@ -624,7 +629,9 @@ def produceBinding(args, api, meta):
 
                             wrapped_call = f"wgpu{entry_name}{proc.name}({alt_argument_names_str})"
 
-                            name_and_args = f"{method_name}({', '.join(alt_arguments)})"
+                            maybe_const = " const" if use_const else ""
+
+                            name_and_args = f"{method_name}({', '.join(alt_arguments)}){maybe_const}"
                             decls.append(f"\t{return_type} {name_and_args};\n")
                             implems.append(
                                 f"{return_type} {entry_name}::{name_and_args} {{\n"
@@ -643,7 +650,9 @@ def produceBinding(args, api, meta):
 
                     wrapped_call = f"{begin_cast}wgpu{entry_name}{proc.name}({alt_argument_names_str}){end_cast}"
 
-                    name_and_args = f"{method_name}({', '.join(alt_arguments)})"
+                    maybe_const = " const" if use_const else ""
+
+                    name_and_args = f"{method_name}({', '.join(alt_arguments)}){maybe_const}"
                     decls.append(f"\t{return_type} {name_and_args};\n")
                     implems.append(
                         f"{return_type} {entry_name}::{name_and_args} {{\n"
