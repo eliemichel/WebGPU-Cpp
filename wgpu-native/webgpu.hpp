@@ -35,7 +35,6 @@
 #pragma once
 
 #include <webgpu/webgpu.h>
-#include <webgpu/wgpu.h>
 
 #include <iostream>
 #include <vector>
@@ -133,7 +132,7 @@ public: \
 	W m_raw; /* Ideally, this would be private, but then types generated with this macro would not be structural. */
 
 #define ENUM_ENTRY(Name, Value) \
-	static constexpr W Name = (W)(Value);
+	static constexpr W Name = (W)Value;
 
 #define END };
 
@@ -3036,11 +3035,11 @@ Adapter Instance::requestAdapter(const RequestAdapterOptions& options) {
 	Adapter adapter = nullptr;
 	bool requestEnded = false;
 	
-	auto onAdapterRequestEnded = [&adapter, &requestEnded](RequestAdapterStatus status, Adapter _adapter, char const * message) {
+	auto onAdapterRequestEnded = [&adapter, &requestEnded](RequestAdapterStatus status, Adapter _adapter, StringView message) {
 		if (status == RequestAdapterStatus::Success) {
 			adapter = _adapter;
 		} else {
-			std::cout << "Could not get WebGPU adapter: " << message << std::endl;
+			std::cout << "Could not get WebGPU adapter: " << std::string(message.data, message.length) << std::endl;
 		}
 		requestEnded = true;
 	};
@@ -3061,11 +3060,11 @@ Device Adapter::requestDevice(const DeviceDescriptor& descriptor) {
 	WGPUDevice device = nullptr;
 	bool requestEnded = false;
 
-	auto onDeviceRequestEnded = [&device, &requestEnded](RequestDeviceStatus status, Device _device, char const * message) {
+	auto onDeviceRequestEnded = [&device, &requestEnded](RequestDeviceStatus status, Device _device, StringView message) {
 		if (status == RequestDeviceStatus::Success) {
 			device = _device;
 		} else {
-			std::cout << "Could not get WebGPU adapter: " << message << std::endl;
+			std::cout << "Could not get WebGPU adapter: " << std::string(message.data, message.length) << std::endl;
 		}
 		requestEnded = true;
 	};
