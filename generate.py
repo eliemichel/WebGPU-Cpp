@@ -31,6 +31,7 @@ import re
 from dataclasses import dataclass, field
 from collections import defaultdict
 from os.path import dirname, isfile, join
+from typing import Dict, List
 import logging
 
 DEFAULT_HEADER_URL = "https://raw.githubusercontent.com/webgpu-native/webgpu-headers/main/webgpu.h"
@@ -650,7 +651,8 @@ def produceBinding(args, api, meta):
                         + "}\n"
                     )
 
-        injected_decls = meta["injected-decls"].get(entry_name, [])
+        injected_decls = meta["injected-decls"].members.get(entry_name, [])
+        macro = meta["injected-decls"].macro_override.get(entry_name, macro)
 
         binding[namespace].append(
             f"{macro}({entry_name})\n"
@@ -851,24 +853,37 @@ def loadTemplate(path):
         "blacklist": blacklist,
     }
 
+@dataclass
+class InjectedData():
+    # Extra members to insert, for each type
+    members: Dict[str,List[str]]
+
+    # Replacement for the HANDLE/STRUCT/etc macro used for this definition
+    # (used to replace STRUCT by STRUCT_NO_OSTREAM)
+    macro_override: Dict[str,str]
+
 def parseTemplateInjection(text):
     it = iter(text.split("\n"))
     
-    injected_data = defaultdict(list)
+    injected_data = InjectedData(
+        members = defaultdict(list),
+        macro_override = {},
+    )
 
-    begin_re = re.compile(r"^(HANDLE|DESCRIPTOR|STRUCT)\((\w+)\)")
+    begin_re = re.compile(r"^(HANDLE|DESCRIPTOR|STRUCT|STRUCT_NO_OSTREAM)\((\w+)\)")
     end_re = re.compile(r"^END")
     current_category = None
 
     while (line := next(it, None)) is not None:
         if (match := begin_re.search(line)):
             current_category = match.group(2)
+            injected_data.macro_override[current_category] = match.group(1)
 
         elif (match := end_re.search(line)):
             current_category = None
 
         elif current_category is not None:
-            injected_data[current_category].append(line + "\n")
+            injected_data.members[current_category].append(line + "\n")
 
     return injected_data
 
