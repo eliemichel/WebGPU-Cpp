@@ -40,6 +40,7 @@
 #include <vector>
 #include <functional>
 #include <cassert>
+#include <cmath>
 #include <memory>
 
 #if __EMSCRIPTEN__
