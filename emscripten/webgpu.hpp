@@ -107,7 +107,7 @@ public: \
 	} \
 public:
 
-#define STRUCT(Type) \
+#define STRUCT_NO_OSTREAM(Type) \
 struct Type : public WGPU ## Type { \
 public: \
 	typedef Type S; /* S == Self */ \
@@ -116,6 +116,10 @@ public: \
 	Type(const W &other) : W(other) {} \
 	Type(const DefaultFlag &) : W() { setDefault(); } \
 	Type& operator=(const DefaultFlag &) { setDefault(); return *this; } \
+public:
+
+#define STRUCT(Type) \
+STRUCT_NO_OSTREAM(Type) \
 	friend auto operator<<(std::ostream &stream, const S&) -> std::ostream & { \
 		return stream << "<wgpu::" << #Type << ">"; \
 	} \
@@ -132,7 +136,7 @@ public: \
 	W m_raw; /* Ideally, this would be private, but then types generated with this macro would not be structural. */
 
 #define ENUM_ENTRY(Name, Value) \
-	static constexpr W Name = (W)Value;
+	static constexpr W Name = (W)(Value);
 
 #define END };
 
@@ -1497,6 +1501,7 @@ void PrimitiveDepthClipControl::setDefault() {
 	unclippedDepth = false;
 	((ChainedStruct*)&chain)->setDefault();
 	chain.sType = SType::PrimitiveDepthClipControl;
+	chain.next = nullptr;
 }
 
 
@@ -1554,6 +1559,7 @@ void RenderPassDepthStencilAttachment::setDefault() {
 void RenderPassDescriptorMaxDrawCount::setDefault() {
 	((ChainedStruct*)&chain)->setDefault();
 	chain.sType = SType::RenderPassDescriptorMaxDrawCount;
+	chain.next = nullptr;
 }
 
 
@@ -1599,6 +1605,7 @@ void SamplerDescriptor::setDefault() {
 void ShaderModuleSPIRVDescriptor::setDefault() {
 	((ChainedStruct*)&chain)->setDefault();
 	chain.sType = SType::ShaderModuleSPIRVDescriptor;
+	chain.next = nullptr;
 }
 
 
@@ -1606,6 +1613,7 @@ void ShaderModuleSPIRVDescriptor::setDefault() {
 void ShaderModuleWGSLDescriptor::setDefault() {
 	((ChainedStruct*)&chain)->setDefault();
 	chain.sType = SType::ShaderModuleWGSLDescriptor;
+	chain.next = nullptr;
 }
 
 
@@ -1654,6 +1662,7 @@ void SurfaceDescriptor::setDefault() {
 void SurfaceDescriptorFromCanvasHTMLSelector::setDefault() {
 	((ChainedStruct*)&chain)->setDefault();
 	chain.sType = SType::SurfaceDescriptorFromCanvasHTMLSelector;
+	chain.next = nullptr;
 }
 
 
@@ -1681,6 +1690,7 @@ void TextureBindingViewDimensionDescriptor::setDefault() {
 	textureBindingViewDimension = TextureViewDimension::Undefined;
 	((ChainedStruct*)&chain)->setDefault();
 	chain.sType = SType::TextureBindingViewDimensionDescriptor;
+	chain.next = nullptr;
 }
 
 
@@ -2608,53 +2618,65 @@ void TextureView::release() const {
 
 // Extra implementations
 Adapter Instance::requestAdapter(const RequestAdapterOptions& options) {
-	Adapter adapter = nullptr;
-	bool requestEnded = false;
-	
-	auto onAdapterRequestEnded = [&adapter, &requestEnded](RequestAdapterStatus status, Adapter _adapter, char const * message) {
+	struct Context {
+		Adapter adapter = nullptr;
+		bool requestEnded = false;
+	};
+	Context context;
+
+	auto h = requestAdapter(options, [&context](
+		RequestAdapterStatus status,
+		Adapter adapter,
+		const char* message
+	) {
 		if (status == RequestAdapterStatus::Success) {
-			adapter = _adapter;
-		} else {
+			context.adapter = adapter;
+		}
+		else {
 			std::cout << "Could not get WebGPU adapter: " << message << std::endl;
 		}
-		requestEnded = true;
-	};
+		context.requestEnded = true;
+	});
 
-	auto h = requestAdapter(options, onAdapterRequestEnded);
-	
 #if __EMSCRIPTEN__
-	while (!requestEnded) {
-		emscripten_sleep(100);
+	while (!context.requestEnded) {
+		emscripten_sleep(50);
 	}
 #endif
 
-	assert(requestEnded);
-	return adapter;
+	assert(context.requestEnded);
+	return context.adapter;
 }
 
 Device Adapter::requestDevice(const DeviceDescriptor& descriptor) {
-	WGPUDevice device = nullptr;
-	bool requestEnded = false;
-
-	auto onDeviceRequestEnded = [&device, &requestEnded](RequestDeviceStatus status, Device _device, char const * message) {
-		if (status == RequestDeviceStatus::Success) {
-			device = _device;
-		} else {
-			std::cout << "Could not get WebGPU adapter: " << message << std::endl;
-		}
-		requestEnded = true;
+	struct Context {
+		Device device = nullptr;
+		bool requestEnded = false;
 	};
+	Context context;
 
-	auto h = requestDevice(descriptor, onDeviceRequestEnded);
+	auto h = requestDevice(descriptor, [&context](
+		RequestDeviceStatus status,
+		Device device,
+		const char* message
+	) {
+		if (status == RequestDeviceStatus::Success) {
+			context.device = device;
+		}
+		else {
+			std::cout << "Could not get WebGPU device: " << message << std::endl;
+		}
+		context.requestEnded = true;
+	});
 
 #if __EMSCRIPTEN__
-	while (!requestEnded) {
-		emscripten_sleep(100);
+	while (!context.requestEnded) {
+		emscripten_sleep(50);
 	}
 #endif
 
-	assert(requestEnded);
-	return device;
+	assert(context.requestEnded);
+	return context.device;
 }
 
 #endif // WEBGPU_CPP_IMPLEMENTATION
