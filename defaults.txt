@@ -37,7 +37,7 @@ WGPUBindGroupEntry::offset = 0;
 WGPUPrimitiveState::topology = "triangle-list";
 WGPUPrimitiveState::frontFace = "ccw";
 WGPUPrimitiveState::cullMode = "none";
-WGPUPrimitiveDepthClipControl::unclippedDepth = false;
+WGPUPrimitiveState::unclippedDepth = false;
 
 WGPUMultisampleState::count = 1;
 WGPUMultisampleState::mask = 0xFFFFFFFF;
@@ -60,10 +60,10 @@ WGPUStencilFaceState::passOp = "keep";
 
 WGPUVertexBufferLayout::stepMode = "vertex";
 
-WGPUImageCopyTexture::mipLevel = 0;
-WGPUImageCopyTexture::aspect = "all";
+WGPUTexelCopyTextureInfo::mipLevel = 0;
+WGPUTexelCopyTextureInfo::aspect = "all";
 
-WGPURenderPassDescriptor::maxDrawCount = 50000000;
+WGPURenderPassMaxDrawCount::maxDrawCount = 50000000;
 
 WGPURenderPassDepthStencilAttachment::depthReadOnly = false;
 WGPURenderPassDepthStencilAttachment::stencilClearValue = 0;

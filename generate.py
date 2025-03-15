@@ -449,11 +449,39 @@ def produceBinding(args, api, meta):
         "procedures": [],
         "type_aliases": [],
         "ext_suffix": args.ext_suffix,
+        "init_macro_fixes": [],
     }
 
     for url in args.header_url:
         filename = os.path.split(url)[1]
         binding["webgpu_includes"].append(f"#include <webgpu/{filename}>")
+
+
+    if args.use_init_macros:
+        binding["init_macro_fixes"].append(r"""
+// Fix erroneous initializers from Dawn
+
+#undef WGPU_DAWN_TOGGLES_DESCRIPTOR_INIT
+#define WGPU_DAWN_TOGGLES_DESCRIPTOR_INIT _wgpu_MAKE_INIT_STRUCT(WGPUDawnTogglesDescriptor, { \
+    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
+        /*.next=*/NULL _wgpu_COMMA \
+        /*.sType=*/WGPUSType_DawnTogglesDescriptor _wgpu_COMMA \
+    }) _wgpu_COMMA \
+    /*.enabledToggleCount=*/0 _wgpu_COMMA \
+    /*.enabledToggles=*/NULL _wgpu_COMMA \
+    /*.disabledToggleCount=*/0 _wgpu_COMMA \
+    /*.disabledToggles=*/NULL _wgpu_COMMA \
+})
+#undef WGPU_DAWN_WGSL_BLOCKLIST_INIT
+#define WGPU_DAWN_WGSL_BLOCKLIST_INIT _wgpu_MAKE_INIT_STRUCT(WGPUDawnWGSLBlocklist, { \
+    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
+        /*.next=*/NULL _wgpu_COMMA \
+        /*.sType=*/WGPUSType_DawnWGSLBlocklist _wgpu_COMMA \
+    }) _wgpu_COMMA \
+    /*.blocklistedFeatureCount=*/0 _wgpu_COMMA \
+    /*.blocklistedFeatures=*/NULL _wgpu_COMMA \
+})
+        """.strip())
 
     # Cached variables for format_arg
     handle_names = [ h.name for h in api.handles ]

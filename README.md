@@ -320,7 +320,7 @@ The examples provided in this repository were generated as follows:
 python generate.py -u wgpu-native/webgpu.h -u wgpu-native/wgpu.h -t webgpu.template.hpp -o wgpu-native/webgpu.hpp -d defaults.txt -d extra-defaults.txt
 
 # Dawn
-python generate.py -u dawn/webgpu.h -t webgpu.template.hpp -o dawn/webgpu.hpp -d defaults.txt -d extra-defaults.txt --use-init-macro --ext-suffix 2
+python generate.py -u dawn/webgpu.h -t webgpu.template.hpp -o dawn/webgpu.hpp -d defaults.txt -d extra-defaults.txt --use-init-macro
 
 # emscripten
 python generate.py -u emscripten/webgpu.h -t emscripten/webgpu.template.hpp -o emscripten/webgpu.hpp -d defaults.txt -d extra-defaults.txt

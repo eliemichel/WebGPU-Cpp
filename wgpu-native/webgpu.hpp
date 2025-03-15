@@ -1799,6 +1799,7 @@ void PrimitiveState::setDefault() {
 	stripIndexFormat = IndexFormat::Undefined;
 	frontFace = FrontFace::CCW;
 	cullMode = CullMode::None;
+	unclippedDepth = false;
 }
 
 
@@ -1844,6 +1845,7 @@ void RenderPassDepthStencilAttachment::setDefault() {
 
 // Methods of RenderPassMaxDrawCount
 void RenderPassMaxDrawCount::setDefault() {
+	maxDrawCount = 50000000;
 	((ChainedStruct*)&chain)->setDefault();
 	chain.sType = SType::RenderPassMaxDrawCount;
 	chain.next = nullptr;
@@ -2138,7 +2140,8 @@ void TexelCopyBufferInfo::setDefault() {
 
 // Methods of TexelCopyTextureInfo
 void TexelCopyTextureInfo::setDefault() {
-	aspect = TextureAspect::Undefined;
+	mipLevel = 0;
+	aspect = TextureAspect::All;
 	((Origin3D*)&origin)->setDefault();
 }
 
