@@ -66,6 +66,8 @@
 #  endif
 #endif
 
+
+
 /**
  * A namespace providing a more C++ idiomatic API to WebGPU.
  */
@@ -1466,6 +1468,7 @@ HANDLE(RenderBundleEncoder)
 	void setVertexBuffer(uint32_t slot, Buffer buffer, uint64_t offset, uint64_t size) const;
 	void addRef() const;
 	void release() const;
+	void setPushConstants(ShaderStage stages, uint32_t offset, uint32_t sizeBytes, void const * data) const;
 END
 
 HANDLE(RenderPassEncoder)
@@ -2823,6 +2826,9 @@ void RenderBundleEncoder::addRef() const {
 }
 void RenderBundleEncoder::release() const {
 	return wgpuRenderBundleEncoderRelease(m_raw);
+}
+void RenderBundleEncoder::setPushConstants(ShaderStage stages, uint32_t offset, uint32_t sizeBytes, void const * data) const {
+	return wgpuRenderBundleEncoderSetPushConstants(m_raw, static_cast<WGPUShaderStage>(stages), offset, sizeBytes, data);
 }
 
 
