@@ -159,6 +159,24 @@ STRUCT(Origin3D)
 END
 {{end-inject}}
 
+// Temporarily define this until emscripten adopts WGPUStringView
+struct StringView {
+public:
+	typedef StringView S;
+	typedef const char* W;
+	StringView() : m_raw(nullptr) {}
+	StringView(const W &other) : m_raw(other) {}
+	StringView(const DefaultFlag &) : m_raw(nullptr) {}
+	StringView(const std::string_view& cpp) : m_raw(cpp.data()) {}
+	StringView& operator=(const DefaultFlag &) { m_raw = nullptr; return *this; }
+	operator std::string_view() const;
+	friend auto operator<<(std::ostream& stream, const S& self) -> std::ostream& {
+		return stream << std::string_view(self);
+	}
+private:
+	W m_raw;
+};
+
 {{begin-blacklist}}
 wgpuDeviceGetLostFuture
 {{end-blacklist}}
@@ -264,6 +282,10 @@ Device Adapter::requestDevice(const DeviceDescriptor& descriptor) {
 
 	assert(context.requestEnded);
 	return context.device;
+}
+
+StringView::operator std::string_view() const {
+	return std::string_view(m_raw);
 }
 
 #endif // WEBGPU_CPP_IMPLEMENTATION
