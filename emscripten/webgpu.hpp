@@ -1499,7 +1499,6 @@ void PipelineLayoutDescriptor::setDefault() {
 
 // Methods of PrimitiveDepthClipControl
 void PrimitiveDepthClipControl::setDefault() {
-	unclippedDepth = false;
 	((ChainedStruct*)&chain)->setDefault();
 	chain.sType = SType::PrimitiveDepthClipControl;
 	chain.next = nullptr;
@@ -1779,8 +1778,7 @@ void ImageCopyBuffer::setDefault() {
 
 // Methods of ImageCopyTexture
 void ImageCopyTexture::setDefault() {
-	mipLevel = 0;
-	aspect = TextureAspect::All;
+	aspect = TextureAspect::Undefined;
 	((Origin3D*)&origin)->setDefault();
 }
 
