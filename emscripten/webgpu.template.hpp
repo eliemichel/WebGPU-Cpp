@@ -170,6 +170,7 @@ public:
 	StringView(const std::string_view& cpp) : m_raw(cpp.data()) {}
 	StringView& operator=(const DefaultFlag &) { m_raw = nullptr; return *this; }
 	operator std::string_view() const;
+	operator W() const { return m_raw; }
 	friend auto operator<<(std::ostream& stream, const S& self) -> std::ostream& {
 		return stream << std::string_view(self);
 	}
