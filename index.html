@@ -95,12 +95,25 @@
 						<input type="checkbox" id="use_const" name="use_const" checked />
 						use_const
 					</label>
+
+					<label class="pure-checkbox" for="use_init_macros">
+						<input type="checkbox" id="use_init_macros" name="use_init_macros" />
+						use_init_macros
+					</label>
+
+					<label class="pure-checkbox" for="use_inline">
+						<input type="checkbox" id="use_inline" name="use_inline" />
+						use_inline
+					</label>
 				</fieldset>
 			</div>
 
 			<div>
 				<button type="submit" id="submit" class="pure-button pure-button-primary">
 					Generate webgpu.hpp
+				</button>
+				<button type="submit" id="submit-raii" class="pure-button pure-button-primary">
+					Generate webgpu-raii.hpp
 				</button>
 				<span id="spinner">(loading...)</span>
 			</div>
@@ -130,10 +143,13 @@ const $dom = new Promise(resolve => {
 		resolve({
 			form: document.getElementById("form"),
 			submit: document.getElementById("submit"),
+			submitRaii: document.getElementById("submit-raii"),
 			spinner: document.getElementById("spinner"),
 			errorBox: document.getElementById("error-box"),
 			errorName: document.getElementById("error-name"),
 			error: document.getElementById("error"),
+			template: document.getElementById("template"),
+			useInitMacros: document.getElementById("use_init_macros"),
 		});
 	});
 });
@@ -142,15 +158,26 @@ $dom.then(dom => {
 	dom.spinner.style.display = "none";
 	dom.errorBox.style.display = "none";
 
+	function updateDefault() {
+		dom.useInitMacros.checked = dom.template.value === 'dawn';
+	}
+	updateDefault();
+	dom.template.addEventListener("change", updateDefault);
+
 	dom.form.addEventListener("submit", async event => {
 		event.preventDefault();
 		dom.spinner.style.display = "inline";
 		dom.submit.disabled = true;
+		dom.submitRaii.disabled = true;
 		dom.error.innerText = "";
 		dom.errorBox.style.display = "none";
 
+		const isRaii = event.submitter === dom.submitRaii;
+
 		// Build arguments
-		const args = {};
+		const args = {
+			process: isRaii ? 'webgpu-raii-hpp' : 'webgpu-hpp',
+		};
 		for (const el of event.target.elements) {
 			if (!el.name) continue;
 
@@ -190,7 +217,7 @@ $dom.then(dom => {
 				// Provide file to user
 				const element = document.createElement('a');
 				element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(json.output));
-				element.setAttribute('download', "webgpu.hpp");
+				element.setAttribute('download', isRaii ? "webgpu-raii.hpp" : "webgpu.hpp");
 				element.style.display = 'none';
 				document.body.appendChild(element);
 				element.click();
@@ -205,6 +232,7 @@ $dom.then(dom => {
 
 		dom.spinner.style.display = "none";
 		dom.submit.disabled = false;
+		dom.submitRaii.disabled = false;
 	});
 });
 
