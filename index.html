@@ -186,7 +186,10 @@ $dom.then(dom => {
 			} else if (el.type == 'file') {
 				args[el.name] = await Promise.all(Array.from(el.files).map(file => new Promise(resolve => {
 					const reader = new FileReader();
-					reader.onload = event => resolve(event.target.result);
+					reader.onload = event => resolve({
+						filename: file.name,
+						contents: event.target.result
+					});
 					reader.readAsText(file);
 				})));
 			} else {
