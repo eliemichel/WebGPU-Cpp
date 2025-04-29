@@ -14,6 +14,14 @@
 WebGPU-C++
 ==========
 
+> [!WARNING]  
+> This is an **experimental branch** dedicated to a test where we generate source files for [RenderDoc](https://renderdoc.org/) in order to implement a WebGPU replay driver.
+
+```
+# renderdoc
+python generate_renderdoc.py -u renderdoc/webgpu.h -d defaults.txt -d extra-defaults.txt
+```
+
 **Just what you need** to make the raw C API of WebGPU feel **a bit more confy** when programming in C++, but **zero runtime overhead**, this is mostly syntactic sugar! 🧁
 
 Table of Contents
