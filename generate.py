@@ -354,7 +354,7 @@ def parseHeader(api, header):
     return api
 
 def parseEnum(name, it, stypes):
-    entry_re = re.compile(r"^\s+WGPU(\w+)_(\w+) = ([^,]+),?")
+    entry_re = re.compile(r"^\s+WGPU([^_]+)_([\w_]+) = ([^,]+),?")
     end_re = re.compile(".*}")
 
     api = EnumerationApi(name=name)
