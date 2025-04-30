@@ -216,6 +216,7 @@ class EnumerationEntryApi:
 class EnumerationApi:
     name: str
     entries: list[EnumerationEntryApi] = field(default_factory=list)
+    is_flags: bool = False
 
 @dataclass
 class CallbackApi:
@@ -302,6 +303,7 @@ def parseHeader(api, header):
         if (match := new_flag_enum_re.search(x)):
             api.enumerations.append(EnumerationApi(
                 name=match.group(1),
+                is_flags=True,
             ))
             continue
 
@@ -322,7 +324,8 @@ def parseHeader(api, header):
             if not found:
                 api.enumerations.append(EnumerationApi(
                     name=enum_name,
-                    entries=[ entry ]
+                    entries=[ entry ],
+                    is_flags=True,
                 ))
             continue
 
@@ -365,7 +368,7 @@ def parseEnum(name, it, stypes):
     entry_re = re.compile(r"^\s+WGPU([^_]+)_([\w_]+) = ([^,]+),?")
     end_re = re.compile(".*}")
 
-    api = EnumerationApi(name=name)
+    api = EnumerationApi(name=name, is_flags=False)
 
     while (x := next(it, None)) is not None:
         if (match := entry_re.search(x)):
@@ -445,11 +448,18 @@ def produceBinding(args, api):
     binding = {
         "webgpu_serialiser.h": {
             "descriptors": [],
+            "enumerations": [],
         },
         "webgpu_serialiser.cpp": {
             "descriptors": [],
+            "enumerations": [],
         },
     }
+
+    full_handle_names = [ f"WGPU{h.name}" for h in api.handles ]
+
+    def removeNullable(typename):
+        return typename.replace("WGPU_NULLABLE", "").strip()
 
     # Header
 
@@ -457,6 +467,13 @@ def produceBinding(args, api):
     for class_api in api.classes:
         section.append(f"DECLARE_REFLECTION_STRUCT(WGPU{class_api.name});")
     binding["webgpu_serialiser.h"]["descriptors"] = "\n".join(section)
+
+    section = []
+    for enum_api in api.enumerations:
+        if enum_api.is_flags:
+            continue
+        section.append(f"DECLARE_STRINGISE_TYPE(WGPU{enum_api.name});")
+    binding["webgpu_serialiser.h"]["enumerations"] = "\n".join(section)
 
     # Implem
 
@@ -469,8 +486,14 @@ def produceBinding(args, api):
         ])
         
         for prop in class_api.properties:
-            if "*" not in prop.type:
-                section.append(f"  SERIALISE_MEMBER({prop.name});")
+            if (
+                "*" in prop.type or
+                "Callback" in prop.type or
+                "DataFunction" in prop.type or
+                removeNullable(prop.type) in full_handle_names
+            ):
+                continue
+            section.append(f"  SERIALISE_MEMBER({prop.name});")
 
         section.extend([
             f"}}",
@@ -480,7 +503,10 @@ def produceBinding(args, api):
         ])
     binding["webgpu_serialiser.cpp"]["descriptors"] = "\n".join(section)
 
+    section = []
     for enum_api in api.enumerations:
+        if enum_api.is_flags:
+            continue
         section.extend([
             f"template <>",
             f"rdcstr DoStringise(const WGPU{enum_api.name} &el)",

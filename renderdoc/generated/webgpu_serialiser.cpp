@@ -12,8 +12,6 @@ INSTANTIATE_SERIALISE_TYPE(WGPUChainedStruct);
 template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPUBufferMapCallbackInfo &el)
 {
-  SERIALISE_MEMBER(mode);
-  SERIALISE_MEMBER(callback);
 }
 
 INSTANTIATE_SERIALISE_TYPE(WGPUBufferMapCallbackInfo);
@@ -21,8 +19,6 @@ INSTANTIATE_SERIALISE_TYPE(WGPUBufferMapCallbackInfo);
 template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPUCompilationInfoCallbackInfo &el)
 {
-  SERIALISE_MEMBER(mode);
-  SERIALISE_MEMBER(callback);
 }
 
 INSTANTIATE_SERIALISE_TYPE(WGPUCompilationInfoCallbackInfo);
@@ -30,8 +26,6 @@ INSTANTIATE_SERIALISE_TYPE(WGPUCompilationInfoCallbackInfo);
 template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPUCreateComputePipelineAsyncCallbackInfo &el)
 {
-  SERIALISE_MEMBER(mode);
-  SERIALISE_MEMBER(callback);
 }
 
 INSTANTIATE_SERIALISE_TYPE(WGPUCreateComputePipelineAsyncCallbackInfo);
@@ -39,8 +33,6 @@ INSTANTIATE_SERIALISE_TYPE(WGPUCreateComputePipelineAsyncCallbackInfo);
 template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPUCreateRenderPipelineAsyncCallbackInfo &el)
 {
-  SERIALISE_MEMBER(mode);
-  SERIALISE_MEMBER(callback);
 }
 
 INSTANTIATE_SERIALISE_TYPE(WGPUCreateRenderPipelineAsyncCallbackInfo);
@@ -48,8 +40,6 @@ INSTANTIATE_SERIALISE_TYPE(WGPUCreateRenderPipelineAsyncCallbackInfo);
 template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPUDeviceLostCallbackInfo &el)
 {
-  SERIALISE_MEMBER(mode);
-  SERIALISE_MEMBER(callback);
 }
 
 INSTANTIATE_SERIALISE_TYPE(WGPUDeviceLostCallbackInfo);
@@ -57,7 +47,6 @@ INSTANTIATE_SERIALISE_TYPE(WGPUDeviceLostCallbackInfo);
 template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPULoggingCallbackInfo &el)
 {
-  SERIALISE_MEMBER(callback);
 }
 
 INSTANTIATE_SERIALISE_TYPE(WGPULoggingCallbackInfo);
@@ -65,8 +54,6 @@ INSTANTIATE_SERIALISE_TYPE(WGPULoggingCallbackInfo);
 template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPUPopErrorScopeCallbackInfo &el)
 {
-  SERIALISE_MEMBER(mode);
-  SERIALISE_MEMBER(callback);
 }
 
 INSTANTIATE_SERIALISE_TYPE(WGPUPopErrorScopeCallbackInfo);
@@ -74,8 +61,6 @@ INSTANTIATE_SERIALISE_TYPE(WGPUPopErrorScopeCallbackInfo);
 template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPUQueueWorkDoneCallbackInfo &el)
 {
-  SERIALISE_MEMBER(mode);
-  SERIALISE_MEMBER(callback);
 }
 
 INSTANTIATE_SERIALISE_TYPE(WGPUQueueWorkDoneCallbackInfo);
@@ -83,8 +68,6 @@ INSTANTIATE_SERIALISE_TYPE(WGPUQueueWorkDoneCallbackInfo);
 template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPURequestAdapterCallbackInfo &el)
 {
-  SERIALISE_MEMBER(mode);
-  SERIALISE_MEMBER(callback);
 }
 
 INSTANTIATE_SERIALISE_TYPE(WGPURequestAdapterCallbackInfo);
@@ -92,8 +75,6 @@ INSTANTIATE_SERIALISE_TYPE(WGPURequestAdapterCallbackInfo);
 template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPURequestDeviceCallbackInfo &el)
 {
-  SERIALISE_MEMBER(mode);
-  SERIALISE_MEMBER(callback);
 }
 
 INSTANTIATE_SERIALISE_TYPE(WGPURequestDeviceCallbackInfo);
@@ -101,7 +82,6 @@ INSTANTIATE_SERIALISE_TYPE(WGPURequestDeviceCallbackInfo);
 template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPUUncapturedErrorCallbackInfo &el)
 {
-  SERIALISE_MEMBER(callback);
 }
 
 INSTANTIATE_SERIALISE_TYPE(WGPUUncapturedErrorCallbackInfo);
@@ -166,7 +146,6 @@ template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPUBufferHostMappedPointer &el)
 {
   SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(disposeCallback);
 }
 
 INSTANTIATE_SERIALISE_TYPE(WGPUBufferHostMappedPointer);
@@ -364,7 +343,6 @@ template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPUExternalTextureBindingEntry &el)
 {
   SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(externalTexture);
 }
 
 INSTANTIATE_SERIALISE_TYPE(WGPUExternalTextureBindingEntry);
@@ -435,7 +413,6 @@ INSTANTIATE_SERIALISE_TYPE(WGPUOrigin3D);
 template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPUPassTimestampWrites &el)
 {
-  SERIALISE_MEMBER(querySet);
   SERIALISE_MEMBER(beginningOfPassWriteIndex);
   SERIALISE_MEMBER(endOfPassWriteIndex);
 }
@@ -466,7 +443,6 @@ INSTANTIATE_SERIALISE_TYPE(WGPUPrimitiveState);
 template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPURenderPassDepthStencilAttachment &el)
 {
-  SERIALISE_MEMBER(view);
   SERIALISE_MEMBER(depthLoadOp);
   SERIALISE_MEMBER(depthStoreOp);
   SERIALISE_MEMBER(depthClearValue);
@@ -771,7 +747,6 @@ template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPUStaticSamplerBindingLayout &el)
 {
   SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(sampler);
   SERIALISE_MEMBER(sampledTextureBinding);
 }
 
@@ -853,7 +828,6 @@ INSTANTIATE_SERIALISE_TYPE(WGPUSurfaceColorManagement);
 template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPUSurfaceConfiguration &el)
 {
-  SERIALISE_MEMBER(device);
   SERIALISE_MEMBER(format);
   SERIALISE_MEMBER(usage);
   SERIALISE_MEMBER(width);
@@ -933,7 +907,6 @@ INSTANTIATE_SERIALISE_TYPE(WGPUSurfaceSourceXlibWindow);
 template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPUSurfaceTexture &el)
 {
-  SERIALISE_MEMBER(texture);
   SERIALISE_MEMBER(status);
 }
 
@@ -1026,11 +999,8 @@ template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPUBindGroupEntry &el)
 {
   SERIALISE_MEMBER(binding);
-  SERIALISE_MEMBER(buffer);
   SERIALISE_MEMBER(offset);
   SERIALISE_MEMBER(size);
-  SERIALISE_MEMBER(sampler);
-  SERIALISE_MEMBER(textureView);
 }
 
 INSTANTIATE_SERIALISE_TYPE(WGPUBindGroupEntry);
@@ -1119,8 +1089,6 @@ void DoSerialise(SerialiserType &ser, WGPUDawnCacheDeviceDescriptor &el)
 {
   SERIALISE_MEMBER(chain);
   SERIALISE_MEMBER(isolationKey);
-  SERIALISE_MEMBER(loadDataFunction);
-  SERIALISE_MEMBER(storeDataFunction);
 }
 
 INSTANTIATE_SERIALISE_TYPE(WGPUDawnCacheDeviceDescriptor);
@@ -1163,8 +1131,6 @@ template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPUExternalTextureDescriptor &el)
 {
   SERIALISE_MEMBER(label);
-  SERIALISE_MEMBER(plane0);
-  SERIALISE_MEMBER(plane1);
   SERIALISE_MEMBER(cropOrigin);
   SERIALISE_MEMBER(cropSize);
   SERIALISE_MEMBER(apparentSize);
@@ -1187,7 +1153,6 @@ INSTANTIATE_SERIALISE_TYPE(WGPUFutureWaitInfo);
 template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPUImageCopyExternalTexture &el)
 {
-  SERIALISE_MEMBER(externalTexture);
   SERIALISE_MEMBER(origin);
   SERIALISE_MEMBER(naturalSize);
 }
@@ -1294,9 +1259,7 @@ INSTANTIATE_SERIALISE_TYPE(WGPURenderBundleEncoderDescriptor);
 template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPURenderPassColorAttachment &el)
 {
-  SERIALISE_MEMBER(view);
   SERIALISE_MEMBER(depthSlice);
-  SERIALISE_MEMBER(resolveTarget);
   SERIALISE_MEMBER(loadOp);
   SERIALISE_MEMBER(storeOp);
   SERIALISE_MEMBER(clearValue);
@@ -1308,7 +1271,6 @@ template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPURenderPassStorageAttachment &el)
 {
   SERIALISE_MEMBER(offset);
-  SERIALISE_MEMBER(storage);
   SERIALISE_MEMBER(loadOp);
   SERIALISE_MEMBER(storeOp);
   SERIALISE_MEMBER(clearValue);
@@ -1323,7 +1285,6 @@ void DoSerialise(SerialiserType &ser, WGPURequestAdapterOptions &el)
   SERIALISE_MEMBER(powerPreference);
   SERIALISE_MEMBER(forceFallbackAdapter);
   SERIALISE_MEMBER(backendType);
-  SERIALISE_MEMBER(compatibleSurface);
 }
 
 INSTANTIATE_SERIALISE_TYPE(WGPURequestAdapterOptions);
@@ -1420,7 +1381,6 @@ template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPUTexelCopyBufferInfo &el)
 {
   SERIALISE_MEMBER(layout);
-  SERIALISE_MEMBER(buffer);
 }
 
 INSTANTIATE_SERIALISE_TYPE(WGPUTexelCopyBufferInfo);
@@ -1428,7 +1388,6 @@ INSTANTIATE_SERIALISE_TYPE(WGPUTexelCopyBufferInfo);
 template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPUTexelCopyTextureInfo &el)
 {
-  SERIALISE_MEMBER(texture);
   SERIALISE_MEMBER(mipLevel);
   SERIALISE_MEMBER(origin);
   SERIALISE_MEMBER(aspect);
@@ -1496,7 +1455,6 @@ template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPUBindGroupDescriptor &el)
 {
   SERIALISE_MEMBER(label);
-  SERIALISE_MEMBER(layout);
 }
 
 INSTANTIATE_SERIALISE_TYPE(WGPUBindGroupDescriptor);
@@ -1528,7 +1486,6 @@ INSTANTIATE_SERIALISE_TYPE(WGPUCompilationInfo);
 template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPUComputeState &el)
 {
-  SERIALISE_MEMBER(module);
   SERIALISE_MEMBER(entryPoint);
 }
 
@@ -1546,8 +1503,6 @@ void DoSerialise(SerialiserType &ser, WGPUDeviceDescriptor &el)
 {
   SERIALISE_MEMBER(label);
   SERIALISE_MEMBER(defaultQueue);
-  SERIALISE_MEMBER(deviceLostCallbackInfo);
-  SERIALISE_MEMBER(uncapturedErrorCallbackInfo);
 }
 
 INSTANTIATE_SERIALISE_TYPE(WGPUDeviceDescriptor);
@@ -1607,7 +1562,6 @@ INSTANTIATE_SERIALISE_TYPE(WGPUSurfaceDescriptor);
 template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPUVertexState &el)
 {
-  SERIALISE_MEMBER(module);
   SERIALISE_MEMBER(entryPoint);
 }
 
@@ -1617,7 +1571,6 @@ template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPUComputePipelineDescriptor &el)
 {
   SERIALISE_MEMBER(label);
-  SERIALISE_MEMBER(layout);
   SERIALISE_MEMBER(compute);
 }
 
@@ -1626,7 +1579,6 @@ INSTANTIATE_SERIALISE_TYPE(WGPUComputePipelineDescriptor);
 template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPUFragmentState &el)
 {
-  SERIALISE_MEMBER(module);
   SERIALISE_MEMBER(entryPoint);
 }
 
@@ -1636,7 +1588,6 @@ template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPURenderPassDescriptor &el)
 {
   SERIALISE_MEMBER(label);
-  SERIALISE_MEMBER(occlusionQuerySet);
 }
 
 INSTANTIATE_SERIALISE_TYPE(WGPURenderPassDescriptor);
@@ -1645,7 +1596,6 @@ template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPURenderPipelineDescriptor &el)
 {
   SERIALISE_MEMBER(label);
-  SERIALISE_MEMBER(layout);
   SERIALISE_MEMBER(vertex);
   SERIALISE_MEMBER(primitive);
   SERIALISE_MEMBER(multisample);
@@ -1655,1658 +1605,6 @@ INSTANTIATE_SERIALISE_TYPE(WGPURenderPipelineDescriptor);
 
 
 // Enums
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUChainedStruct &el)
-{
-  SERIALISE_MEMBER(sType);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUChainedStruct);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUBufferMapCallbackInfo &el)
-{
-  SERIALISE_MEMBER(mode);
-  SERIALISE_MEMBER(callback);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUBufferMapCallbackInfo);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUCompilationInfoCallbackInfo &el)
-{
-  SERIALISE_MEMBER(mode);
-  SERIALISE_MEMBER(callback);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUCompilationInfoCallbackInfo);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUCreateComputePipelineAsyncCallbackInfo &el)
-{
-  SERIALISE_MEMBER(mode);
-  SERIALISE_MEMBER(callback);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUCreateComputePipelineAsyncCallbackInfo);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUCreateRenderPipelineAsyncCallbackInfo &el)
-{
-  SERIALISE_MEMBER(mode);
-  SERIALISE_MEMBER(callback);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUCreateRenderPipelineAsyncCallbackInfo);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUDeviceLostCallbackInfo &el)
-{
-  SERIALISE_MEMBER(mode);
-  SERIALISE_MEMBER(callback);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUDeviceLostCallbackInfo);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPULoggingCallbackInfo &el)
-{
-  SERIALISE_MEMBER(callback);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPULoggingCallbackInfo);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUPopErrorScopeCallbackInfo &el)
-{
-  SERIALISE_MEMBER(mode);
-  SERIALISE_MEMBER(callback);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUPopErrorScopeCallbackInfo);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUQueueWorkDoneCallbackInfo &el)
-{
-  SERIALISE_MEMBER(mode);
-  SERIALISE_MEMBER(callback);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUQueueWorkDoneCallbackInfo);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPURequestAdapterCallbackInfo &el)
-{
-  SERIALISE_MEMBER(mode);
-  SERIALISE_MEMBER(callback);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPURequestAdapterCallbackInfo);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPURequestDeviceCallbackInfo &el)
-{
-  SERIALISE_MEMBER(mode);
-  SERIALISE_MEMBER(callback);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPURequestDeviceCallbackInfo);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUUncapturedErrorCallbackInfo &el)
-{
-  SERIALISE_MEMBER(callback);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUUncapturedErrorCallbackInfo);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUINTERNAL_HAVE_EMDAWNWEBGPU_HEADER &el)
-{
-  SERIALISE_MEMBER(unused);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUINTERNAL_HAVE_EMDAWNWEBGPU_HEADER);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUAdapterPropertiesD3D &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(shaderModel);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUAdapterPropertiesD3D);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUAdapterPropertiesSubgroups &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(subgroupMinSize);
-  SERIALISE_MEMBER(subgroupMaxSize);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUAdapterPropertiesSubgroups);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUAdapterPropertiesVk &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(driverVersion);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUAdapterPropertiesVk);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUBlendComponent &el)
-{
-  SERIALISE_MEMBER(operation);
-  SERIALISE_MEMBER(srcFactor);
-  SERIALISE_MEMBER(dstFactor);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUBlendComponent);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUBufferBindingLayout &el)
-{
-  SERIALISE_MEMBER(type);
-  SERIALISE_MEMBER(hasDynamicOffset);
-  SERIALISE_MEMBER(minBindingSize);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUBufferBindingLayout);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUBufferHostMappedPointer &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(disposeCallback);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUBufferHostMappedPointer);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUColor &el)
-{
-  SERIALISE_MEMBER(r);
-  SERIALISE_MEMBER(g);
-  SERIALISE_MEMBER(b);
-  SERIALISE_MEMBER(a);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUColor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUColorTargetStateExpandResolveTextureDawn &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(enabled);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUColorTargetStateExpandResolveTextureDawn);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUCopyTextureForBrowserOptions &el)
-{
-  SERIALISE_MEMBER(flipY);
-  SERIALISE_MEMBER(needsColorSpaceConversion);
-  SERIALISE_MEMBER(srcAlphaMode);
-  SERIALISE_MEMBER(dstAlphaMode);
-  SERIALISE_MEMBER(internalUsage);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUCopyTextureForBrowserOptions);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUDawnWGSLBlocklist &el)
-{
-  SERIALISE_MEMBER(chain);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUDawnWGSLBlocklist);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUDawnAdapterPropertiesPowerPreference &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(powerPreference);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUDawnAdapterPropertiesPowerPreference);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUDawnBufferDescriptorErrorInfoFromWireClient &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(outOfMemory);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUDawnBufferDescriptorErrorInfoFromWireClient);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUDawnCompilationMessageUtf16 &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(linePos);
-  SERIALISE_MEMBER(offset);
-  SERIALISE_MEMBER(length);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUDawnCompilationMessageUtf16);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUDawnDrmFormatProperties &el)
-{
-  SERIALISE_MEMBER(modifier);
-  SERIALISE_MEMBER(modifierPlaneCount);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUDawnDrmFormatProperties);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUDawnEncoderInternalUsageDescriptor &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(useInternalUsages);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUDawnEncoderInternalUsageDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUDawnExperimentalImmediateDataLimits &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(maxImmediateDataRangeByteSize);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUDawnExperimentalImmediateDataLimits);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUDawnExperimentalSubgroupLimits &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(minSubgroupSize);
-  SERIALISE_MEMBER(maxSubgroupSize);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUDawnExperimentalSubgroupLimits);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUDawnInjectedInvalidSType &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(invalidSType);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUDawnInjectedInvalidSType);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUDawnRenderPassColorAttachmentRenderToSingleSampled &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(implicitSampleCount);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUDawnRenderPassColorAttachmentRenderToSingleSampled);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUDawnShaderModuleSPIRVOptionsDescriptor &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(allowNonUniformDerivatives);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUDawnShaderModuleSPIRVOptionsDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUDawnTexelCopyBufferRowAlignmentLimits &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(minTexelCopyBufferRowAlignment);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUDawnTexelCopyBufferRowAlignmentLimits);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUDawnTextureInternalUsageDescriptor &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(internalUsage);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUDawnTextureInternalUsageDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUDawnTogglesDescriptor &el)
-{
-  SERIALISE_MEMBER(chain);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUDawnTogglesDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUDawnWireWGSLControl &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(enableExperimental);
-  SERIALISE_MEMBER(enableUnsafe);
-  SERIALISE_MEMBER(enableTesting);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUDawnWireWGSLControl);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUExtent2D &el)
-{
-  SERIALISE_MEMBER(width);
-  SERIALISE_MEMBER(height);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUExtent2D);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUExtent3D &el)
-{
-  SERIALISE_MEMBER(width);
-  SERIALISE_MEMBER(height);
-  SERIALISE_MEMBER(depthOrArrayLayers);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUExtent3D);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUExternalTextureBindingEntry &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(externalTexture);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUExternalTextureBindingEntry);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUExternalTextureBindingLayout &el)
-{
-  SERIALISE_MEMBER(chain);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUExternalTextureBindingLayout);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUFuture &el)
-{
-  SERIALISE_MEMBER(id);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUFuture);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUInstanceCapabilities &el)
-{
-  SERIALISE_MEMBER(timedWaitAnyEnable);
-  SERIALISE_MEMBER(timedWaitAnyMaxCount);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUInstanceCapabilities);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUMemoryHeapInfo &el)
-{
-  SERIALISE_MEMBER(properties);
-  SERIALISE_MEMBER(size);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUMemoryHeapInfo);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUMultisampleState &el)
-{
-  SERIALISE_MEMBER(count);
-  SERIALISE_MEMBER(mask);
-  SERIALISE_MEMBER(alphaToCoverageEnabled);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUMultisampleState);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUOrigin2D &el)
-{
-  SERIALISE_MEMBER(x);
-  SERIALISE_MEMBER(y);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUOrigin2D);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUOrigin3D &el)
-{
-  SERIALISE_MEMBER(x);
-  SERIALISE_MEMBER(y);
-  SERIALISE_MEMBER(z);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUOrigin3D);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUPassTimestampWrites &el)
-{
-  SERIALISE_MEMBER(querySet);
-  SERIALISE_MEMBER(beginningOfPassWriteIndex);
-  SERIALISE_MEMBER(endOfPassWriteIndex);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUPassTimestampWrites);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUPipelineLayoutStorageAttachment &el)
-{
-  SERIALISE_MEMBER(offset);
-  SERIALISE_MEMBER(format);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUPipelineLayoutStorageAttachment);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUPrimitiveState &el)
-{
-  SERIALISE_MEMBER(topology);
-  SERIALISE_MEMBER(stripIndexFormat);
-  SERIALISE_MEMBER(frontFace);
-  SERIALISE_MEMBER(cullMode);
-  SERIALISE_MEMBER(unclippedDepth);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUPrimitiveState);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPURenderPassDepthStencilAttachment &el)
-{
-  SERIALISE_MEMBER(view);
-  SERIALISE_MEMBER(depthLoadOp);
-  SERIALISE_MEMBER(depthStoreOp);
-  SERIALISE_MEMBER(depthClearValue);
-  SERIALISE_MEMBER(depthReadOnly);
-  SERIALISE_MEMBER(stencilLoadOp);
-  SERIALISE_MEMBER(stencilStoreOp);
-  SERIALISE_MEMBER(stencilClearValue);
-  SERIALISE_MEMBER(stencilReadOnly);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPURenderPassDepthStencilAttachment);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPURenderPassDescriptorExpandResolveRect &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(x);
-  SERIALISE_MEMBER(y);
-  SERIALISE_MEMBER(width);
-  SERIALISE_MEMBER(height);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPURenderPassDescriptorExpandResolveRect);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPURenderPassMaxDrawCount &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(maxDrawCount);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPURenderPassMaxDrawCount);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPURequestAdapterWebXROptions &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(xrCompatible);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPURequestAdapterWebXROptions);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSamplerBindingLayout &el)
-{
-  SERIALISE_MEMBER(type);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSamplerBindingLayout);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUShaderModuleCompilationOptions &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(strictMath);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUShaderModuleCompilationOptions);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUShaderSourceSPIRV &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(codeSize);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUShaderSourceSPIRV);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedBufferMemoryBeginAccessDescriptor &el)
-{
-  SERIALISE_MEMBER(initialized);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedBufferMemoryBeginAccessDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedBufferMemoryEndAccessState &el)
-{
-  SERIALISE_MEMBER(initialized);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedBufferMemoryEndAccessState);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedBufferMemoryProperties &el)
-{
-  SERIALISE_MEMBER(usage);
-  SERIALISE_MEMBER(size);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedBufferMemoryProperties);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedFenceDXGISharedHandleDescriptor &el)
-{
-  SERIALISE_MEMBER(chain);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedFenceDXGISharedHandleDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedFenceDXGISharedHandleExportInfo &el)
-{
-  SERIALISE_MEMBER(chain);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedFenceDXGISharedHandleExportInfo);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedFenceEGLSyncDescriptor &el)
-{
-  SERIALISE_MEMBER(chain);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedFenceEGLSyncDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedFenceEGLSyncExportInfo &el)
-{
-  SERIALISE_MEMBER(chain);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedFenceEGLSyncExportInfo);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedFenceMTLSharedEventDescriptor &el)
-{
-  SERIALISE_MEMBER(chain);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedFenceMTLSharedEventDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedFenceMTLSharedEventExportInfo &el)
-{
-  SERIALISE_MEMBER(chain);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedFenceMTLSharedEventExportInfo);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedFenceSyncFDDescriptor &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(handle);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedFenceSyncFDDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedFenceSyncFDExportInfo &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(handle);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedFenceSyncFDExportInfo);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedFenceVkSemaphoreOpaqueFDDescriptor &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(handle);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedFenceVkSemaphoreOpaqueFDDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedFenceVkSemaphoreOpaqueFDExportInfo &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(handle);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedFenceVkSemaphoreOpaqueFDExportInfo);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedFenceVkSemaphoreZirconHandleDescriptor &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(handle);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedFenceVkSemaphoreZirconHandleDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedFenceVkSemaphoreZirconHandleExportInfo &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(handle);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedFenceVkSemaphoreZirconHandleExportInfo);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedTextureMemoryD3DSwapchainBeginState &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(isSwapchain);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedTextureMemoryD3DSwapchainBeginState);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedTextureMemoryDXGISharedHandleDescriptor &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(useKeyedMutex);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedTextureMemoryDXGISharedHandleDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedTextureMemoryEGLImageDescriptor &el)
-{
-  SERIALISE_MEMBER(chain);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedTextureMemoryEGLImageDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedTextureMemoryIOSurfaceDescriptor &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(allowStorageBinding);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedTextureMemoryIOSurfaceDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedTextureMemoryAHardwareBufferDescriptor &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(useExternalFormat);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedTextureMemoryAHardwareBufferDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedTextureMemoryDmaBufPlane &el)
-{
-  SERIALISE_MEMBER(fd);
-  SERIALISE_MEMBER(offset);
-  SERIALISE_MEMBER(stride);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedTextureMemoryDmaBufPlane);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedTextureMemoryOpaqueFDDescriptor &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(memoryFD);
-  SERIALISE_MEMBER(memoryTypeIndex);
-  SERIALISE_MEMBER(allocationSize);
-  SERIALISE_MEMBER(dedicatedAllocation);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedTextureMemoryOpaqueFDDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedTextureMemoryVkDedicatedAllocationDescriptor &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(dedicatedAllocation);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedTextureMemoryVkDedicatedAllocationDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedTextureMemoryVkImageLayoutBeginState &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(oldLayout);
-  SERIALISE_MEMBER(newLayout);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedTextureMemoryVkImageLayoutBeginState);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedTextureMemoryVkImageLayoutEndState &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(oldLayout);
-  SERIALISE_MEMBER(newLayout);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedTextureMemoryVkImageLayoutEndState);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedTextureMemoryZirconHandleDescriptor &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(memoryFD);
-  SERIALISE_MEMBER(allocationSize);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedTextureMemoryZirconHandleDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUStaticSamplerBindingLayout &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(sampler);
-  SERIALISE_MEMBER(sampledTextureBinding);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUStaticSamplerBindingLayout);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUStencilFaceState &el)
-{
-  SERIALISE_MEMBER(compare);
-  SERIALISE_MEMBER(failOp);
-  SERIALISE_MEMBER(depthFailOp);
-  SERIALISE_MEMBER(passOp);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUStencilFaceState);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUStorageTextureBindingLayout &el)
-{
-  SERIALISE_MEMBER(access);
-  SERIALISE_MEMBER(format);
-  SERIALISE_MEMBER(viewDimension);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUStorageTextureBindingLayout);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUStringView &el)
-{
-  SERIALISE_MEMBER(length);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUStringView);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSubgroupMatrixConfig &el)
-{
-  SERIALISE_MEMBER(componentType);
-  SERIALISE_MEMBER(resultComponentType);
-  SERIALISE_MEMBER(M);
-  SERIALISE_MEMBER(N);
-  SERIALISE_MEMBER(K);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSubgroupMatrixConfig);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSupportedWGSLLanguageFeatures &el)
-{
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSupportedWGSLLanguageFeatures);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSupportedFeatures &el)
-{
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSupportedFeatures);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSurfaceCapabilities &el)
-{
-  SERIALISE_MEMBER(usages);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSurfaceCapabilities);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSurfaceColorManagement &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(colorSpace);
-  SERIALISE_MEMBER(toneMappingMode);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSurfaceColorManagement);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSurfaceConfiguration &el)
-{
-  SERIALISE_MEMBER(device);
-  SERIALISE_MEMBER(format);
-  SERIALISE_MEMBER(usage);
-  SERIALISE_MEMBER(width);
-  SERIALISE_MEMBER(height);
-  SERIALISE_MEMBER(alphaMode);
-  SERIALISE_MEMBER(presentMode);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSurfaceConfiguration);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSurfaceDescriptorFromWindowsCoreWindow &el)
-{
-  SERIALISE_MEMBER(chain);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSurfaceDescriptorFromWindowsCoreWindow);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSurfaceDescriptorFromWindowsSwapChainPanel &el)
-{
-  SERIALISE_MEMBER(chain);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSurfaceDescriptorFromWindowsSwapChainPanel);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSurfaceSourceXCBWindow &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(window);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSurfaceSourceXCBWindow);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSurfaceSourceAndroidNativeWindow &el)
-{
-  SERIALISE_MEMBER(chain);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSurfaceSourceAndroidNativeWindow);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSurfaceSourceMetalLayer &el)
-{
-  SERIALISE_MEMBER(chain);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSurfaceSourceMetalLayer);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSurfaceSourceWaylandSurface &el)
-{
-  SERIALISE_MEMBER(chain);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSurfaceSourceWaylandSurface);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSurfaceSourceWindowsHWND &el)
-{
-  SERIALISE_MEMBER(chain);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSurfaceSourceWindowsHWND);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSurfaceSourceXlibWindow &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(window);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSurfaceSourceXlibWindow);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSurfaceTexture &el)
-{
-  SERIALISE_MEMBER(texture);
-  SERIALISE_MEMBER(status);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSurfaceTexture);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUTexelCopyBufferLayout &el)
-{
-  SERIALISE_MEMBER(offset);
-  SERIALISE_MEMBER(bytesPerRow);
-  SERIALISE_MEMBER(rowsPerImage);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUTexelCopyBufferLayout);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUTextureBindingLayout &el)
-{
-  SERIALISE_MEMBER(sampleType);
-  SERIALISE_MEMBER(viewDimension);
-  SERIALISE_MEMBER(multisampled);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUTextureBindingLayout);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUTextureBindingViewDimensionDescriptor &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(textureBindingViewDimension);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUTextureBindingViewDimensionDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUVertexAttribute &el)
-{
-  SERIALISE_MEMBER(format);
-  SERIALISE_MEMBER(offset);
-  SERIALISE_MEMBER(shaderLocation);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUVertexAttribute);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUYCbCrVkDescriptor &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(vkFormat);
-  SERIALISE_MEMBER(vkYCbCrModel);
-  SERIALISE_MEMBER(vkYCbCrRange);
-  SERIALISE_MEMBER(vkComponentSwizzleRed);
-  SERIALISE_MEMBER(vkComponentSwizzleGreen);
-  SERIALISE_MEMBER(vkComponentSwizzleBlue);
-  SERIALISE_MEMBER(vkComponentSwizzleAlpha);
-  SERIALISE_MEMBER(vkXChromaOffset);
-  SERIALISE_MEMBER(vkYChromaOffset);
-  SERIALISE_MEMBER(vkChromaFilter);
-  SERIALISE_MEMBER(forceExplicitReconstruction);
-  SERIALISE_MEMBER(externalFormat);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUYCbCrVkDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUAHardwareBufferProperties &el)
-{
-  SERIALISE_MEMBER(yCbCrInfo);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUAHardwareBufferProperties);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUAdapterPropertiesMemoryHeaps &el)
-{
-  SERIALISE_MEMBER(chain);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUAdapterPropertiesMemoryHeaps);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUAdapterPropertiesSubgroupMatrixConfigs &el)
-{
-  SERIALISE_MEMBER(chain);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUAdapterPropertiesSubgroupMatrixConfigs);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUBindGroupEntry &el)
-{
-  SERIALISE_MEMBER(binding);
-  SERIALISE_MEMBER(buffer);
-  SERIALISE_MEMBER(offset);
-  SERIALISE_MEMBER(size);
-  SERIALISE_MEMBER(sampler);
-  SERIALISE_MEMBER(textureView);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUBindGroupEntry);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUBindGroupLayoutEntry &el)
-{
-  SERIALISE_MEMBER(binding);
-  SERIALISE_MEMBER(visibility);
-  SERIALISE_MEMBER(buffer);
-  SERIALISE_MEMBER(sampler);
-  SERIALISE_MEMBER(texture);
-  SERIALISE_MEMBER(storageTexture);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUBindGroupLayoutEntry);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUBlendState &el)
-{
-  SERIALISE_MEMBER(color);
-  SERIALISE_MEMBER(alpha);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUBlendState);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUBufferDescriptor &el)
-{
-  SERIALISE_MEMBER(label);
-  SERIALISE_MEMBER(usage);
-  SERIALISE_MEMBER(size);
-  SERIALISE_MEMBER(mappedAtCreation);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUBufferDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUCommandBufferDescriptor &el)
-{
-  SERIALISE_MEMBER(label);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUCommandBufferDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUCommandEncoderDescriptor &el)
-{
-  SERIALISE_MEMBER(label);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUCommandEncoderDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUCompilationMessage &el)
-{
-  SERIALISE_MEMBER(message);
-  SERIALISE_MEMBER(type);
-  SERIALISE_MEMBER(lineNum);
-  SERIALISE_MEMBER(linePos);
-  SERIALISE_MEMBER(offset);
-  SERIALISE_MEMBER(length);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUCompilationMessage);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUComputePassDescriptor &el)
-{
-  SERIALISE_MEMBER(label);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUComputePassDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUConstantEntry &el)
-{
-  SERIALISE_MEMBER(key);
-  SERIALISE_MEMBER(value);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUConstantEntry);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUDawnCacheDeviceDescriptor &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(isolationKey);
-  SERIALISE_MEMBER(loadDataFunction);
-  SERIALISE_MEMBER(storeDataFunction);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUDawnCacheDeviceDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUDawnDrmFormatCapabilities &el)
-{
-  SERIALISE_MEMBER(chain);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUDawnDrmFormatCapabilities);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUDepthStencilState &el)
-{
-  SERIALISE_MEMBER(format);
-  SERIALISE_MEMBER(depthWriteEnabled);
-  SERIALISE_MEMBER(depthCompare);
-  SERIALISE_MEMBER(stencilFront);
-  SERIALISE_MEMBER(stencilBack);
-  SERIALISE_MEMBER(stencilReadMask);
-  SERIALISE_MEMBER(stencilWriteMask);
-  SERIALISE_MEMBER(depthBias);
-  SERIALISE_MEMBER(depthBiasSlopeScale);
-  SERIALISE_MEMBER(depthBiasClamp);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUDepthStencilState);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUEmscriptenSurfaceSourceCanvasHTMLSelector &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(selector);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUEmscriptenSurfaceSourceCanvasHTMLSelector);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUExternalTextureDescriptor &el)
-{
-  SERIALISE_MEMBER(label);
-  SERIALISE_MEMBER(plane0);
-  SERIALISE_MEMBER(plane1);
-  SERIALISE_MEMBER(cropOrigin);
-  SERIALISE_MEMBER(cropSize);
-  SERIALISE_MEMBER(apparentSize);
-  SERIALISE_MEMBER(doYuvToRgbConversionOnly);
-  SERIALISE_MEMBER(mirrored);
-  SERIALISE_MEMBER(rotation);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUExternalTextureDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUFutureWaitInfo &el)
-{
-  SERIALISE_MEMBER(future);
-  SERIALISE_MEMBER(completed);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUFutureWaitInfo);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUImageCopyExternalTexture &el)
-{
-  SERIALISE_MEMBER(externalTexture);
-  SERIALISE_MEMBER(origin);
-  SERIALISE_MEMBER(naturalSize);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUImageCopyExternalTexture);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUInstanceDescriptor &el)
-{
-  SERIALISE_MEMBER(capabilities);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUInstanceDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPULimits &el)
-{
-  SERIALISE_MEMBER(maxTextureDimension1D);
-  SERIALISE_MEMBER(maxTextureDimension2D);
-  SERIALISE_MEMBER(maxTextureDimension3D);
-  SERIALISE_MEMBER(maxTextureArrayLayers);
-  SERIALISE_MEMBER(maxBindGroups);
-  SERIALISE_MEMBER(maxBindGroupsPlusVertexBuffers);
-  SERIALISE_MEMBER(maxBindingsPerBindGroup);
-  SERIALISE_MEMBER(maxDynamicUniformBuffersPerPipelineLayout);
-  SERIALISE_MEMBER(maxDynamicStorageBuffersPerPipelineLayout);
-  SERIALISE_MEMBER(maxSampledTexturesPerShaderStage);
-  SERIALISE_MEMBER(maxSamplersPerShaderStage);
-  SERIALISE_MEMBER(maxStorageBuffersPerShaderStage);
-  SERIALISE_MEMBER(maxStorageTexturesPerShaderStage);
-  SERIALISE_MEMBER(maxUniformBuffersPerShaderStage);
-  SERIALISE_MEMBER(maxUniformBufferBindingSize);
-  SERIALISE_MEMBER(maxStorageBufferBindingSize);
-  SERIALISE_MEMBER(minUniformBufferOffsetAlignment);
-  SERIALISE_MEMBER(minStorageBufferOffsetAlignment);
-  SERIALISE_MEMBER(maxVertexBuffers);
-  SERIALISE_MEMBER(maxBufferSize);
-  SERIALISE_MEMBER(maxVertexAttributes);
-  SERIALISE_MEMBER(maxVertexBufferArrayStride);
-  SERIALISE_MEMBER(maxInterStageShaderVariables);
-  SERIALISE_MEMBER(maxColorAttachments);
-  SERIALISE_MEMBER(maxColorAttachmentBytesPerSample);
-  SERIALISE_MEMBER(maxComputeWorkgroupStorageSize);
-  SERIALISE_MEMBER(maxComputeInvocationsPerWorkgroup);
-  SERIALISE_MEMBER(maxComputeWorkgroupSizeX);
-  SERIALISE_MEMBER(maxComputeWorkgroupSizeY);
-  SERIALISE_MEMBER(maxComputeWorkgroupSizeZ);
-  SERIALISE_MEMBER(maxComputeWorkgroupsPerDimension);
-  SERIALISE_MEMBER(maxStorageBuffersInVertexStage);
-  SERIALISE_MEMBER(maxStorageTexturesInVertexStage);
-  SERIALISE_MEMBER(maxStorageBuffersInFragmentStage);
-  SERIALISE_MEMBER(maxStorageTexturesInFragmentStage);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPULimits);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUPipelineLayoutPixelLocalStorage &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(totalPixelLocalStorageSize);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUPipelineLayoutPixelLocalStorage);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUQuerySetDescriptor &el)
-{
-  SERIALISE_MEMBER(label);
-  SERIALISE_MEMBER(type);
-  SERIALISE_MEMBER(count);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUQuerySetDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUQueueDescriptor &el)
-{
-  SERIALISE_MEMBER(label);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUQueueDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPURenderBundleDescriptor &el)
-{
-  SERIALISE_MEMBER(label);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPURenderBundleDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPURenderBundleEncoderDescriptor &el)
-{
-  SERIALISE_MEMBER(label);
-  SERIALISE_MEMBER(depthStencilFormat);
-  SERIALISE_MEMBER(depthReadOnly);
-  SERIALISE_MEMBER(stencilReadOnly);
-  SERIALISE_MEMBER(sampleCount);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPURenderBundleEncoderDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPURenderPassColorAttachment &el)
-{
-  SERIALISE_MEMBER(view);
-  SERIALISE_MEMBER(depthSlice);
-  SERIALISE_MEMBER(resolveTarget);
-  SERIALISE_MEMBER(loadOp);
-  SERIALISE_MEMBER(storeOp);
-  SERIALISE_MEMBER(clearValue);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPURenderPassColorAttachment);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPURenderPassStorageAttachment &el)
-{
-  SERIALISE_MEMBER(offset);
-  SERIALISE_MEMBER(storage);
-  SERIALISE_MEMBER(loadOp);
-  SERIALISE_MEMBER(storeOp);
-  SERIALISE_MEMBER(clearValue);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPURenderPassStorageAttachment);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPURequestAdapterOptions &el)
-{
-  SERIALISE_MEMBER(featureLevel);
-  SERIALISE_MEMBER(powerPreference);
-  SERIALISE_MEMBER(forceFallbackAdapter);
-  SERIALISE_MEMBER(backendType);
-  SERIALISE_MEMBER(compatibleSurface);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPURequestAdapterOptions);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSamplerDescriptor &el)
-{
-  SERIALISE_MEMBER(label);
-  SERIALISE_MEMBER(addressModeU);
-  SERIALISE_MEMBER(addressModeV);
-  SERIALISE_MEMBER(addressModeW);
-  SERIALISE_MEMBER(magFilter);
-  SERIALISE_MEMBER(minFilter);
-  SERIALISE_MEMBER(mipmapFilter);
-  SERIALISE_MEMBER(lodMinClamp);
-  SERIALISE_MEMBER(lodMaxClamp);
-  SERIALISE_MEMBER(compare);
-  SERIALISE_MEMBER(maxAnisotropy);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSamplerDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUShaderSourceWGSL &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(code);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUShaderSourceWGSL);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedBufferMemoryDescriptor &el)
-{
-  SERIALISE_MEMBER(label);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedBufferMemoryDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedFenceDescriptor &el)
-{
-  SERIALISE_MEMBER(label);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedFenceDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedFenceExportInfo &el)
-{
-  SERIALISE_MEMBER(type);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedFenceExportInfo);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedTextureMemoryAHardwareBufferProperties &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(yCbCrInfo);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedTextureMemoryAHardwareBufferProperties);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedTextureMemoryBeginAccessDescriptor &el)
-{
-  SERIALISE_MEMBER(concurrentRead);
-  SERIALISE_MEMBER(initialized);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedTextureMemoryBeginAccessDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedTextureMemoryDmaBufDescriptor &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(size);
-  SERIALISE_MEMBER(drmFormat);
-  SERIALISE_MEMBER(drmModifier);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedTextureMemoryDmaBufDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedTextureMemoryEndAccessState &el)
-{
-  SERIALISE_MEMBER(initialized);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedTextureMemoryEndAccessState);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUTexelCopyBufferInfo &el)
-{
-  SERIALISE_MEMBER(layout);
-  SERIALISE_MEMBER(buffer);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUTexelCopyBufferInfo);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUTexelCopyTextureInfo &el)
-{
-  SERIALISE_MEMBER(texture);
-  SERIALISE_MEMBER(mipLevel);
-  SERIALISE_MEMBER(origin);
-  SERIALISE_MEMBER(aspect);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUTexelCopyTextureInfo);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUTextureDescriptor &el)
-{
-  SERIALISE_MEMBER(label);
-  SERIALISE_MEMBER(usage);
-  SERIALISE_MEMBER(dimension);
-  SERIALISE_MEMBER(size);
-  SERIALISE_MEMBER(format);
-  SERIALISE_MEMBER(mipLevelCount);
-  SERIALISE_MEMBER(sampleCount);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUTextureDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUTextureViewDescriptor &el)
-{
-  SERIALISE_MEMBER(label);
-  SERIALISE_MEMBER(format);
-  SERIALISE_MEMBER(dimension);
-  SERIALISE_MEMBER(baseMipLevel);
-  SERIALISE_MEMBER(baseArrayLayer);
-  SERIALISE_MEMBER(aspect);
-  SERIALISE_MEMBER(usage);
-  SERIALISE_MEMBER(mipLevelCount);
-  SERIALISE_MEMBER(arrayLayerCount);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUTextureViewDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUVertexBufferLayout &el)
-{
-  SERIALISE_MEMBER(stepMode);
-  SERIALISE_MEMBER(arrayStride);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUVertexBufferLayout);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUAdapterInfo &el)
-{
-  SERIALISE_MEMBER(vendor);
-  SERIALISE_MEMBER(architecture);
-  SERIALISE_MEMBER(device);
-  SERIALISE_MEMBER(description);
-  SERIALISE_MEMBER(backendType);
-  SERIALISE_MEMBER(adapterType);
-  SERIALISE_MEMBER(vendorID);
-  SERIALISE_MEMBER(deviceID);
-  SERIALISE_MEMBER(subgroupMinSize);
-  SERIALISE_MEMBER(subgroupMaxSize);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUAdapterInfo);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUBindGroupDescriptor &el)
-{
-  SERIALISE_MEMBER(label);
-  SERIALISE_MEMBER(layout);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUBindGroupDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUBindGroupLayoutDescriptor &el)
-{
-  SERIALISE_MEMBER(label);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUBindGroupLayoutDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUColorTargetState &el)
-{
-  SERIALISE_MEMBER(format);
-  SERIALISE_MEMBER(writeMask);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUColorTargetState);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUCompilationInfo &el)
-{
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUCompilationInfo);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUComputeState &el)
-{
-  SERIALISE_MEMBER(module);
-  SERIALISE_MEMBER(entryPoint);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUComputeState);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUDawnFormatCapabilities &el)
-{
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUDawnFormatCapabilities);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUDeviceDescriptor &el)
-{
-  SERIALISE_MEMBER(label);
-  SERIALISE_MEMBER(defaultQueue);
-  SERIALISE_MEMBER(deviceLostCallbackInfo);
-  SERIALISE_MEMBER(uncapturedErrorCallbackInfo);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUDeviceDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUPipelineLayoutDescriptor &el)
-{
-  SERIALISE_MEMBER(label);
-  SERIALISE_MEMBER(immediateDataRangeByteSize);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUPipelineLayoutDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPURenderPassPixelLocalStorage &el)
-{
-  SERIALISE_MEMBER(chain);
-  SERIALISE_MEMBER(totalPixelLocalStorageSize);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPURenderPassPixelLocalStorage);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUShaderModuleDescriptor &el)
-{
-  SERIALISE_MEMBER(label);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUShaderModuleDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedTextureMemoryDescriptor &el)
-{
-  SERIALISE_MEMBER(label);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedTextureMemoryDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSharedTextureMemoryProperties &el)
-{
-  SERIALISE_MEMBER(usage);
-  SERIALISE_MEMBER(size);
-  SERIALISE_MEMBER(format);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSharedTextureMemoryProperties);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUSurfaceDescriptor &el)
-{
-  SERIALISE_MEMBER(label);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUSurfaceDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUVertexState &el)
-{
-  SERIALISE_MEMBER(module);
-  SERIALISE_MEMBER(entryPoint);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUVertexState);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUComputePipelineDescriptor &el)
-{
-  SERIALISE_MEMBER(label);
-  SERIALISE_MEMBER(layout);
-  SERIALISE_MEMBER(compute);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUComputePipelineDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUFragmentState &el)
-{
-  SERIALISE_MEMBER(module);
-  SERIALISE_MEMBER(entryPoint);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUFragmentState);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPURenderPassDescriptor &el)
-{
-  SERIALISE_MEMBER(label);
-  SERIALISE_MEMBER(occlusionQuerySet);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPURenderPassDescriptor);
-
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPURenderPipelineDescriptor &el)
-{
-  SERIALISE_MEMBER(label);
-  SERIALISE_MEMBER(layout);
-  SERIALISE_MEMBER(vertex);
-  SERIALISE_MEMBER(primitive);
-  SERIALISE_MEMBER(multisample);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPURenderPipelineDescriptor);
-
 template <>
 rdcstr DoStringise(const WGPUWGSLLanguageFeatureName &el)
 {
@@ -4420,98 +2718,6 @@ rdcstr DoStringise(const WGPUWaitStatus &el)
     STRINGISE_ENUM(WGPUWaitStatus_TimedOut);
     STRINGISE_ENUM(WGPUWaitStatus_Error);
     STRINGISE_ENUM(WGPUWaitStatus_Force32);
-  }
-  END_ENUM_STRINGISE();
-}
-
-template <>
-rdcstr DoStringise(const WGPUBufferUsage &el)
-{
-  BEGIN_ENUM_STRINGISE(WGPUBufferUsage)
-  {
-    STRINGISE_ENUM(WGPUBufferUsage_None);
-    STRINGISE_ENUM(WGPUBufferUsage_MapRead);
-    STRINGISE_ENUM(WGPUBufferUsage_MapWrite);
-    STRINGISE_ENUM(WGPUBufferUsage_CopySrc);
-    STRINGISE_ENUM(WGPUBufferUsage_CopyDst);
-    STRINGISE_ENUM(WGPUBufferUsage_Index);
-    STRINGISE_ENUM(WGPUBufferUsage_Vertex);
-    STRINGISE_ENUM(WGPUBufferUsage_Uniform);
-    STRINGISE_ENUM(WGPUBufferUsage_Storage);
-    STRINGISE_ENUM(WGPUBufferUsage_Indirect);
-    STRINGISE_ENUM(WGPUBufferUsage_QueryResolve);
-  }
-  END_ENUM_STRINGISE();
-}
-
-template <>
-rdcstr DoStringise(const WGPUColorWriteMask &el)
-{
-  BEGIN_ENUM_STRINGISE(WGPUColorWriteMask)
-  {
-    STRINGISE_ENUM(WGPUColorWriteMask_None);
-    STRINGISE_ENUM(WGPUColorWriteMask_Red);
-    STRINGISE_ENUM(WGPUColorWriteMask_Green);
-    STRINGISE_ENUM(WGPUColorWriteMask_Blue);
-    STRINGISE_ENUM(WGPUColorWriteMask_Alpha);
-    STRINGISE_ENUM(WGPUColorWriteMask_All);
-  }
-  END_ENUM_STRINGISE();
-}
-
-template <>
-rdcstr DoStringise(const WGPUHeapProperty &el)
-{
-  BEGIN_ENUM_STRINGISE(WGPUHeapProperty)
-  {
-    STRINGISE_ENUM(WGPUHeapProperty_None);
-    STRINGISE_ENUM(WGPUHeapProperty_DeviceLocal);
-    STRINGISE_ENUM(WGPUHeapProperty_HostVisible);
-    STRINGISE_ENUM(WGPUHeapProperty_HostCoherent);
-    STRINGISE_ENUM(WGPUHeapProperty_HostUncached);
-    STRINGISE_ENUM(WGPUHeapProperty_HostCached);
-  }
-  END_ENUM_STRINGISE();
-}
-
-template <>
-rdcstr DoStringise(const WGPUMapMode &el)
-{
-  BEGIN_ENUM_STRINGISE(WGPUMapMode)
-  {
-    STRINGISE_ENUM(WGPUMapMode_None);
-    STRINGISE_ENUM(WGPUMapMode_Read);
-    STRINGISE_ENUM(WGPUMapMode_Write);
-  }
-  END_ENUM_STRINGISE();
-}
-
-template <>
-rdcstr DoStringise(const WGPUShaderStage &el)
-{
-  BEGIN_ENUM_STRINGISE(WGPUShaderStage)
-  {
-    STRINGISE_ENUM(WGPUShaderStage_None);
-    STRINGISE_ENUM(WGPUShaderStage_Vertex);
-    STRINGISE_ENUM(WGPUShaderStage_Fragment);
-    STRINGISE_ENUM(WGPUShaderStage_Compute);
-  }
-  END_ENUM_STRINGISE();
-}
-
-template <>
-rdcstr DoStringise(const WGPUTextureUsage &el)
-{
-  BEGIN_ENUM_STRINGISE(WGPUTextureUsage)
-  {
-    STRINGISE_ENUM(WGPUTextureUsage_None);
-    STRINGISE_ENUM(WGPUTextureUsage_CopySrc);
-    STRINGISE_ENUM(WGPUTextureUsage_CopyDst);
-    STRINGISE_ENUM(WGPUTextureUsage_TextureBinding);
-    STRINGISE_ENUM(WGPUTextureUsage_StorageBinding);
-    STRINGISE_ENUM(WGPUTextureUsage_RenderAttachment);
-    STRINGISE_ENUM(WGPUTextureUsage_TransientAttachment);
-    STRINGISE_ENUM(WGPUTextureUsage_StorageAttachment);
   }
   END_ENUM_STRINGISE();
 }

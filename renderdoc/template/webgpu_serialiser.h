@@ -7,5 +7,8 @@
 // Descriptors & Structs
 {{descriptors}}
 
+// Enums
+{{enumerations}}
+
 // Object handles
 DECLARE_REFLECTION_STRUCT(WGPUInstance);
