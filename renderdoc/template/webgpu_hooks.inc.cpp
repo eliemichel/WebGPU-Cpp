@@ -27,19 +27,9 @@
  * See 'generate_renderdoc.py' in the 'renderdoc' branch of https://github.com/eliemichel/WebGPU-Cpp
  */
 
-#include "webgpu_serialiser.h"
+/**
+ * NB: This is meant to be included in the definition of WebGPUHook in the
+ * manually written webgpu_hooks.cpp
+ */
 
-// Descriptors & Structs
-{{descriptors}}
-
-// Enums
-{{enumerations}}
-
-// Object handles
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUInstance &el)
-{
-  SERIALISE_ELEMENT(el);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUInstance);
+{{hooks}}

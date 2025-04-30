@@ -27,19 +27,10 @@
  * See 'generate_renderdoc.py' in the 'renderdoc' branch of https://github.com/eliemichel/WebGPU-Cpp
  */
 
-#include "webgpu_serialiser.h"
+#pragma once
 
-// Descriptors & Structs
-{{descriptors}}
+// Iteracte over all procedures
+{{foreach-macro}}
 
-// Enums
-{{enumerations}}
-
-// Object handles
-template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUInstance &el)
-{
-  SERIALISE_ELEMENT(el);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUInstance);
+// Iteracte over all procedures except the special ones that are manually implemented
+{{foreach-macro-default}}

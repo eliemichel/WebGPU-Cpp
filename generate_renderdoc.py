@@ -110,6 +110,8 @@ def main(args):
     filenames = [
         "webgpu_serialiser.h",
         "webgpu_serialiser.cpp",
+        "webgpu_macros.h",
+        "webgpu_hooks.inc.cpp",
     ]
 
     templates = {
@@ -454,7 +456,20 @@ def produceBinding(args, api):
             "descriptors": [],
             "enumerations": [],
         },
+        "webgpu_macros.h": {
+            "foreach-macro": [],
+            "foreach-macro-default": [],
+        },
+        "webgpu_hooks.inc.cpp": {
+            "hooks": []
+        },
     }
+
+    # Procedures that we handle manually
+    excluded_procs = [
+        "CreateInstance",
+        "InstanceRelease",
+    ]
 
     full_handle_names = [ f"WGPU{h.name}" for h in api.handles ]
 
@@ -525,6 +540,43 @@ def produceBinding(args, api):
             f"",
         ])
     binding["webgpu_serialiser.cpp"]["enumerations"] = "\n".join(section)
+
+    section = []
+    for proc_api in api.procedures:
+        fullname = (proc_api.parent if proc_api.parent is not None else "") + proc_api.name
+        if fullname in excluded_procs:
+            continue
+        arguments = [ f"{x.type} {x.name}" for x in proc_api.arguments ]
+        argument_names = [ x.name for x in proc_api.arguments ]
+        maybe_return = "" if proc_api.return_type == "void" else "return "
+        section.extend([
+            f"static {proc_api.return_type} wgpu{fullname}_hook({', '.join(arguments)}) {{",
+            f"  {{",
+            f"    WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();",
+            f"    ser.SetActionChunk();", # Is this useful?
+            f"    SCOPED_SERIALISE_CHUNK(WebGPUChunk::Proc{fullname});",
+            f"    webgpuHooks.capturer.AddChunk(scope.Get());",
+            f"  }}",
+            f"  {maybe_return}webgpuHooks.procs.wgpu{fullname}({', '.join(argument_names)});",
+            f"}}",
+        ])
+    binding["webgpu_hooks.inc.cpp"]["hooks"] = "\n".join(section)
+
+    section = []
+    section.append("#define FOREACH_WEBGPU_PROC(MACRO)")
+    for proc_api in api.procedures:
+        fullname = (proc_api.parent if proc_api.parent is not None else "") + proc_api.name
+        section.append(f"  MACRO({fullname})")
+    binding["webgpu_macros.h"]["foreach-macro"] = " \\\n".join(section)
+
+    section = []
+    section.append("#define FOREACH_WEBGPU_PROC_WITH_DEFAULT_BEHAVIOR(MACRO)")
+    for proc_api in api.procedures:
+        fullname = (proc_api.parent if proc_api.parent is not None else "") + proc_api.name
+        if fullname in excluded_procs:
+            continue
+        section.append(f"  MACRO({fullname})")
+    binding["webgpu_macros.h"]["foreach-macro-default"] = " \\\n".join(section)
 
     return binding
 
