@@ -33,6 +33,7 @@
  */
 
 static void wgpuAdapterInfoFreeMembers_hook(WGPUAdapterInfo value) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -42,6 +43,7 @@ static void wgpuAdapterInfoFreeMembers_hook(WGPUAdapterInfo value) {
   webgpuHooks.procs.wgpuAdapterInfoFreeMembers(value);
 }
 static void wgpuAdapterPropertiesMemoryHeapsFreeMembers_hook(WGPUAdapterPropertiesMemoryHeaps value) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -51,6 +53,7 @@ static void wgpuAdapterPropertiesMemoryHeapsFreeMembers_hook(WGPUAdapterProperti
   webgpuHooks.procs.wgpuAdapterPropertiesMemoryHeapsFreeMembers(value);
 }
 static void wgpuAdapterPropertiesSubgroupMatrixConfigsFreeMembers_hook(WGPUAdapterPropertiesSubgroupMatrixConfigs value) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -60,6 +63,7 @@ static void wgpuAdapterPropertiesSubgroupMatrixConfigsFreeMembers_hook(WGPUAdapt
   webgpuHooks.procs.wgpuAdapterPropertiesSubgroupMatrixConfigsFreeMembers(value);
 }
 static void wgpuDawnDrmFormatCapabilitiesFreeMembers_hook(WGPUDawnDrmFormatCapabilities value) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -69,6 +73,7 @@ static void wgpuDawnDrmFormatCapabilitiesFreeMembers_hook(WGPUDawnDrmFormatCapab
   webgpuHooks.procs.wgpuDawnDrmFormatCapabilitiesFreeMembers(value);
 }
 static WGPUStatus wgpuGetInstanceCapabilities_hook(WGPUInstanceCapabilities * capabilities) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -78,6 +83,7 @@ static WGPUStatus wgpuGetInstanceCapabilities_hook(WGPUInstanceCapabilities * ca
   return webgpuHooks.procs.wgpuGetInstanceCapabilities(capabilities);
 }
 static WGPUProc wgpuGetProcAddress_hook(WGPUStringView procName) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -87,6 +93,7 @@ static WGPUProc wgpuGetProcAddress_hook(WGPUStringView procName) {
   return webgpuHooks.procs.wgpuGetProcAddress(procName);
 }
 static void wgpuSharedBufferMemoryEndAccessStateFreeMembers_hook(WGPUSharedBufferMemoryEndAccessState value) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -96,6 +103,7 @@ static void wgpuSharedBufferMemoryEndAccessStateFreeMembers_hook(WGPUSharedBuffe
   webgpuHooks.procs.wgpuSharedBufferMemoryEndAccessStateFreeMembers(value);
 }
 static void wgpuSharedTextureMemoryEndAccessStateFreeMembers_hook(WGPUSharedTextureMemoryEndAccessState value) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -105,6 +113,7 @@ static void wgpuSharedTextureMemoryEndAccessStateFreeMembers_hook(WGPUSharedText
   webgpuHooks.procs.wgpuSharedTextureMemoryEndAccessStateFreeMembers(value);
 }
 static void wgpuSupportedWGSLLanguageFeaturesFreeMembers_hook(WGPUSupportedWGSLLanguageFeatures value) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -114,6 +123,7 @@ static void wgpuSupportedWGSLLanguageFeaturesFreeMembers_hook(WGPUSupportedWGSLL
   webgpuHooks.procs.wgpuSupportedWGSLLanguageFeaturesFreeMembers(value);
 }
 static void wgpuSupportedFeaturesFreeMembers_hook(WGPUSupportedFeatures value) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -123,6 +133,7 @@ static void wgpuSupportedFeaturesFreeMembers_hook(WGPUSupportedFeatures value) {
   webgpuHooks.procs.wgpuSupportedFeaturesFreeMembers(value);
 }
 static void wgpuSurfaceCapabilitiesFreeMembers_hook(WGPUSurfaceCapabilities value) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -132,6 +143,7 @@ static void wgpuSurfaceCapabilitiesFreeMembers_hook(WGPUSurfaceCapabilities valu
   webgpuHooks.procs.wgpuSurfaceCapabilitiesFreeMembers(value);
 }
 static WGPUDevice wgpuAdapterCreateDevice_hook(WGPUAdapter adapter, WGPUDeviceDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -141,6 +153,7 @@ static WGPUDevice wgpuAdapterCreateDevice_hook(WGPUAdapter adapter, WGPUDeviceDe
   return webgpuHooks.procs.wgpuAdapterCreateDevice(adapter, descriptor);
 }
 static void wgpuAdapterGetFeatures_hook(WGPUAdapter adapter, WGPUSupportedFeatures * features) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -150,6 +163,7 @@ static void wgpuAdapterGetFeatures_hook(WGPUAdapter adapter, WGPUSupportedFeatur
   webgpuHooks.procs.wgpuAdapterGetFeatures(adapter, features);
 }
 static WGPUStatus wgpuAdapterGetFormatCapabilities_hook(WGPUAdapter adapter, WGPUTextureFormat format, WGPUDawnFormatCapabilities * capabilities) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -159,6 +173,7 @@ static WGPUStatus wgpuAdapterGetFormatCapabilities_hook(WGPUAdapter adapter, WGP
   return webgpuHooks.procs.wgpuAdapterGetFormatCapabilities(adapter, format, capabilities);
 }
 static WGPUStatus wgpuAdapterGetInfo_hook(WGPUAdapter adapter, WGPUAdapterInfo * info) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -168,6 +183,7 @@ static WGPUStatus wgpuAdapterGetInfo_hook(WGPUAdapter adapter, WGPUAdapterInfo *
   return webgpuHooks.procs.wgpuAdapterGetInfo(adapter, info);
 }
 static WGPUInstance wgpuAdapterGetInstance_hook(WGPUAdapter adapter) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -177,6 +193,7 @@ static WGPUInstance wgpuAdapterGetInstance_hook(WGPUAdapter adapter) {
   return webgpuHooks.procs.wgpuAdapterGetInstance(adapter);
 }
 static WGPUStatus wgpuAdapterGetLimits_hook(WGPUAdapter adapter, WGPULimits * limits) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -186,6 +203,7 @@ static WGPUStatus wgpuAdapterGetLimits_hook(WGPUAdapter adapter, WGPULimits * li
   return webgpuHooks.procs.wgpuAdapterGetLimits(adapter, limits);
 }
 static WGPUBool wgpuAdapterHasFeature_hook(WGPUAdapter adapter, WGPUFeatureName feature) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -195,6 +213,7 @@ static WGPUBool wgpuAdapterHasFeature_hook(WGPUAdapter adapter, WGPUFeatureName 
   return webgpuHooks.procs.wgpuAdapterHasFeature(adapter, feature);
 }
 static WGPUFuture wgpuAdapterRequestDevice_hook(WGPUAdapter adapter, WGPUDeviceDescriptor const * options, WGPURequestDeviceCallbackInfo callbackInfo) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -204,6 +223,7 @@ static WGPUFuture wgpuAdapterRequestDevice_hook(WGPUAdapter adapter, WGPUDeviceD
   return webgpuHooks.procs.wgpuAdapterRequestDevice(adapter, options, callbackInfo);
 }
 static void wgpuAdapterAddRef_hook(WGPUAdapter adapter) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -213,6 +233,7 @@ static void wgpuAdapterAddRef_hook(WGPUAdapter adapter) {
   webgpuHooks.procs.wgpuAdapterAddRef(adapter);
 }
 static void wgpuAdapterRelease_hook(WGPUAdapter adapter) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -222,6 +243,7 @@ static void wgpuAdapterRelease_hook(WGPUAdapter adapter) {
   webgpuHooks.procs.wgpuAdapterRelease(adapter);
 }
 static void wgpuBindGroupSetLabel_hook(WGPUBindGroup bindGroup, WGPUStringView label) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -231,6 +253,7 @@ static void wgpuBindGroupSetLabel_hook(WGPUBindGroup bindGroup, WGPUStringView l
   webgpuHooks.procs.wgpuBindGroupSetLabel(bindGroup, label);
 }
 static void wgpuBindGroupAddRef_hook(WGPUBindGroup bindGroup) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -240,6 +263,7 @@ static void wgpuBindGroupAddRef_hook(WGPUBindGroup bindGroup) {
   webgpuHooks.procs.wgpuBindGroupAddRef(bindGroup);
 }
 static void wgpuBindGroupRelease_hook(WGPUBindGroup bindGroup) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -249,6 +273,7 @@ static void wgpuBindGroupRelease_hook(WGPUBindGroup bindGroup) {
   webgpuHooks.procs.wgpuBindGroupRelease(bindGroup);
 }
 static void wgpuBindGroupLayoutSetLabel_hook(WGPUBindGroupLayout bindGroupLayout, WGPUStringView label) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -258,6 +283,7 @@ static void wgpuBindGroupLayoutSetLabel_hook(WGPUBindGroupLayout bindGroupLayout
   webgpuHooks.procs.wgpuBindGroupLayoutSetLabel(bindGroupLayout, label);
 }
 static void wgpuBindGroupLayoutAddRef_hook(WGPUBindGroupLayout bindGroupLayout) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -267,6 +293,7 @@ static void wgpuBindGroupLayoutAddRef_hook(WGPUBindGroupLayout bindGroupLayout) 
   webgpuHooks.procs.wgpuBindGroupLayoutAddRef(bindGroupLayout);
 }
 static void wgpuBindGroupLayoutRelease_hook(WGPUBindGroupLayout bindGroupLayout) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -276,6 +303,7 @@ static void wgpuBindGroupLayoutRelease_hook(WGPUBindGroupLayout bindGroupLayout)
   webgpuHooks.procs.wgpuBindGroupLayoutRelease(bindGroupLayout);
 }
 static void wgpuBufferDestroy_hook(WGPUBuffer buffer) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -285,6 +313,7 @@ static void wgpuBufferDestroy_hook(WGPUBuffer buffer) {
   webgpuHooks.procs.wgpuBufferDestroy(buffer);
 }
 static void const * wgpuBufferGetConstMappedRange_hook(WGPUBuffer buffer, size_t offset, size_t size) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -294,6 +323,7 @@ static void const * wgpuBufferGetConstMappedRange_hook(WGPUBuffer buffer, size_t
   return webgpuHooks.procs.wgpuBufferGetConstMappedRange(buffer, offset, size);
 }
 static WGPUBufferMapState wgpuBufferGetMapState_hook(WGPUBuffer buffer) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -303,6 +333,7 @@ static WGPUBufferMapState wgpuBufferGetMapState_hook(WGPUBuffer buffer) {
   return webgpuHooks.procs.wgpuBufferGetMapState(buffer);
 }
 static void * wgpuBufferGetMappedRange_hook(WGPUBuffer buffer, size_t offset, size_t size) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -312,6 +343,7 @@ static void * wgpuBufferGetMappedRange_hook(WGPUBuffer buffer, size_t offset, si
   return webgpuHooks.procs.wgpuBufferGetMappedRange(buffer, offset, size);
 }
 static uint64_t wgpuBufferGetSize_hook(WGPUBuffer buffer) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -321,6 +353,7 @@ static uint64_t wgpuBufferGetSize_hook(WGPUBuffer buffer) {
   return webgpuHooks.procs.wgpuBufferGetSize(buffer);
 }
 static WGPUBufferUsage wgpuBufferGetUsage_hook(WGPUBuffer buffer) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -330,6 +363,7 @@ static WGPUBufferUsage wgpuBufferGetUsage_hook(WGPUBuffer buffer) {
   return webgpuHooks.procs.wgpuBufferGetUsage(buffer);
 }
 static WGPUFuture wgpuBufferMapAsync_hook(WGPUBuffer buffer, WGPUMapMode mode, size_t offset, size_t size, WGPUBufferMapCallbackInfo callbackInfo) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -339,6 +373,7 @@ static WGPUFuture wgpuBufferMapAsync_hook(WGPUBuffer buffer, WGPUMapMode mode, s
   return webgpuHooks.procs.wgpuBufferMapAsync(buffer, mode, offset, size, callbackInfo);
 }
 static WGPUStatus wgpuBufferReadMappedRange_hook(WGPUBuffer buffer, size_t offset, void * data, size_t size) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -348,6 +383,7 @@ static WGPUStatus wgpuBufferReadMappedRange_hook(WGPUBuffer buffer, size_t offse
   return webgpuHooks.procs.wgpuBufferReadMappedRange(buffer, offset, data, size);
 }
 static void wgpuBufferSetLabel_hook(WGPUBuffer buffer, WGPUStringView label) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -357,6 +393,7 @@ static void wgpuBufferSetLabel_hook(WGPUBuffer buffer, WGPUStringView label) {
   webgpuHooks.procs.wgpuBufferSetLabel(buffer, label);
 }
 static void wgpuBufferUnmap_hook(WGPUBuffer buffer) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -366,6 +403,7 @@ static void wgpuBufferUnmap_hook(WGPUBuffer buffer) {
   webgpuHooks.procs.wgpuBufferUnmap(buffer);
 }
 static WGPUStatus wgpuBufferWriteMappedRange_hook(WGPUBuffer buffer, size_t offset, void const * data, size_t size) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -375,6 +413,7 @@ static WGPUStatus wgpuBufferWriteMappedRange_hook(WGPUBuffer buffer, size_t offs
   return webgpuHooks.procs.wgpuBufferWriteMappedRange(buffer, offset, data, size);
 }
 static void wgpuBufferAddRef_hook(WGPUBuffer buffer) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -384,6 +423,7 @@ static void wgpuBufferAddRef_hook(WGPUBuffer buffer) {
   webgpuHooks.procs.wgpuBufferAddRef(buffer);
 }
 static void wgpuBufferRelease_hook(WGPUBuffer buffer) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -393,6 +433,7 @@ static void wgpuBufferRelease_hook(WGPUBuffer buffer) {
   webgpuHooks.procs.wgpuBufferRelease(buffer);
 }
 static void wgpuCommandBufferSetLabel_hook(WGPUCommandBuffer commandBuffer, WGPUStringView label) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -402,6 +443,7 @@ static void wgpuCommandBufferSetLabel_hook(WGPUCommandBuffer commandBuffer, WGPU
   webgpuHooks.procs.wgpuCommandBufferSetLabel(commandBuffer, label);
 }
 static void wgpuCommandBufferAddRef_hook(WGPUCommandBuffer commandBuffer) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -411,6 +453,7 @@ static void wgpuCommandBufferAddRef_hook(WGPUCommandBuffer commandBuffer) {
   webgpuHooks.procs.wgpuCommandBufferAddRef(commandBuffer);
 }
 static void wgpuCommandBufferRelease_hook(WGPUCommandBuffer commandBuffer) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -420,6 +463,7 @@ static void wgpuCommandBufferRelease_hook(WGPUCommandBuffer commandBuffer) {
   webgpuHooks.procs.wgpuCommandBufferRelease(commandBuffer);
 }
 static WGPUComputePassEncoder wgpuCommandEncoderBeginComputePass_hook(WGPUCommandEncoder commandEncoder, WGPUComputePassDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -429,6 +473,7 @@ static WGPUComputePassEncoder wgpuCommandEncoderBeginComputePass_hook(WGPUComman
   return webgpuHooks.procs.wgpuCommandEncoderBeginComputePass(commandEncoder, descriptor);
 }
 static WGPURenderPassEncoder wgpuCommandEncoderBeginRenderPass_hook(WGPUCommandEncoder commandEncoder, WGPURenderPassDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -438,6 +483,7 @@ static WGPURenderPassEncoder wgpuCommandEncoderBeginRenderPass_hook(WGPUCommandE
   return webgpuHooks.procs.wgpuCommandEncoderBeginRenderPass(commandEncoder, descriptor);
 }
 static void wgpuCommandEncoderClearBuffer_hook(WGPUCommandEncoder commandEncoder, WGPUBuffer buffer, uint64_t offset, uint64_t size) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -447,6 +493,7 @@ static void wgpuCommandEncoderClearBuffer_hook(WGPUCommandEncoder commandEncoder
   webgpuHooks.procs.wgpuCommandEncoderClearBuffer(commandEncoder, buffer, offset, size);
 }
 static void wgpuCommandEncoderCopyBufferToBuffer_hook(WGPUCommandEncoder commandEncoder, WGPUBuffer source, uint64_t sourceOffset, WGPUBuffer destination, uint64_t destinationOffset, uint64_t size) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -456,6 +503,7 @@ static void wgpuCommandEncoderCopyBufferToBuffer_hook(WGPUCommandEncoder command
   webgpuHooks.procs.wgpuCommandEncoderCopyBufferToBuffer(commandEncoder, source, sourceOffset, destination, destinationOffset, size);
 }
 static void wgpuCommandEncoderCopyBufferToTexture_hook(WGPUCommandEncoder commandEncoder, WGPUTexelCopyBufferInfo const * source, WGPUTexelCopyTextureInfo const * destination, WGPUExtent3D const * copySize) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -465,6 +513,7 @@ static void wgpuCommandEncoderCopyBufferToTexture_hook(WGPUCommandEncoder comman
   webgpuHooks.procs.wgpuCommandEncoderCopyBufferToTexture(commandEncoder, source, destination, copySize);
 }
 static void wgpuCommandEncoderCopyTextureToBuffer_hook(WGPUCommandEncoder commandEncoder, WGPUTexelCopyTextureInfo const * source, WGPUTexelCopyBufferInfo const * destination, WGPUExtent3D const * copySize) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -474,6 +523,7 @@ static void wgpuCommandEncoderCopyTextureToBuffer_hook(WGPUCommandEncoder comman
   webgpuHooks.procs.wgpuCommandEncoderCopyTextureToBuffer(commandEncoder, source, destination, copySize);
 }
 static void wgpuCommandEncoderCopyTextureToTexture_hook(WGPUCommandEncoder commandEncoder, WGPUTexelCopyTextureInfo const * source, WGPUTexelCopyTextureInfo const * destination, WGPUExtent3D const * copySize) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -483,6 +533,7 @@ static void wgpuCommandEncoderCopyTextureToTexture_hook(WGPUCommandEncoder comma
   webgpuHooks.procs.wgpuCommandEncoderCopyTextureToTexture(commandEncoder, source, destination, copySize);
 }
 static WGPUCommandBuffer wgpuCommandEncoderFinish_hook(WGPUCommandEncoder commandEncoder, WGPUCommandBufferDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -492,6 +543,7 @@ static WGPUCommandBuffer wgpuCommandEncoderFinish_hook(WGPUCommandEncoder comman
   return webgpuHooks.procs.wgpuCommandEncoderFinish(commandEncoder, descriptor);
 }
 static void wgpuCommandEncoderInjectValidationError_hook(WGPUCommandEncoder commandEncoder, WGPUStringView message) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -501,6 +553,7 @@ static void wgpuCommandEncoderInjectValidationError_hook(WGPUCommandEncoder comm
   webgpuHooks.procs.wgpuCommandEncoderInjectValidationError(commandEncoder, message);
 }
 static void wgpuCommandEncoderInsertDebugMarker_hook(WGPUCommandEncoder commandEncoder, WGPUStringView markerLabel) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -510,6 +563,7 @@ static void wgpuCommandEncoderInsertDebugMarker_hook(WGPUCommandEncoder commandE
   webgpuHooks.procs.wgpuCommandEncoderInsertDebugMarker(commandEncoder, markerLabel);
 }
 static void wgpuCommandEncoderPopDebugGroup_hook(WGPUCommandEncoder commandEncoder) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -519,6 +573,7 @@ static void wgpuCommandEncoderPopDebugGroup_hook(WGPUCommandEncoder commandEncod
   webgpuHooks.procs.wgpuCommandEncoderPopDebugGroup(commandEncoder);
 }
 static void wgpuCommandEncoderPushDebugGroup_hook(WGPUCommandEncoder commandEncoder, WGPUStringView groupLabel) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -528,6 +583,7 @@ static void wgpuCommandEncoderPushDebugGroup_hook(WGPUCommandEncoder commandEnco
   webgpuHooks.procs.wgpuCommandEncoderPushDebugGroup(commandEncoder, groupLabel);
 }
 static void wgpuCommandEncoderResolveQuerySet_hook(WGPUCommandEncoder commandEncoder, WGPUQuerySet querySet, uint32_t firstQuery, uint32_t queryCount, WGPUBuffer destination, uint64_t destinationOffset) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -537,6 +593,7 @@ static void wgpuCommandEncoderResolveQuerySet_hook(WGPUCommandEncoder commandEnc
   webgpuHooks.procs.wgpuCommandEncoderResolveQuerySet(commandEncoder, querySet, firstQuery, queryCount, destination, destinationOffset);
 }
 static void wgpuCommandEncoderSetLabel_hook(WGPUCommandEncoder commandEncoder, WGPUStringView label) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -546,6 +603,7 @@ static void wgpuCommandEncoderSetLabel_hook(WGPUCommandEncoder commandEncoder, W
   webgpuHooks.procs.wgpuCommandEncoderSetLabel(commandEncoder, label);
 }
 static void wgpuCommandEncoderWriteBuffer_hook(WGPUCommandEncoder commandEncoder, WGPUBuffer buffer, uint64_t bufferOffset, uint8_t const * data, uint64_t size) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -555,6 +613,7 @@ static void wgpuCommandEncoderWriteBuffer_hook(WGPUCommandEncoder commandEncoder
   webgpuHooks.procs.wgpuCommandEncoderWriteBuffer(commandEncoder, buffer, bufferOffset, data, size);
 }
 static void wgpuCommandEncoderWriteTimestamp_hook(WGPUCommandEncoder commandEncoder, WGPUQuerySet querySet, uint32_t queryIndex) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -564,6 +623,7 @@ static void wgpuCommandEncoderWriteTimestamp_hook(WGPUCommandEncoder commandEnco
   webgpuHooks.procs.wgpuCommandEncoderWriteTimestamp(commandEncoder, querySet, queryIndex);
 }
 static void wgpuCommandEncoderAddRef_hook(WGPUCommandEncoder commandEncoder) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -573,6 +633,7 @@ static void wgpuCommandEncoderAddRef_hook(WGPUCommandEncoder commandEncoder) {
   webgpuHooks.procs.wgpuCommandEncoderAddRef(commandEncoder);
 }
 static void wgpuCommandEncoderRelease_hook(WGPUCommandEncoder commandEncoder) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -582,6 +643,7 @@ static void wgpuCommandEncoderRelease_hook(WGPUCommandEncoder commandEncoder) {
   webgpuHooks.procs.wgpuCommandEncoderRelease(commandEncoder);
 }
 static void wgpuComputePassEncoderDispatchWorkgroups_hook(WGPUComputePassEncoder computePassEncoder, uint32_t workgroupCountX, uint32_t workgroupCountY, uint32_t workgroupCountZ) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -591,6 +653,7 @@ static void wgpuComputePassEncoderDispatchWorkgroups_hook(WGPUComputePassEncoder
   webgpuHooks.procs.wgpuComputePassEncoderDispatchWorkgroups(computePassEncoder, workgroupCountX, workgroupCountY, workgroupCountZ);
 }
 static void wgpuComputePassEncoderDispatchWorkgroupsIndirect_hook(WGPUComputePassEncoder computePassEncoder, WGPUBuffer indirectBuffer, uint64_t indirectOffset) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -600,6 +663,7 @@ static void wgpuComputePassEncoderDispatchWorkgroupsIndirect_hook(WGPUComputePas
   webgpuHooks.procs.wgpuComputePassEncoderDispatchWorkgroupsIndirect(computePassEncoder, indirectBuffer, indirectOffset);
 }
 static void wgpuComputePassEncoderEnd_hook(WGPUComputePassEncoder computePassEncoder) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -609,6 +673,7 @@ static void wgpuComputePassEncoderEnd_hook(WGPUComputePassEncoder computePassEnc
   webgpuHooks.procs.wgpuComputePassEncoderEnd(computePassEncoder);
 }
 static void wgpuComputePassEncoderInsertDebugMarker_hook(WGPUComputePassEncoder computePassEncoder, WGPUStringView markerLabel) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -618,6 +683,7 @@ static void wgpuComputePassEncoderInsertDebugMarker_hook(WGPUComputePassEncoder 
   webgpuHooks.procs.wgpuComputePassEncoderInsertDebugMarker(computePassEncoder, markerLabel);
 }
 static void wgpuComputePassEncoderPopDebugGroup_hook(WGPUComputePassEncoder computePassEncoder) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -627,6 +693,7 @@ static void wgpuComputePassEncoderPopDebugGroup_hook(WGPUComputePassEncoder comp
   webgpuHooks.procs.wgpuComputePassEncoderPopDebugGroup(computePassEncoder);
 }
 static void wgpuComputePassEncoderPushDebugGroup_hook(WGPUComputePassEncoder computePassEncoder, WGPUStringView groupLabel) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -636,6 +703,7 @@ static void wgpuComputePassEncoderPushDebugGroup_hook(WGPUComputePassEncoder com
   webgpuHooks.procs.wgpuComputePassEncoderPushDebugGroup(computePassEncoder, groupLabel);
 }
 static void wgpuComputePassEncoderSetBindGroup_hook(WGPUComputePassEncoder computePassEncoder, uint32_t groupIndex, WGPUBindGroup group, size_t dynamicOffsetCount, uint32_t const * dynamicOffsets) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -645,6 +713,7 @@ static void wgpuComputePassEncoderSetBindGroup_hook(WGPUComputePassEncoder compu
   webgpuHooks.procs.wgpuComputePassEncoderSetBindGroup(computePassEncoder, groupIndex, group, dynamicOffsetCount, dynamicOffsets);
 }
 static void wgpuComputePassEncoderSetImmediateData_hook(WGPUComputePassEncoder computePassEncoder, uint32_t offset, void const * data, size_t size) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -654,6 +723,7 @@ static void wgpuComputePassEncoderSetImmediateData_hook(WGPUComputePassEncoder c
   webgpuHooks.procs.wgpuComputePassEncoderSetImmediateData(computePassEncoder, offset, data, size);
 }
 static void wgpuComputePassEncoderSetLabel_hook(WGPUComputePassEncoder computePassEncoder, WGPUStringView label) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -663,6 +733,7 @@ static void wgpuComputePassEncoderSetLabel_hook(WGPUComputePassEncoder computePa
   webgpuHooks.procs.wgpuComputePassEncoderSetLabel(computePassEncoder, label);
 }
 static void wgpuComputePassEncoderSetPipeline_hook(WGPUComputePassEncoder computePassEncoder, WGPUComputePipeline pipeline) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -672,6 +743,7 @@ static void wgpuComputePassEncoderSetPipeline_hook(WGPUComputePassEncoder comput
   webgpuHooks.procs.wgpuComputePassEncoderSetPipeline(computePassEncoder, pipeline);
 }
 static void wgpuComputePassEncoderWriteTimestamp_hook(WGPUComputePassEncoder computePassEncoder, WGPUQuerySet querySet, uint32_t queryIndex) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -681,6 +753,7 @@ static void wgpuComputePassEncoderWriteTimestamp_hook(WGPUComputePassEncoder com
   webgpuHooks.procs.wgpuComputePassEncoderWriteTimestamp(computePassEncoder, querySet, queryIndex);
 }
 static void wgpuComputePassEncoderAddRef_hook(WGPUComputePassEncoder computePassEncoder) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -690,6 +763,7 @@ static void wgpuComputePassEncoderAddRef_hook(WGPUComputePassEncoder computePass
   webgpuHooks.procs.wgpuComputePassEncoderAddRef(computePassEncoder);
 }
 static void wgpuComputePassEncoderRelease_hook(WGPUComputePassEncoder computePassEncoder) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -699,6 +773,7 @@ static void wgpuComputePassEncoderRelease_hook(WGPUComputePassEncoder computePas
   webgpuHooks.procs.wgpuComputePassEncoderRelease(computePassEncoder);
 }
 static WGPUBindGroupLayout wgpuComputePipelineGetBindGroupLayout_hook(WGPUComputePipeline computePipeline, uint32_t groupIndex) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -708,6 +783,7 @@ static WGPUBindGroupLayout wgpuComputePipelineGetBindGroupLayout_hook(WGPUComput
   return webgpuHooks.procs.wgpuComputePipelineGetBindGroupLayout(computePipeline, groupIndex);
 }
 static void wgpuComputePipelineSetLabel_hook(WGPUComputePipeline computePipeline, WGPUStringView label) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -717,6 +793,7 @@ static void wgpuComputePipelineSetLabel_hook(WGPUComputePipeline computePipeline
   webgpuHooks.procs.wgpuComputePipelineSetLabel(computePipeline, label);
 }
 static void wgpuComputePipelineAddRef_hook(WGPUComputePipeline computePipeline) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -726,6 +803,7 @@ static void wgpuComputePipelineAddRef_hook(WGPUComputePipeline computePipeline) 
   webgpuHooks.procs.wgpuComputePipelineAddRef(computePipeline);
 }
 static void wgpuComputePipelineRelease_hook(WGPUComputePipeline computePipeline) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -735,6 +813,7 @@ static void wgpuComputePipelineRelease_hook(WGPUComputePipeline computePipeline)
   webgpuHooks.procs.wgpuComputePipelineRelease(computePipeline);
 }
 static WGPUBindGroup wgpuDeviceCreateBindGroup_hook(WGPUDevice device, WGPUBindGroupDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -744,6 +823,7 @@ static WGPUBindGroup wgpuDeviceCreateBindGroup_hook(WGPUDevice device, WGPUBindG
   return webgpuHooks.procs.wgpuDeviceCreateBindGroup(device, descriptor);
 }
 static WGPUBindGroupLayout wgpuDeviceCreateBindGroupLayout_hook(WGPUDevice device, WGPUBindGroupLayoutDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -753,6 +833,7 @@ static WGPUBindGroupLayout wgpuDeviceCreateBindGroupLayout_hook(WGPUDevice devic
   return webgpuHooks.procs.wgpuDeviceCreateBindGroupLayout(device, descriptor);
 }
 static WGPUBuffer wgpuDeviceCreateBuffer_hook(WGPUDevice device, WGPUBufferDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -762,6 +843,7 @@ static WGPUBuffer wgpuDeviceCreateBuffer_hook(WGPUDevice device, WGPUBufferDescr
   return webgpuHooks.procs.wgpuDeviceCreateBuffer(device, descriptor);
 }
 static WGPUCommandEncoder wgpuDeviceCreateCommandEncoder_hook(WGPUDevice device, WGPUCommandEncoderDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -771,6 +853,7 @@ static WGPUCommandEncoder wgpuDeviceCreateCommandEncoder_hook(WGPUDevice device,
   return webgpuHooks.procs.wgpuDeviceCreateCommandEncoder(device, descriptor);
 }
 static WGPUComputePipeline wgpuDeviceCreateComputePipeline_hook(WGPUDevice device, WGPUComputePipelineDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -780,6 +863,7 @@ static WGPUComputePipeline wgpuDeviceCreateComputePipeline_hook(WGPUDevice devic
   return webgpuHooks.procs.wgpuDeviceCreateComputePipeline(device, descriptor);
 }
 static WGPUFuture wgpuDeviceCreateComputePipelineAsync_hook(WGPUDevice device, WGPUComputePipelineDescriptor const * descriptor, WGPUCreateComputePipelineAsyncCallbackInfo callbackInfo) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -789,6 +873,7 @@ static WGPUFuture wgpuDeviceCreateComputePipelineAsync_hook(WGPUDevice device, W
   return webgpuHooks.procs.wgpuDeviceCreateComputePipelineAsync(device, descriptor, callbackInfo);
 }
 static WGPUBuffer wgpuDeviceCreateErrorBuffer_hook(WGPUDevice device, WGPUBufferDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -798,6 +883,7 @@ static WGPUBuffer wgpuDeviceCreateErrorBuffer_hook(WGPUDevice device, WGPUBuffer
   return webgpuHooks.procs.wgpuDeviceCreateErrorBuffer(device, descriptor);
 }
 static WGPUExternalTexture wgpuDeviceCreateErrorExternalTexture_hook(WGPUDevice device) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -807,6 +893,7 @@ static WGPUExternalTexture wgpuDeviceCreateErrorExternalTexture_hook(WGPUDevice 
   return webgpuHooks.procs.wgpuDeviceCreateErrorExternalTexture(device);
 }
 static WGPUShaderModule wgpuDeviceCreateErrorShaderModule_hook(WGPUDevice device, WGPUShaderModuleDescriptor const * descriptor, WGPUStringView errorMessage) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -816,6 +903,7 @@ static WGPUShaderModule wgpuDeviceCreateErrorShaderModule_hook(WGPUDevice device
   return webgpuHooks.procs.wgpuDeviceCreateErrorShaderModule(device, descriptor, errorMessage);
 }
 static WGPUTexture wgpuDeviceCreateErrorTexture_hook(WGPUDevice device, WGPUTextureDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -825,6 +913,7 @@ static WGPUTexture wgpuDeviceCreateErrorTexture_hook(WGPUDevice device, WGPUText
   return webgpuHooks.procs.wgpuDeviceCreateErrorTexture(device, descriptor);
 }
 static WGPUExternalTexture wgpuDeviceCreateExternalTexture_hook(WGPUDevice device, WGPUExternalTextureDescriptor const * externalTextureDescriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -834,6 +923,7 @@ static WGPUExternalTexture wgpuDeviceCreateExternalTexture_hook(WGPUDevice devic
   return webgpuHooks.procs.wgpuDeviceCreateExternalTexture(device, externalTextureDescriptor);
 }
 static WGPUPipelineLayout wgpuDeviceCreatePipelineLayout_hook(WGPUDevice device, WGPUPipelineLayoutDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -843,6 +933,7 @@ static WGPUPipelineLayout wgpuDeviceCreatePipelineLayout_hook(WGPUDevice device,
   return webgpuHooks.procs.wgpuDeviceCreatePipelineLayout(device, descriptor);
 }
 static WGPUQuerySet wgpuDeviceCreateQuerySet_hook(WGPUDevice device, WGPUQuerySetDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -852,6 +943,7 @@ static WGPUQuerySet wgpuDeviceCreateQuerySet_hook(WGPUDevice device, WGPUQuerySe
   return webgpuHooks.procs.wgpuDeviceCreateQuerySet(device, descriptor);
 }
 static WGPURenderBundleEncoder wgpuDeviceCreateRenderBundleEncoder_hook(WGPUDevice device, WGPURenderBundleEncoderDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -861,6 +953,7 @@ static WGPURenderBundleEncoder wgpuDeviceCreateRenderBundleEncoder_hook(WGPUDevi
   return webgpuHooks.procs.wgpuDeviceCreateRenderBundleEncoder(device, descriptor);
 }
 static WGPURenderPipeline wgpuDeviceCreateRenderPipeline_hook(WGPUDevice device, WGPURenderPipelineDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -870,6 +963,7 @@ static WGPURenderPipeline wgpuDeviceCreateRenderPipeline_hook(WGPUDevice device,
   return webgpuHooks.procs.wgpuDeviceCreateRenderPipeline(device, descriptor);
 }
 static WGPUFuture wgpuDeviceCreateRenderPipelineAsync_hook(WGPUDevice device, WGPURenderPipelineDescriptor const * descriptor, WGPUCreateRenderPipelineAsyncCallbackInfo callbackInfo) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -879,6 +973,7 @@ static WGPUFuture wgpuDeviceCreateRenderPipelineAsync_hook(WGPUDevice device, WG
   return webgpuHooks.procs.wgpuDeviceCreateRenderPipelineAsync(device, descriptor, callbackInfo);
 }
 static WGPUSampler wgpuDeviceCreateSampler_hook(WGPUDevice device, WGPUSamplerDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -888,6 +983,7 @@ static WGPUSampler wgpuDeviceCreateSampler_hook(WGPUDevice device, WGPUSamplerDe
   return webgpuHooks.procs.wgpuDeviceCreateSampler(device, descriptor);
 }
 static WGPUShaderModule wgpuDeviceCreateShaderModule_hook(WGPUDevice device, WGPUShaderModuleDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -897,6 +993,7 @@ static WGPUShaderModule wgpuDeviceCreateShaderModule_hook(WGPUDevice device, WGP
   return webgpuHooks.procs.wgpuDeviceCreateShaderModule(device, descriptor);
 }
 static WGPUTexture wgpuDeviceCreateTexture_hook(WGPUDevice device, WGPUTextureDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -906,6 +1003,7 @@ static WGPUTexture wgpuDeviceCreateTexture_hook(WGPUDevice device, WGPUTextureDe
   return webgpuHooks.procs.wgpuDeviceCreateTexture(device, descriptor);
 }
 static void wgpuDeviceDestroy_hook(WGPUDevice device) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -915,6 +1013,7 @@ static void wgpuDeviceDestroy_hook(WGPUDevice device) {
   webgpuHooks.procs.wgpuDeviceDestroy(device);
 }
 static void wgpuDeviceForceLoss_hook(WGPUDevice device, WGPUDeviceLostReason type, WGPUStringView message) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -924,6 +1023,7 @@ static void wgpuDeviceForceLoss_hook(WGPUDevice device, WGPUDeviceLostReason typ
   webgpuHooks.procs.wgpuDeviceForceLoss(device, type, message);
 }
 static WGPUStatus wgpuDeviceGetAHardwareBufferProperties_hook(WGPUDevice device, void * handle, WGPUAHardwareBufferProperties * properties) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -933,6 +1033,7 @@ static WGPUStatus wgpuDeviceGetAHardwareBufferProperties_hook(WGPUDevice device,
   return webgpuHooks.procs.wgpuDeviceGetAHardwareBufferProperties(device, handle, properties);
 }
 static WGPUAdapter wgpuDeviceGetAdapter_hook(WGPUDevice device) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -942,6 +1043,7 @@ static WGPUAdapter wgpuDeviceGetAdapter_hook(WGPUDevice device) {
   return webgpuHooks.procs.wgpuDeviceGetAdapter(device);
 }
 static WGPUStatus wgpuDeviceGetAdapterInfo_hook(WGPUDevice device, WGPUAdapterInfo * adapterInfo) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -951,6 +1053,7 @@ static WGPUStatus wgpuDeviceGetAdapterInfo_hook(WGPUDevice device, WGPUAdapterIn
   return webgpuHooks.procs.wgpuDeviceGetAdapterInfo(device, adapterInfo);
 }
 static void wgpuDeviceGetFeatures_hook(WGPUDevice device, WGPUSupportedFeatures * features) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -960,6 +1063,7 @@ static void wgpuDeviceGetFeatures_hook(WGPUDevice device, WGPUSupportedFeatures 
   webgpuHooks.procs.wgpuDeviceGetFeatures(device, features);
 }
 static WGPUStatus wgpuDeviceGetLimits_hook(WGPUDevice device, WGPULimits * limits) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -969,6 +1073,7 @@ static WGPUStatus wgpuDeviceGetLimits_hook(WGPUDevice device, WGPULimits * limit
   return webgpuHooks.procs.wgpuDeviceGetLimits(device, limits);
 }
 static WGPUFuture wgpuDeviceGetLostFuture_hook(WGPUDevice device) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -978,6 +1083,7 @@ static WGPUFuture wgpuDeviceGetLostFuture_hook(WGPUDevice device) {
   return webgpuHooks.procs.wgpuDeviceGetLostFuture(device);
 }
 static WGPUQueue wgpuDeviceGetQueue_hook(WGPUDevice device) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -987,6 +1093,7 @@ static WGPUQueue wgpuDeviceGetQueue_hook(WGPUDevice device) {
   return webgpuHooks.procs.wgpuDeviceGetQueue(device);
 }
 static WGPUBool wgpuDeviceHasFeature_hook(WGPUDevice device, WGPUFeatureName feature) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -996,6 +1103,7 @@ static WGPUBool wgpuDeviceHasFeature_hook(WGPUDevice device, WGPUFeatureName fea
   return webgpuHooks.procs.wgpuDeviceHasFeature(device, feature);
 }
 static WGPUSharedBufferMemory wgpuDeviceImportSharedBufferMemory_hook(WGPUDevice device, WGPUSharedBufferMemoryDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1005,6 +1113,7 @@ static WGPUSharedBufferMemory wgpuDeviceImportSharedBufferMemory_hook(WGPUDevice
   return webgpuHooks.procs.wgpuDeviceImportSharedBufferMemory(device, descriptor);
 }
 static WGPUSharedFence wgpuDeviceImportSharedFence_hook(WGPUDevice device, WGPUSharedFenceDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1014,6 +1123,7 @@ static WGPUSharedFence wgpuDeviceImportSharedFence_hook(WGPUDevice device, WGPUS
   return webgpuHooks.procs.wgpuDeviceImportSharedFence(device, descriptor);
 }
 static WGPUSharedTextureMemory wgpuDeviceImportSharedTextureMemory_hook(WGPUDevice device, WGPUSharedTextureMemoryDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1023,6 +1133,7 @@ static WGPUSharedTextureMemory wgpuDeviceImportSharedTextureMemory_hook(WGPUDevi
   return webgpuHooks.procs.wgpuDeviceImportSharedTextureMemory(device, descriptor);
 }
 static void wgpuDeviceInjectError_hook(WGPUDevice device, WGPUErrorType type, WGPUStringView message) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1032,6 +1143,7 @@ static void wgpuDeviceInjectError_hook(WGPUDevice device, WGPUErrorType type, WG
   webgpuHooks.procs.wgpuDeviceInjectError(device, type, message);
 }
 static WGPUFuture wgpuDevicePopErrorScope_hook(WGPUDevice device, WGPUPopErrorScopeCallbackInfo callbackInfo) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1041,6 +1153,7 @@ static WGPUFuture wgpuDevicePopErrorScope_hook(WGPUDevice device, WGPUPopErrorSc
   return webgpuHooks.procs.wgpuDevicePopErrorScope(device, callbackInfo);
 }
 static void wgpuDevicePushErrorScope_hook(WGPUDevice device, WGPUErrorFilter filter) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1050,6 +1163,7 @@ static void wgpuDevicePushErrorScope_hook(WGPUDevice device, WGPUErrorFilter fil
   webgpuHooks.procs.wgpuDevicePushErrorScope(device, filter);
 }
 static void wgpuDeviceSetLabel_hook(WGPUDevice device, WGPUStringView label) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1059,6 +1173,7 @@ static void wgpuDeviceSetLabel_hook(WGPUDevice device, WGPUStringView label) {
   webgpuHooks.procs.wgpuDeviceSetLabel(device, label);
 }
 static void wgpuDeviceSetLoggingCallback_hook(WGPUDevice device, WGPULoggingCallbackInfo callbackInfo) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1068,6 +1183,7 @@ static void wgpuDeviceSetLoggingCallback_hook(WGPUDevice device, WGPULoggingCall
   webgpuHooks.procs.wgpuDeviceSetLoggingCallback(device, callbackInfo);
 }
 static void wgpuDeviceTick_hook(WGPUDevice device) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1077,6 +1193,7 @@ static void wgpuDeviceTick_hook(WGPUDevice device) {
   webgpuHooks.procs.wgpuDeviceTick(device);
 }
 static void wgpuDeviceValidateTextureDescriptor_hook(WGPUDevice device, WGPUTextureDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1086,6 +1203,7 @@ static void wgpuDeviceValidateTextureDescriptor_hook(WGPUDevice device, WGPUText
   webgpuHooks.procs.wgpuDeviceValidateTextureDescriptor(device, descriptor);
 }
 static void wgpuDeviceAddRef_hook(WGPUDevice device) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1095,6 +1213,7 @@ static void wgpuDeviceAddRef_hook(WGPUDevice device) {
   webgpuHooks.procs.wgpuDeviceAddRef(device);
 }
 static void wgpuDeviceRelease_hook(WGPUDevice device) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1104,6 +1223,7 @@ static void wgpuDeviceRelease_hook(WGPUDevice device) {
   webgpuHooks.procs.wgpuDeviceRelease(device);
 }
 static void wgpuExternalTextureDestroy_hook(WGPUExternalTexture externalTexture) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1113,6 +1233,7 @@ static void wgpuExternalTextureDestroy_hook(WGPUExternalTexture externalTexture)
   webgpuHooks.procs.wgpuExternalTextureDestroy(externalTexture);
 }
 static void wgpuExternalTextureExpire_hook(WGPUExternalTexture externalTexture) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1122,6 +1243,7 @@ static void wgpuExternalTextureExpire_hook(WGPUExternalTexture externalTexture) 
   webgpuHooks.procs.wgpuExternalTextureExpire(externalTexture);
 }
 static void wgpuExternalTextureRefresh_hook(WGPUExternalTexture externalTexture) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1131,6 +1253,7 @@ static void wgpuExternalTextureRefresh_hook(WGPUExternalTexture externalTexture)
   webgpuHooks.procs.wgpuExternalTextureRefresh(externalTexture);
 }
 static void wgpuExternalTextureSetLabel_hook(WGPUExternalTexture externalTexture, WGPUStringView label) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1140,6 +1263,7 @@ static void wgpuExternalTextureSetLabel_hook(WGPUExternalTexture externalTexture
   webgpuHooks.procs.wgpuExternalTextureSetLabel(externalTexture, label);
 }
 static void wgpuExternalTextureAddRef_hook(WGPUExternalTexture externalTexture) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1149,6 +1273,7 @@ static void wgpuExternalTextureAddRef_hook(WGPUExternalTexture externalTexture) 
   webgpuHooks.procs.wgpuExternalTextureAddRef(externalTexture);
 }
 static void wgpuExternalTextureRelease_hook(WGPUExternalTexture externalTexture) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1158,6 +1283,7 @@ static void wgpuExternalTextureRelease_hook(WGPUExternalTexture externalTexture)
   webgpuHooks.procs.wgpuExternalTextureRelease(externalTexture);
 }
 static WGPUSurface wgpuInstanceCreateSurface_hook(WGPUInstance instance, WGPUSurfaceDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1167,6 +1293,7 @@ static WGPUSurface wgpuInstanceCreateSurface_hook(WGPUInstance instance, WGPUSur
   return webgpuHooks.procs.wgpuInstanceCreateSurface(instance, descriptor);
 }
 static WGPUStatus wgpuInstanceGetWGSLLanguageFeatures_hook(WGPUInstance instance, WGPUSupportedWGSLLanguageFeatures * features) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1176,6 +1303,7 @@ static WGPUStatus wgpuInstanceGetWGSLLanguageFeatures_hook(WGPUInstance instance
   return webgpuHooks.procs.wgpuInstanceGetWGSLLanguageFeatures(instance, features);
 }
 static WGPUBool wgpuInstanceHasWGSLLanguageFeature_hook(WGPUInstance instance, WGPUWGSLLanguageFeatureName feature) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1185,6 +1313,7 @@ static WGPUBool wgpuInstanceHasWGSLLanguageFeature_hook(WGPUInstance instance, W
   return webgpuHooks.procs.wgpuInstanceHasWGSLLanguageFeature(instance, feature);
 }
 static void wgpuInstanceProcessEvents_hook(WGPUInstance instance) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1194,6 +1323,7 @@ static void wgpuInstanceProcessEvents_hook(WGPUInstance instance) {
   webgpuHooks.procs.wgpuInstanceProcessEvents(instance);
 }
 static WGPUFuture wgpuInstanceRequestAdapter_hook(WGPUInstance instance, WGPURequestAdapterOptions const * options, WGPURequestAdapterCallbackInfo callbackInfo) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1203,6 +1333,7 @@ static WGPUFuture wgpuInstanceRequestAdapter_hook(WGPUInstance instance, WGPUReq
   return webgpuHooks.procs.wgpuInstanceRequestAdapter(instance, options, callbackInfo);
 }
 static WGPUWaitStatus wgpuInstanceWaitAny_hook(WGPUInstance instance, size_t futureCount, WGPUFutureWaitInfo * futures, uint64_t timeoutNS) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1212,6 +1343,7 @@ static WGPUWaitStatus wgpuInstanceWaitAny_hook(WGPUInstance instance, size_t fut
   return webgpuHooks.procs.wgpuInstanceWaitAny(instance, futureCount, futures, timeoutNS);
 }
 static void wgpuInstanceAddRef_hook(WGPUInstance instance) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1221,6 +1353,7 @@ static void wgpuInstanceAddRef_hook(WGPUInstance instance) {
   webgpuHooks.procs.wgpuInstanceAddRef(instance);
 }
 static void wgpuPipelineLayoutSetLabel_hook(WGPUPipelineLayout pipelineLayout, WGPUStringView label) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1230,6 +1363,7 @@ static void wgpuPipelineLayoutSetLabel_hook(WGPUPipelineLayout pipelineLayout, W
   webgpuHooks.procs.wgpuPipelineLayoutSetLabel(pipelineLayout, label);
 }
 static void wgpuPipelineLayoutAddRef_hook(WGPUPipelineLayout pipelineLayout) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1239,6 +1373,7 @@ static void wgpuPipelineLayoutAddRef_hook(WGPUPipelineLayout pipelineLayout) {
   webgpuHooks.procs.wgpuPipelineLayoutAddRef(pipelineLayout);
 }
 static void wgpuPipelineLayoutRelease_hook(WGPUPipelineLayout pipelineLayout) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1248,6 +1383,7 @@ static void wgpuPipelineLayoutRelease_hook(WGPUPipelineLayout pipelineLayout) {
   webgpuHooks.procs.wgpuPipelineLayoutRelease(pipelineLayout);
 }
 static void wgpuQuerySetDestroy_hook(WGPUQuerySet querySet) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1257,6 +1393,7 @@ static void wgpuQuerySetDestroy_hook(WGPUQuerySet querySet) {
   webgpuHooks.procs.wgpuQuerySetDestroy(querySet);
 }
 static uint32_t wgpuQuerySetGetCount_hook(WGPUQuerySet querySet) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1266,6 +1403,7 @@ static uint32_t wgpuQuerySetGetCount_hook(WGPUQuerySet querySet) {
   return webgpuHooks.procs.wgpuQuerySetGetCount(querySet);
 }
 static WGPUQueryType wgpuQuerySetGetType_hook(WGPUQuerySet querySet) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1275,6 +1413,7 @@ static WGPUQueryType wgpuQuerySetGetType_hook(WGPUQuerySet querySet) {
   return webgpuHooks.procs.wgpuQuerySetGetType(querySet);
 }
 static void wgpuQuerySetSetLabel_hook(WGPUQuerySet querySet, WGPUStringView label) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1284,6 +1423,7 @@ static void wgpuQuerySetSetLabel_hook(WGPUQuerySet querySet, WGPUStringView labe
   webgpuHooks.procs.wgpuQuerySetSetLabel(querySet, label);
 }
 static void wgpuQuerySetAddRef_hook(WGPUQuerySet querySet) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1293,6 +1433,7 @@ static void wgpuQuerySetAddRef_hook(WGPUQuerySet querySet) {
   webgpuHooks.procs.wgpuQuerySetAddRef(querySet);
 }
 static void wgpuQuerySetRelease_hook(WGPUQuerySet querySet) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1302,6 +1443,7 @@ static void wgpuQuerySetRelease_hook(WGPUQuerySet querySet) {
   webgpuHooks.procs.wgpuQuerySetRelease(querySet);
 }
 static void wgpuQueueCopyExternalTextureForBrowser_hook(WGPUQueue queue, WGPUImageCopyExternalTexture const * source, WGPUTexelCopyTextureInfo const * destination, WGPUExtent3D const * copySize, WGPUCopyTextureForBrowserOptions const * options) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1311,6 +1453,7 @@ static void wgpuQueueCopyExternalTextureForBrowser_hook(WGPUQueue queue, WGPUIma
   webgpuHooks.procs.wgpuQueueCopyExternalTextureForBrowser(queue, source, destination, copySize, options);
 }
 static void wgpuQueueCopyTextureForBrowser_hook(WGPUQueue queue, WGPUTexelCopyTextureInfo const * source, WGPUTexelCopyTextureInfo const * destination, WGPUExtent3D const * copySize, WGPUCopyTextureForBrowserOptions const * options) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1320,6 +1463,7 @@ static void wgpuQueueCopyTextureForBrowser_hook(WGPUQueue queue, WGPUTexelCopyTe
   webgpuHooks.procs.wgpuQueueCopyTextureForBrowser(queue, source, destination, copySize, options);
 }
 static WGPUFuture wgpuQueueOnSubmittedWorkDone_hook(WGPUQueue queue, WGPUQueueWorkDoneCallbackInfo callbackInfo) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1329,6 +1473,7 @@ static WGPUFuture wgpuQueueOnSubmittedWorkDone_hook(WGPUQueue queue, WGPUQueueWo
   return webgpuHooks.procs.wgpuQueueOnSubmittedWorkDone(queue, callbackInfo);
 }
 static void wgpuQueueSetLabel_hook(WGPUQueue queue, WGPUStringView label) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1338,6 +1483,7 @@ static void wgpuQueueSetLabel_hook(WGPUQueue queue, WGPUStringView label) {
   webgpuHooks.procs.wgpuQueueSetLabel(queue, label);
 }
 static void wgpuQueueSubmit_hook(WGPUQueue queue, size_t commandCount, WGPUCommandBuffer const * commands) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1347,6 +1493,7 @@ static void wgpuQueueSubmit_hook(WGPUQueue queue, size_t commandCount, WGPUComma
   webgpuHooks.procs.wgpuQueueSubmit(queue, commandCount, commands);
 }
 static void wgpuQueueWriteBuffer_hook(WGPUQueue queue, WGPUBuffer buffer, uint64_t bufferOffset, void const * data, size_t size) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1356,6 +1503,7 @@ static void wgpuQueueWriteBuffer_hook(WGPUQueue queue, WGPUBuffer buffer, uint64
   webgpuHooks.procs.wgpuQueueWriteBuffer(queue, buffer, bufferOffset, data, size);
 }
 static void wgpuQueueWriteTexture_hook(WGPUQueue queue, WGPUTexelCopyTextureInfo const * destination, void const * data, size_t dataSize, WGPUTexelCopyBufferLayout const * dataLayout, WGPUExtent3D const * writeSize) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1365,6 +1513,7 @@ static void wgpuQueueWriteTexture_hook(WGPUQueue queue, WGPUTexelCopyTextureInfo
   webgpuHooks.procs.wgpuQueueWriteTexture(queue, destination, data, dataSize, dataLayout, writeSize);
 }
 static void wgpuQueueAddRef_hook(WGPUQueue queue) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1374,6 +1523,7 @@ static void wgpuQueueAddRef_hook(WGPUQueue queue) {
   webgpuHooks.procs.wgpuQueueAddRef(queue);
 }
 static void wgpuQueueRelease_hook(WGPUQueue queue) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1383,6 +1533,7 @@ static void wgpuQueueRelease_hook(WGPUQueue queue) {
   webgpuHooks.procs.wgpuQueueRelease(queue);
 }
 static void wgpuRenderBundleSetLabel_hook(WGPURenderBundle renderBundle, WGPUStringView label) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1392,6 +1543,7 @@ static void wgpuRenderBundleSetLabel_hook(WGPURenderBundle renderBundle, WGPUStr
   webgpuHooks.procs.wgpuRenderBundleSetLabel(renderBundle, label);
 }
 static void wgpuRenderBundleAddRef_hook(WGPURenderBundle renderBundle) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1401,6 +1553,7 @@ static void wgpuRenderBundleAddRef_hook(WGPURenderBundle renderBundle) {
   webgpuHooks.procs.wgpuRenderBundleAddRef(renderBundle);
 }
 static void wgpuRenderBundleRelease_hook(WGPURenderBundle renderBundle) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1410,6 +1563,7 @@ static void wgpuRenderBundleRelease_hook(WGPURenderBundle renderBundle) {
   webgpuHooks.procs.wgpuRenderBundleRelease(renderBundle);
 }
 static void wgpuRenderBundleEncoderDraw_hook(WGPURenderBundleEncoder renderBundleEncoder, uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1419,6 +1573,7 @@ static void wgpuRenderBundleEncoderDraw_hook(WGPURenderBundleEncoder renderBundl
   webgpuHooks.procs.wgpuRenderBundleEncoderDraw(renderBundleEncoder, vertexCount, instanceCount, firstVertex, firstInstance);
 }
 static void wgpuRenderBundleEncoderDrawIndexed_hook(WGPURenderBundleEncoder renderBundleEncoder, uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t baseVertex, uint32_t firstInstance) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1428,6 +1583,7 @@ static void wgpuRenderBundleEncoderDrawIndexed_hook(WGPURenderBundleEncoder rend
   webgpuHooks.procs.wgpuRenderBundleEncoderDrawIndexed(renderBundleEncoder, indexCount, instanceCount, firstIndex, baseVertex, firstInstance);
 }
 static void wgpuRenderBundleEncoderDrawIndexedIndirect_hook(WGPURenderBundleEncoder renderBundleEncoder, WGPUBuffer indirectBuffer, uint64_t indirectOffset) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1437,6 +1593,7 @@ static void wgpuRenderBundleEncoderDrawIndexedIndirect_hook(WGPURenderBundleEnco
   webgpuHooks.procs.wgpuRenderBundleEncoderDrawIndexedIndirect(renderBundleEncoder, indirectBuffer, indirectOffset);
 }
 static void wgpuRenderBundleEncoderDrawIndirect_hook(WGPURenderBundleEncoder renderBundleEncoder, WGPUBuffer indirectBuffer, uint64_t indirectOffset) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1446,6 +1603,7 @@ static void wgpuRenderBundleEncoderDrawIndirect_hook(WGPURenderBundleEncoder ren
   webgpuHooks.procs.wgpuRenderBundleEncoderDrawIndirect(renderBundleEncoder, indirectBuffer, indirectOffset);
 }
 static WGPURenderBundle wgpuRenderBundleEncoderFinish_hook(WGPURenderBundleEncoder renderBundleEncoder, WGPURenderBundleDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1455,6 +1613,7 @@ static WGPURenderBundle wgpuRenderBundleEncoderFinish_hook(WGPURenderBundleEncod
   return webgpuHooks.procs.wgpuRenderBundleEncoderFinish(renderBundleEncoder, descriptor);
 }
 static void wgpuRenderBundleEncoderInsertDebugMarker_hook(WGPURenderBundleEncoder renderBundleEncoder, WGPUStringView markerLabel) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1464,6 +1623,7 @@ static void wgpuRenderBundleEncoderInsertDebugMarker_hook(WGPURenderBundleEncode
   webgpuHooks.procs.wgpuRenderBundleEncoderInsertDebugMarker(renderBundleEncoder, markerLabel);
 }
 static void wgpuRenderBundleEncoderPopDebugGroup_hook(WGPURenderBundleEncoder renderBundleEncoder) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1473,6 +1633,7 @@ static void wgpuRenderBundleEncoderPopDebugGroup_hook(WGPURenderBundleEncoder re
   webgpuHooks.procs.wgpuRenderBundleEncoderPopDebugGroup(renderBundleEncoder);
 }
 static void wgpuRenderBundleEncoderPushDebugGroup_hook(WGPURenderBundleEncoder renderBundleEncoder, WGPUStringView groupLabel) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1482,6 +1643,7 @@ static void wgpuRenderBundleEncoderPushDebugGroup_hook(WGPURenderBundleEncoder r
   webgpuHooks.procs.wgpuRenderBundleEncoderPushDebugGroup(renderBundleEncoder, groupLabel);
 }
 static void wgpuRenderBundleEncoderSetBindGroup_hook(WGPURenderBundleEncoder renderBundleEncoder, uint32_t groupIndex, WGPUBindGroup group, size_t dynamicOffsetCount, uint32_t const * dynamicOffsets) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1491,6 +1653,7 @@ static void wgpuRenderBundleEncoderSetBindGroup_hook(WGPURenderBundleEncoder ren
   webgpuHooks.procs.wgpuRenderBundleEncoderSetBindGroup(renderBundleEncoder, groupIndex, group, dynamicOffsetCount, dynamicOffsets);
 }
 static void wgpuRenderBundleEncoderSetImmediateData_hook(WGPURenderBundleEncoder renderBundleEncoder, uint32_t offset, void const * data, size_t size) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1500,6 +1663,7 @@ static void wgpuRenderBundleEncoderSetImmediateData_hook(WGPURenderBundleEncoder
   webgpuHooks.procs.wgpuRenderBundleEncoderSetImmediateData(renderBundleEncoder, offset, data, size);
 }
 static void wgpuRenderBundleEncoderSetIndexBuffer_hook(WGPURenderBundleEncoder renderBundleEncoder, WGPUBuffer buffer, WGPUIndexFormat format, uint64_t offset, uint64_t size) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1509,6 +1673,7 @@ static void wgpuRenderBundleEncoderSetIndexBuffer_hook(WGPURenderBundleEncoder r
   webgpuHooks.procs.wgpuRenderBundleEncoderSetIndexBuffer(renderBundleEncoder, buffer, format, offset, size);
 }
 static void wgpuRenderBundleEncoderSetLabel_hook(WGPURenderBundleEncoder renderBundleEncoder, WGPUStringView label) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1518,6 +1683,7 @@ static void wgpuRenderBundleEncoderSetLabel_hook(WGPURenderBundleEncoder renderB
   webgpuHooks.procs.wgpuRenderBundleEncoderSetLabel(renderBundleEncoder, label);
 }
 static void wgpuRenderBundleEncoderSetPipeline_hook(WGPURenderBundleEncoder renderBundleEncoder, WGPURenderPipeline pipeline) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1527,6 +1693,7 @@ static void wgpuRenderBundleEncoderSetPipeline_hook(WGPURenderBundleEncoder rend
   webgpuHooks.procs.wgpuRenderBundleEncoderSetPipeline(renderBundleEncoder, pipeline);
 }
 static void wgpuRenderBundleEncoderSetVertexBuffer_hook(WGPURenderBundleEncoder renderBundleEncoder, uint32_t slot, WGPUBuffer buffer, uint64_t offset, uint64_t size) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1536,6 +1703,7 @@ static void wgpuRenderBundleEncoderSetVertexBuffer_hook(WGPURenderBundleEncoder 
   webgpuHooks.procs.wgpuRenderBundleEncoderSetVertexBuffer(renderBundleEncoder, slot, buffer, offset, size);
 }
 static void wgpuRenderBundleEncoderAddRef_hook(WGPURenderBundleEncoder renderBundleEncoder) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1545,6 +1713,7 @@ static void wgpuRenderBundleEncoderAddRef_hook(WGPURenderBundleEncoder renderBun
   webgpuHooks.procs.wgpuRenderBundleEncoderAddRef(renderBundleEncoder);
 }
 static void wgpuRenderBundleEncoderRelease_hook(WGPURenderBundleEncoder renderBundleEncoder) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1554,6 +1723,7 @@ static void wgpuRenderBundleEncoderRelease_hook(WGPURenderBundleEncoder renderBu
   webgpuHooks.procs.wgpuRenderBundleEncoderRelease(renderBundleEncoder);
 }
 static void wgpuRenderPassEncoderBeginOcclusionQuery_hook(WGPURenderPassEncoder renderPassEncoder, uint32_t queryIndex) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1563,6 +1733,7 @@ static void wgpuRenderPassEncoderBeginOcclusionQuery_hook(WGPURenderPassEncoder 
   webgpuHooks.procs.wgpuRenderPassEncoderBeginOcclusionQuery(renderPassEncoder, queryIndex);
 }
 static void wgpuRenderPassEncoderDraw_hook(WGPURenderPassEncoder renderPassEncoder, uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1572,6 +1743,7 @@ static void wgpuRenderPassEncoderDraw_hook(WGPURenderPassEncoder renderPassEncod
   webgpuHooks.procs.wgpuRenderPassEncoderDraw(renderPassEncoder, vertexCount, instanceCount, firstVertex, firstInstance);
 }
 static void wgpuRenderPassEncoderDrawIndexed_hook(WGPURenderPassEncoder renderPassEncoder, uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t baseVertex, uint32_t firstInstance) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1581,6 +1753,7 @@ static void wgpuRenderPassEncoderDrawIndexed_hook(WGPURenderPassEncoder renderPa
   webgpuHooks.procs.wgpuRenderPassEncoderDrawIndexed(renderPassEncoder, indexCount, instanceCount, firstIndex, baseVertex, firstInstance);
 }
 static void wgpuRenderPassEncoderDrawIndexedIndirect_hook(WGPURenderPassEncoder renderPassEncoder, WGPUBuffer indirectBuffer, uint64_t indirectOffset) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1590,6 +1763,7 @@ static void wgpuRenderPassEncoderDrawIndexedIndirect_hook(WGPURenderPassEncoder 
   webgpuHooks.procs.wgpuRenderPassEncoderDrawIndexedIndirect(renderPassEncoder, indirectBuffer, indirectOffset);
 }
 static void wgpuRenderPassEncoderDrawIndirect_hook(WGPURenderPassEncoder renderPassEncoder, WGPUBuffer indirectBuffer, uint64_t indirectOffset) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1599,6 +1773,7 @@ static void wgpuRenderPassEncoderDrawIndirect_hook(WGPURenderPassEncoder renderP
   webgpuHooks.procs.wgpuRenderPassEncoderDrawIndirect(renderPassEncoder, indirectBuffer, indirectOffset);
 }
 static void wgpuRenderPassEncoderEnd_hook(WGPURenderPassEncoder renderPassEncoder) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1608,6 +1783,7 @@ static void wgpuRenderPassEncoderEnd_hook(WGPURenderPassEncoder renderPassEncode
   webgpuHooks.procs.wgpuRenderPassEncoderEnd(renderPassEncoder);
 }
 static void wgpuRenderPassEncoderEndOcclusionQuery_hook(WGPURenderPassEncoder renderPassEncoder) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1617,6 +1793,7 @@ static void wgpuRenderPassEncoderEndOcclusionQuery_hook(WGPURenderPassEncoder re
   webgpuHooks.procs.wgpuRenderPassEncoderEndOcclusionQuery(renderPassEncoder);
 }
 static void wgpuRenderPassEncoderExecuteBundles_hook(WGPURenderPassEncoder renderPassEncoder, size_t bundleCount, WGPURenderBundle const * bundles) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1626,6 +1803,7 @@ static void wgpuRenderPassEncoderExecuteBundles_hook(WGPURenderPassEncoder rende
   webgpuHooks.procs.wgpuRenderPassEncoderExecuteBundles(renderPassEncoder, bundleCount, bundles);
 }
 static void wgpuRenderPassEncoderInsertDebugMarker_hook(WGPURenderPassEncoder renderPassEncoder, WGPUStringView markerLabel) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1635,6 +1813,7 @@ static void wgpuRenderPassEncoderInsertDebugMarker_hook(WGPURenderPassEncoder re
   webgpuHooks.procs.wgpuRenderPassEncoderInsertDebugMarker(renderPassEncoder, markerLabel);
 }
 static void wgpuRenderPassEncoderMultiDrawIndexedIndirect_hook(WGPURenderPassEncoder renderPassEncoder, WGPUBuffer indirectBuffer, uint64_t indirectOffset, uint32_t maxDrawCount, WGPUBuffer drawCountBuffer, uint64_t drawCountBufferOffset) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1644,6 +1823,7 @@ static void wgpuRenderPassEncoderMultiDrawIndexedIndirect_hook(WGPURenderPassEnc
   webgpuHooks.procs.wgpuRenderPassEncoderMultiDrawIndexedIndirect(renderPassEncoder, indirectBuffer, indirectOffset, maxDrawCount, drawCountBuffer, drawCountBufferOffset);
 }
 static void wgpuRenderPassEncoderMultiDrawIndirect_hook(WGPURenderPassEncoder renderPassEncoder, WGPUBuffer indirectBuffer, uint64_t indirectOffset, uint32_t maxDrawCount, WGPUBuffer drawCountBuffer, uint64_t drawCountBufferOffset) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1653,6 +1833,7 @@ static void wgpuRenderPassEncoderMultiDrawIndirect_hook(WGPURenderPassEncoder re
   webgpuHooks.procs.wgpuRenderPassEncoderMultiDrawIndirect(renderPassEncoder, indirectBuffer, indirectOffset, maxDrawCount, drawCountBuffer, drawCountBufferOffset);
 }
 static void wgpuRenderPassEncoderPixelLocalStorageBarrier_hook(WGPURenderPassEncoder renderPassEncoder) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1662,6 +1843,7 @@ static void wgpuRenderPassEncoderPixelLocalStorageBarrier_hook(WGPURenderPassEnc
   webgpuHooks.procs.wgpuRenderPassEncoderPixelLocalStorageBarrier(renderPassEncoder);
 }
 static void wgpuRenderPassEncoderPopDebugGroup_hook(WGPURenderPassEncoder renderPassEncoder) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1671,6 +1853,7 @@ static void wgpuRenderPassEncoderPopDebugGroup_hook(WGPURenderPassEncoder render
   webgpuHooks.procs.wgpuRenderPassEncoderPopDebugGroup(renderPassEncoder);
 }
 static void wgpuRenderPassEncoderPushDebugGroup_hook(WGPURenderPassEncoder renderPassEncoder, WGPUStringView groupLabel) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1680,6 +1863,7 @@ static void wgpuRenderPassEncoderPushDebugGroup_hook(WGPURenderPassEncoder rende
   webgpuHooks.procs.wgpuRenderPassEncoderPushDebugGroup(renderPassEncoder, groupLabel);
 }
 static void wgpuRenderPassEncoderSetBindGroup_hook(WGPURenderPassEncoder renderPassEncoder, uint32_t groupIndex, WGPUBindGroup group, size_t dynamicOffsetCount, uint32_t const * dynamicOffsets) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1689,6 +1873,7 @@ static void wgpuRenderPassEncoderSetBindGroup_hook(WGPURenderPassEncoder renderP
   webgpuHooks.procs.wgpuRenderPassEncoderSetBindGroup(renderPassEncoder, groupIndex, group, dynamicOffsetCount, dynamicOffsets);
 }
 static void wgpuRenderPassEncoderSetBlendConstant_hook(WGPURenderPassEncoder renderPassEncoder, WGPUColor const * color) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1698,6 +1883,7 @@ static void wgpuRenderPassEncoderSetBlendConstant_hook(WGPURenderPassEncoder ren
   webgpuHooks.procs.wgpuRenderPassEncoderSetBlendConstant(renderPassEncoder, color);
 }
 static void wgpuRenderPassEncoderSetImmediateData_hook(WGPURenderPassEncoder renderPassEncoder, uint32_t offset, void const * data, size_t size) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1707,6 +1893,7 @@ static void wgpuRenderPassEncoderSetImmediateData_hook(WGPURenderPassEncoder ren
   webgpuHooks.procs.wgpuRenderPassEncoderSetImmediateData(renderPassEncoder, offset, data, size);
 }
 static void wgpuRenderPassEncoderSetIndexBuffer_hook(WGPURenderPassEncoder renderPassEncoder, WGPUBuffer buffer, WGPUIndexFormat format, uint64_t offset, uint64_t size) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1716,6 +1903,7 @@ static void wgpuRenderPassEncoderSetIndexBuffer_hook(WGPURenderPassEncoder rende
   webgpuHooks.procs.wgpuRenderPassEncoderSetIndexBuffer(renderPassEncoder, buffer, format, offset, size);
 }
 static void wgpuRenderPassEncoderSetLabel_hook(WGPURenderPassEncoder renderPassEncoder, WGPUStringView label) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1725,6 +1913,7 @@ static void wgpuRenderPassEncoderSetLabel_hook(WGPURenderPassEncoder renderPassE
   webgpuHooks.procs.wgpuRenderPassEncoderSetLabel(renderPassEncoder, label);
 }
 static void wgpuRenderPassEncoderSetPipeline_hook(WGPURenderPassEncoder renderPassEncoder, WGPURenderPipeline pipeline) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1734,6 +1923,7 @@ static void wgpuRenderPassEncoderSetPipeline_hook(WGPURenderPassEncoder renderPa
   webgpuHooks.procs.wgpuRenderPassEncoderSetPipeline(renderPassEncoder, pipeline);
 }
 static void wgpuRenderPassEncoderSetScissorRect_hook(WGPURenderPassEncoder renderPassEncoder, uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1743,6 +1933,7 @@ static void wgpuRenderPassEncoderSetScissorRect_hook(WGPURenderPassEncoder rende
   webgpuHooks.procs.wgpuRenderPassEncoderSetScissorRect(renderPassEncoder, x, y, width, height);
 }
 static void wgpuRenderPassEncoderSetStencilReference_hook(WGPURenderPassEncoder renderPassEncoder, uint32_t reference) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1752,6 +1943,7 @@ static void wgpuRenderPassEncoderSetStencilReference_hook(WGPURenderPassEncoder 
   webgpuHooks.procs.wgpuRenderPassEncoderSetStencilReference(renderPassEncoder, reference);
 }
 static void wgpuRenderPassEncoderSetVertexBuffer_hook(WGPURenderPassEncoder renderPassEncoder, uint32_t slot, WGPUBuffer buffer, uint64_t offset, uint64_t size) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1761,6 +1953,7 @@ static void wgpuRenderPassEncoderSetVertexBuffer_hook(WGPURenderPassEncoder rend
   webgpuHooks.procs.wgpuRenderPassEncoderSetVertexBuffer(renderPassEncoder, slot, buffer, offset, size);
 }
 static void wgpuRenderPassEncoderSetViewport_hook(WGPURenderPassEncoder renderPassEncoder, float x, float y, float width, float height, float minDepth, float maxDepth) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1770,6 +1963,7 @@ static void wgpuRenderPassEncoderSetViewport_hook(WGPURenderPassEncoder renderPa
   webgpuHooks.procs.wgpuRenderPassEncoderSetViewport(renderPassEncoder, x, y, width, height, minDepth, maxDepth);
 }
 static void wgpuRenderPassEncoderWriteTimestamp_hook(WGPURenderPassEncoder renderPassEncoder, WGPUQuerySet querySet, uint32_t queryIndex) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1779,6 +1973,7 @@ static void wgpuRenderPassEncoderWriteTimestamp_hook(WGPURenderPassEncoder rende
   webgpuHooks.procs.wgpuRenderPassEncoderWriteTimestamp(renderPassEncoder, querySet, queryIndex);
 }
 static void wgpuRenderPassEncoderAddRef_hook(WGPURenderPassEncoder renderPassEncoder) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1788,6 +1983,7 @@ static void wgpuRenderPassEncoderAddRef_hook(WGPURenderPassEncoder renderPassEnc
   webgpuHooks.procs.wgpuRenderPassEncoderAddRef(renderPassEncoder);
 }
 static void wgpuRenderPassEncoderRelease_hook(WGPURenderPassEncoder renderPassEncoder) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1797,6 +1993,7 @@ static void wgpuRenderPassEncoderRelease_hook(WGPURenderPassEncoder renderPassEn
   webgpuHooks.procs.wgpuRenderPassEncoderRelease(renderPassEncoder);
 }
 static WGPUBindGroupLayout wgpuRenderPipelineGetBindGroupLayout_hook(WGPURenderPipeline renderPipeline, uint32_t groupIndex) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1806,6 +2003,7 @@ static WGPUBindGroupLayout wgpuRenderPipelineGetBindGroupLayout_hook(WGPURenderP
   return webgpuHooks.procs.wgpuRenderPipelineGetBindGroupLayout(renderPipeline, groupIndex);
 }
 static void wgpuRenderPipelineSetLabel_hook(WGPURenderPipeline renderPipeline, WGPUStringView label) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1815,6 +2013,7 @@ static void wgpuRenderPipelineSetLabel_hook(WGPURenderPipeline renderPipeline, W
   webgpuHooks.procs.wgpuRenderPipelineSetLabel(renderPipeline, label);
 }
 static void wgpuRenderPipelineAddRef_hook(WGPURenderPipeline renderPipeline) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1824,6 +2023,7 @@ static void wgpuRenderPipelineAddRef_hook(WGPURenderPipeline renderPipeline) {
   webgpuHooks.procs.wgpuRenderPipelineAddRef(renderPipeline);
 }
 static void wgpuRenderPipelineRelease_hook(WGPURenderPipeline renderPipeline) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1833,6 +2033,7 @@ static void wgpuRenderPipelineRelease_hook(WGPURenderPipeline renderPipeline) {
   webgpuHooks.procs.wgpuRenderPipelineRelease(renderPipeline);
 }
 static void wgpuSamplerSetLabel_hook(WGPUSampler sampler, WGPUStringView label) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1842,6 +2043,7 @@ static void wgpuSamplerSetLabel_hook(WGPUSampler sampler, WGPUStringView label) 
   webgpuHooks.procs.wgpuSamplerSetLabel(sampler, label);
 }
 static void wgpuSamplerAddRef_hook(WGPUSampler sampler) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1851,6 +2053,7 @@ static void wgpuSamplerAddRef_hook(WGPUSampler sampler) {
   webgpuHooks.procs.wgpuSamplerAddRef(sampler);
 }
 static void wgpuSamplerRelease_hook(WGPUSampler sampler) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1860,6 +2063,7 @@ static void wgpuSamplerRelease_hook(WGPUSampler sampler) {
   webgpuHooks.procs.wgpuSamplerRelease(sampler);
 }
 static WGPUFuture wgpuShaderModuleGetCompilationInfo_hook(WGPUShaderModule shaderModule, WGPUCompilationInfoCallbackInfo callbackInfo) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1869,6 +2073,7 @@ static WGPUFuture wgpuShaderModuleGetCompilationInfo_hook(WGPUShaderModule shade
   return webgpuHooks.procs.wgpuShaderModuleGetCompilationInfo(shaderModule, callbackInfo);
 }
 static void wgpuShaderModuleSetLabel_hook(WGPUShaderModule shaderModule, WGPUStringView label) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1878,6 +2083,7 @@ static void wgpuShaderModuleSetLabel_hook(WGPUShaderModule shaderModule, WGPUStr
   webgpuHooks.procs.wgpuShaderModuleSetLabel(shaderModule, label);
 }
 static void wgpuShaderModuleAddRef_hook(WGPUShaderModule shaderModule) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1887,6 +2093,7 @@ static void wgpuShaderModuleAddRef_hook(WGPUShaderModule shaderModule) {
   webgpuHooks.procs.wgpuShaderModuleAddRef(shaderModule);
 }
 static void wgpuShaderModuleRelease_hook(WGPUShaderModule shaderModule) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1896,6 +2103,7 @@ static void wgpuShaderModuleRelease_hook(WGPUShaderModule shaderModule) {
   webgpuHooks.procs.wgpuShaderModuleRelease(shaderModule);
 }
 static WGPUStatus wgpuSharedBufferMemoryBeginAccess_hook(WGPUSharedBufferMemory sharedBufferMemory, WGPUBuffer buffer, WGPUSharedBufferMemoryBeginAccessDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1905,6 +2113,7 @@ static WGPUStatus wgpuSharedBufferMemoryBeginAccess_hook(WGPUSharedBufferMemory 
   return webgpuHooks.procs.wgpuSharedBufferMemoryBeginAccess(sharedBufferMemory, buffer, descriptor);
 }
 static WGPUBuffer wgpuSharedBufferMemoryCreateBuffer_hook(WGPUSharedBufferMemory sharedBufferMemory, WGPUBufferDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1914,6 +2123,7 @@ static WGPUBuffer wgpuSharedBufferMemoryCreateBuffer_hook(WGPUSharedBufferMemory
   return webgpuHooks.procs.wgpuSharedBufferMemoryCreateBuffer(sharedBufferMemory, descriptor);
 }
 static WGPUStatus wgpuSharedBufferMemoryEndAccess_hook(WGPUSharedBufferMemory sharedBufferMemory, WGPUBuffer buffer, WGPUSharedBufferMemoryEndAccessState * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1923,6 +2133,7 @@ static WGPUStatus wgpuSharedBufferMemoryEndAccess_hook(WGPUSharedBufferMemory sh
   return webgpuHooks.procs.wgpuSharedBufferMemoryEndAccess(sharedBufferMemory, buffer, descriptor);
 }
 static WGPUStatus wgpuSharedBufferMemoryGetProperties_hook(WGPUSharedBufferMemory sharedBufferMemory, WGPUSharedBufferMemoryProperties * properties) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1932,6 +2143,7 @@ static WGPUStatus wgpuSharedBufferMemoryGetProperties_hook(WGPUSharedBufferMemor
   return webgpuHooks.procs.wgpuSharedBufferMemoryGetProperties(sharedBufferMemory, properties);
 }
 static WGPUBool wgpuSharedBufferMemoryIsDeviceLost_hook(WGPUSharedBufferMemory sharedBufferMemory) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1941,6 +2153,7 @@ static WGPUBool wgpuSharedBufferMemoryIsDeviceLost_hook(WGPUSharedBufferMemory s
   return webgpuHooks.procs.wgpuSharedBufferMemoryIsDeviceLost(sharedBufferMemory);
 }
 static void wgpuSharedBufferMemorySetLabel_hook(WGPUSharedBufferMemory sharedBufferMemory, WGPUStringView label) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1950,6 +2163,7 @@ static void wgpuSharedBufferMemorySetLabel_hook(WGPUSharedBufferMemory sharedBuf
   webgpuHooks.procs.wgpuSharedBufferMemorySetLabel(sharedBufferMemory, label);
 }
 static void wgpuSharedBufferMemoryAddRef_hook(WGPUSharedBufferMemory sharedBufferMemory) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1959,6 +2173,7 @@ static void wgpuSharedBufferMemoryAddRef_hook(WGPUSharedBufferMemory sharedBuffe
   webgpuHooks.procs.wgpuSharedBufferMemoryAddRef(sharedBufferMemory);
 }
 static void wgpuSharedBufferMemoryRelease_hook(WGPUSharedBufferMemory sharedBufferMemory) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1968,6 +2183,7 @@ static void wgpuSharedBufferMemoryRelease_hook(WGPUSharedBufferMemory sharedBuff
   webgpuHooks.procs.wgpuSharedBufferMemoryRelease(sharedBufferMemory);
 }
 static void wgpuSharedFenceExportInfo_hook(WGPUSharedFence sharedFence, WGPUSharedFenceExportInfo * info) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1977,6 +2193,7 @@ static void wgpuSharedFenceExportInfo_hook(WGPUSharedFence sharedFence, WGPUShar
   webgpuHooks.procs.wgpuSharedFenceExportInfo(sharedFence, info);
 }
 static void wgpuSharedFenceAddRef_hook(WGPUSharedFence sharedFence) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1986,6 +2203,7 @@ static void wgpuSharedFenceAddRef_hook(WGPUSharedFence sharedFence) {
   webgpuHooks.procs.wgpuSharedFenceAddRef(sharedFence);
 }
 static void wgpuSharedFenceRelease_hook(WGPUSharedFence sharedFence) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -1995,6 +2213,7 @@ static void wgpuSharedFenceRelease_hook(WGPUSharedFence sharedFence) {
   webgpuHooks.procs.wgpuSharedFenceRelease(sharedFence);
 }
 static WGPUStatus wgpuSharedTextureMemoryBeginAccess_hook(WGPUSharedTextureMemory sharedTextureMemory, WGPUTexture texture, WGPUSharedTextureMemoryBeginAccessDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2004,6 +2223,7 @@ static WGPUStatus wgpuSharedTextureMemoryBeginAccess_hook(WGPUSharedTextureMemor
   return webgpuHooks.procs.wgpuSharedTextureMemoryBeginAccess(sharedTextureMemory, texture, descriptor);
 }
 static WGPUTexture wgpuSharedTextureMemoryCreateTexture_hook(WGPUSharedTextureMemory sharedTextureMemory, WGPUTextureDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2013,6 +2233,7 @@ static WGPUTexture wgpuSharedTextureMemoryCreateTexture_hook(WGPUSharedTextureMe
   return webgpuHooks.procs.wgpuSharedTextureMemoryCreateTexture(sharedTextureMemory, descriptor);
 }
 static WGPUStatus wgpuSharedTextureMemoryEndAccess_hook(WGPUSharedTextureMemory sharedTextureMemory, WGPUTexture texture, WGPUSharedTextureMemoryEndAccessState * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2022,6 +2243,7 @@ static WGPUStatus wgpuSharedTextureMemoryEndAccess_hook(WGPUSharedTextureMemory 
   return webgpuHooks.procs.wgpuSharedTextureMemoryEndAccess(sharedTextureMemory, texture, descriptor);
 }
 static WGPUStatus wgpuSharedTextureMemoryGetProperties_hook(WGPUSharedTextureMemory sharedTextureMemory, WGPUSharedTextureMemoryProperties * properties) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2031,6 +2253,7 @@ static WGPUStatus wgpuSharedTextureMemoryGetProperties_hook(WGPUSharedTextureMem
   return webgpuHooks.procs.wgpuSharedTextureMemoryGetProperties(sharedTextureMemory, properties);
 }
 static WGPUBool wgpuSharedTextureMemoryIsDeviceLost_hook(WGPUSharedTextureMemory sharedTextureMemory) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2040,6 +2263,7 @@ static WGPUBool wgpuSharedTextureMemoryIsDeviceLost_hook(WGPUSharedTextureMemory
   return webgpuHooks.procs.wgpuSharedTextureMemoryIsDeviceLost(sharedTextureMemory);
 }
 static void wgpuSharedTextureMemorySetLabel_hook(WGPUSharedTextureMemory sharedTextureMemory, WGPUStringView label) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2049,6 +2273,7 @@ static void wgpuSharedTextureMemorySetLabel_hook(WGPUSharedTextureMemory sharedT
   webgpuHooks.procs.wgpuSharedTextureMemorySetLabel(sharedTextureMemory, label);
 }
 static void wgpuSharedTextureMemoryAddRef_hook(WGPUSharedTextureMemory sharedTextureMemory) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2058,6 +2283,7 @@ static void wgpuSharedTextureMemoryAddRef_hook(WGPUSharedTextureMemory sharedTex
   webgpuHooks.procs.wgpuSharedTextureMemoryAddRef(sharedTextureMemory);
 }
 static void wgpuSharedTextureMemoryRelease_hook(WGPUSharedTextureMemory sharedTextureMemory) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2067,6 +2293,7 @@ static void wgpuSharedTextureMemoryRelease_hook(WGPUSharedTextureMemory sharedTe
   webgpuHooks.procs.wgpuSharedTextureMemoryRelease(sharedTextureMemory);
 }
 static void wgpuSurfaceConfigure_hook(WGPUSurface surface, WGPUSurfaceConfiguration const * config) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2076,6 +2303,7 @@ static void wgpuSurfaceConfigure_hook(WGPUSurface surface, WGPUSurfaceConfigurat
   webgpuHooks.procs.wgpuSurfaceConfigure(surface, config);
 }
 static WGPUStatus wgpuSurfaceGetCapabilities_hook(WGPUSurface surface, WGPUAdapter adapter, WGPUSurfaceCapabilities * capabilities) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2085,6 +2313,7 @@ static WGPUStatus wgpuSurfaceGetCapabilities_hook(WGPUSurface surface, WGPUAdapt
   return webgpuHooks.procs.wgpuSurfaceGetCapabilities(surface, adapter, capabilities);
 }
 static void wgpuSurfaceGetCurrentTexture_hook(WGPUSurface surface, WGPUSurfaceTexture * surfaceTexture) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2093,16 +2322,8 @@ static void wgpuSurfaceGetCurrentTexture_hook(WGPUSurface surface, WGPUSurfaceTe
   }
   webgpuHooks.procs.wgpuSurfaceGetCurrentTexture(surface, surfaceTexture);
 }
-static void wgpuSurfacePresent_hook(WGPUSurface surface) {
-  {
-    WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
-    ser.SetActionChunk();
-    SCOPED_SERIALISE_CHUNK(WebGPUChunk::ProcSurfacePresent);
-    webgpuHooks.capturer.AddChunk(scope.Get());
-  }
-  webgpuHooks.procs.wgpuSurfacePresent(surface);
-}
 static void wgpuSurfaceSetLabel_hook(WGPUSurface surface, WGPUStringView label) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2112,6 +2333,7 @@ static void wgpuSurfaceSetLabel_hook(WGPUSurface surface, WGPUStringView label) 
   webgpuHooks.procs.wgpuSurfaceSetLabel(surface, label);
 }
 static void wgpuSurfaceUnconfigure_hook(WGPUSurface surface) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2121,6 +2343,7 @@ static void wgpuSurfaceUnconfigure_hook(WGPUSurface surface) {
   webgpuHooks.procs.wgpuSurfaceUnconfigure(surface);
 }
 static void wgpuSurfaceAddRef_hook(WGPUSurface surface) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2130,6 +2353,7 @@ static void wgpuSurfaceAddRef_hook(WGPUSurface surface) {
   webgpuHooks.procs.wgpuSurfaceAddRef(surface);
 }
 static void wgpuSurfaceRelease_hook(WGPUSurface surface) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2139,6 +2363,7 @@ static void wgpuSurfaceRelease_hook(WGPUSurface surface) {
   webgpuHooks.procs.wgpuSurfaceRelease(surface);
 }
 static WGPUTextureView wgpuTextureCreateErrorView_hook(WGPUTexture texture, WGPUTextureViewDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2148,6 +2373,7 @@ static WGPUTextureView wgpuTextureCreateErrorView_hook(WGPUTexture texture, WGPU
   return webgpuHooks.procs.wgpuTextureCreateErrorView(texture, descriptor);
 }
 static WGPUTextureView wgpuTextureCreateView_hook(WGPUTexture texture, WGPUTextureViewDescriptor const * descriptor) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2157,6 +2383,7 @@ static WGPUTextureView wgpuTextureCreateView_hook(WGPUTexture texture, WGPUTextu
   return webgpuHooks.procs.wgpuTextureCreateView(texture, descriptor);
 }
 static void wgpuTextureDestroy_hook(WGPUTexture texture) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2166,6 +2393,7 @@ static void wgpuTextureDestroy_hook(WGPUTexture texture) {
   webgpuHooks.procs.wgpuTextureDestroy(texture);
 }
 static uint32_t wgpuTextureGetDepthOrArrayLayers_hook(WGPUTexture texture) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2175,6 +2403,7 @@ static uint32_t wgpuTextureGetDepthOrArrayLayers_hook(WGPUTexture texture) {
   return webgpuHooks.procs.wgpuTextureGetDepthOrArrayLayers(texture);
 }
 static WGPUTextureDimension wgpuTextureGetDimension_hook(WGPUTexture texture) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2184,6 +2413,7 @@ static WGPUTextureDimension wgpuTextureGetDimension_hook(WGPUTexture texture) {
   return webgpuHooks.procs.wgpuTextureGetDimension(texture);
 }
 static WGPUTextureFormat wgpuTextureGetFormat_hook(WGPUTexture texture) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2193,6 +2423,7 @@ static WGPUTextureFormat wgpuTextureGetFormat_hook(WGPUTexture texture) {
   return webgpuHooks.procs.wgpuTextureGetFormat(texture);
 }
 static uint32_t wgpuTextureGetHeight_hook(WGPUTexture texture) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2202,6 +2433,7 @@ static uint32_t wgpuTextureGetHeight_hook(WGPUTexture texture) {
   return webgpuHooks.procs.wgpuTextureGetHeight(texture);
 }
 static uint32_t wgpuTextureGetMipLevelCount_hook(WGPUTexture texture) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2211,6 +2443,7 @@ static uint32_t wgpuTextureGetMipLevelCount_hook(WGPUTexture texture) {
   return webgpuHooks.procs.wgpuTextureGetMipLevelCount(texture);
 }
 static uint32_t wgpuTextureGetSampleCount_hook(WGPUTexture texture) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2220,6 +2453,7 @@ static uint32_t wgpuTextureGetSampleCount_hook(WGPUTexture texture) {
   return webgpuHooks.procs.wgpuTextureGetSampleCount(texture);
 }
 static WGPUTextureUsage wgpuTextureGetUsage_hook(WGPUTexture texture) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2229,6 +2463,7 @@ static WGPUTextureUsage wgpuTextureGetUsage_hook(WGPUTexture texture) {
   return webgpuHooks.procs.wgpuTextureGetUsage(texture);
 }
 static uint32_t wgpuTextureGetWidth_hook(WGPUTexture texture) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2238,6 +2473,7 @@ static uint32_t wgpuTextureGetWidth_hook(WGPUTexture texture) {
   return webgpuHooks.procs.wgpuTextureGetWidth(texture);
 }
 static void wgpuTextureSetLabel_hook(WGPUTexture texture, WGPUStringView label) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2247,6 +2483,7 @@ static void wgpuTextureSetLabel_hook(WGPUTexture texture, WGPUStringView label) 
   webgpuHooks.procs.wgpuTextureSetLabel(texture, label);
 }
 static void wgpuTextureAddRef_hook(WGPUTexture texture) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2256,6 +2493,7 @@ static void wgpuTextureAddRef_hook(WGPUTexture texture) {
   webgpuHooks.procs.wgpuTextureAddRef(texture);
 }
 static void wgpuTextureRelease_hook(WGPUTexture texture) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2265,6 +2503,7 @@ static void wgpuTextureRelease_hook(WGPUTexture texture) {
   webgpuHooks.procs.wgpuTextureRelease(texture);
 }
 static void wgpuTextureViewSetLabel_hook(WGPUTextureView textureView, WGPUStringView label) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2274,6 +2513,7 @@ static void wgpuTextureViewSetLabel_hook(WGPUTextureView textureView, WGPUString
   webgpuHooks.procs.wgpuTextureViewSetLabel(textureView, label);
 }
 static void wgpuTextureViewAddRef_hook(WGPUTextureView textureView) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();
@@ -2283,6 +2523,7 @@ static void wgpuTextureViewAddRef_hook(WGPUTextureView textureView) {
   webgpuHooks.procs.wgpuTextureViewAddRef(textureView);
 }
 static void wgpuTextureViewRelease_hook(WGPUTextureView textureView) {
+  if(RenderDoc::Inst().IsFrameCapturing())
   {
     WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();
     ser.SetActionChunk();

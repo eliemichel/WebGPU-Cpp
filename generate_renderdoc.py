@@ -466,7 +466,12 @@ def produceBinding(args, api):
     }
 
     # Procedures that we handle manually
-    excluded_procs = [
+    excluded_procs_hooks = [
+        "CreateInstance",
+        "InstanceRelease",
+        "SurfacePresent",
+    ]
+    excluded_procs_replay = [
         "CreateInstance",
         "InstanceRelease",
     ]
@@ -544,13 +549,14 @@ def produceBinding(args, api):
     section = []
     for proc_api in api.procedures:
         fullname = (proc_api.parent if proc_api.parent is not None else "") + proc_api.name
-        if fullname in excluded_procs:
+        if fullname in excluded_procs_hooks:
             continue
         arguments = [ f"{x.type} {x.name}" for x in proc_api.arguments ]
         argument_names = [ x.name for x in proc_api.arguments ]
         maybe_return = "" if proc_api.return_type == "void" else "return "
         section.extend([
             f"static {proc_api.return_type} wgpu{fullname}_hook({', '.join(arguments)}) {{",
+            f"  if(RenderDoc::Inst().IsFrameCapturing())",
             f"  {{",
             f"    WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();",
             f"    ser.SetActionChunk();", # Is this useful?
@@ -570,10 +576,10 @@ def produceBinding(args, api):
     binding["webgpu_macros.h"]["foreach-macro"] = " \\\n".join(section)
 
     section = []
-    section.append("#define FOREACH_WEBGPU_PROC_WITH_DEFAULT_BEHAVIOR(MACRO)")
+    section.append("#define FOREACH_WEBGPU_PROC_WITH_DEFAULT_REPLAY_BEHAVIOR(MACRO)")
     for proc_api in api.procedures:
         fullname = (proc_api.parent if proc_api.parent is not None else "") + proc_api.name
-        if fullname in excluded_procs:
+        if fullname in excluded_procs_replay:
             continue
         section.append(f"  MACRO({fullname})")
     binding["webgpu_macros.h"]["foreach-macro-default"] = " \\\n".join(section)

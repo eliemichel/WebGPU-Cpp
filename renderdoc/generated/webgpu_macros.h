@@ -286,7 +286,7 @@
   MACRO(TextureViewRelease)
 
 // Iteracte over all procedures except the special ones that are manually implemented
-#define FOREACH_WEBGPU_PROC_WITH_DEFAULT_BEHAVIOR(MACRO) \
+#define FOREACH_WEBGPU_PROC_WITH_DEFAULT_REPLAY_BEHAVIOR(MACRO) \
   MACRO(AdapterInfoFreeMembers) \
   MACRO(AdapterPropertiesMemoryHeapsFreeMembers) \
   MACRO(AdapterPropertiesSubgroupMatrixConfigsFreeMembers) \
