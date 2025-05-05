@@ -30,7 +30,13 @@
 #pragma once
 
 // Iteracte over all procedures
-{{foreach-macro}}
+{{foreach-proc}}
 
 // Iteracte over all procedures except the special ones that are manually implemented
-{{foreach-macro-default}}
+{{foreach-proc-default}}
+
+// Iteracte over all resource type names
+{{foreach-resource-type}}
+
+// Iteracte over all resource type names except the special ones that are manually implemented
+{{foreach-resource-type-default}}

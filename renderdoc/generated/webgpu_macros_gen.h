@@ -538,3 +538,55 @@
   MACRO(TextureViewSetLabel) \
   MACRO(TextureViewAddRef) \
   MACRO(TextureViewRelease)
+
+// Iteracte over all resource type names
+#define FOREACH_WEBGPU_RESOURCE_TYPE(MACRO) \
+  MACRO(Adapter) \
+  MACRO(BindGroup) \
+  MACRO(BindGroupLayout) \
+  MACRO(Buffer) \
+  MACRO(CommandBuffer) \
+  MACRO(CommandEncoder) \
+  MACRO(ComputePassEncoder) \
+  MACRO(ComputePipeline) \
+  MACRO(Device) \
+  MACRO(ExternalTexture) \
+  MACRO(Instance) \
+  MACRO(PipelineLayout) \
+  MACRO(QuerySet) \
+  MACRO(Queue) \
+  MACRO(RenderBundle) \
+  MACRO(RenderBundleEncoder) \
+  MACRO(RenderPassEncoder) \
+  MACRO(RenderPipeline) \
+  MACRO(Sampler) \
+  MACRO(ShaderModule) \
+  MACRO(SharedBufferMemory) \
+  MACRO(SharedFence) \
+  MACRO(SharedTextureMemory) \
+  MACRO(Surface) \
+  MACRO(Texture) \
+  MACRO(TextureView)
+
+// Iteracte over all resource type names except the special ones that are manually implemented
+#define FOREACH_WEBGPU_RESOURCE_TYPE_WITH_DEFAULT_REPLAY_BEHAVIOR(MACRO) \
+  MACRO(BindGroup) \
+  MACRO(BindGroupLayout) \
+  MACRO(Buffer) \
+  MACRO(CommandBuffer) \
+  MACRO(CommandEncoder) \
+  MACRO(ComputePipeline) \
+  MACRO(ExternalTexture) \
+  MACRO(PipelineLayout) \
+  MACRO(QuerySet) \
+  MACRO(Queue) \
+  MACRO(RenderBundle) \
+  MACRO(RenderBundleEncoder) \
+  MACRO(RenderPipeline) \
+  MACRO(Sampler) \
+  MACRO(ShaderModule) \
+  MACRO(SharedBufferMemory) \
+  MACRO(SharedFence) \
+  MACRO(SharedTextureMemory) \
+  MACRO(Surface) \
+  MACRO(TextureView)

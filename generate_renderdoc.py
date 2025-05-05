@@ -108,10 +108,10 @@ def main(args):
     applyDefaultArgs(args)
 
     filenames = [
-        "webgpu_serialiser.h",
-        "webgpu_serialiser.cpp",
-        "webgpu_macros.h",
-        "webgpu_hooks.inc.cpp",
+        "webgpu_serialiser_gen.h",
+        "webgpu_serialiser_gen.cpp",
+        "webgpu_macros_gen.h",
+        "webgpu_hooks_gen.inc.cpp",
     ]
 
     templates = {
@@ -448,19 +448,21 @@ def parseProcArgs(line):
 def produceBinding(args, api):
     """Produce C++ binding"""
     binding = {
-        "webgpu_serialiser.h": {
+        "webgpu_serialiser_gen.h": {
             "descriptors": [],
             "enumerations": [],
         },
-        "webgpu_serialiser.cpp": {
+        "webgpu_serialiser_gen.cpp": {
             "descriptors": [],
             "enumerations": [],
         },
-        "webgpu_macros.h": {
-            "foreach-macro": [],
-            "foreach-macro-default": [],
+        "webgpu_macros_gen.h": {
+            "foreach-proc": [],
+            "foreach-proc-default": [],
+            "foreach-resource-type": [],
+            "foreach-resource-type-default": [],
         },
-        "webgpu_hooks.inc.cpp": {
+        "webgpu_hooks_gen.inc.cpp": {
             "hooks": []
         },
     }
@@ -475,6 +477,29 @@ def produceBinding(args, api):
         "CreateInstance",
         "InstanceRelease",
     ]
+    excluded_structs_serialize = [
+        "StringView",
+    ]
+    excluded_resource_type_replay = [
+        # We do not really create them
+        "Instance",
+        "Adapter",
+        "Device",
+        "ComputePassEncoder",
+        "RenderPassEncoder",
+        # Early test
+        "Texture",
+    ]
+    excluded_resource_type_usage = [
+        # Does not have a label in descriptor
+        "Instance",
+
+        # We do not really create them
+        "Adapter",
+        "Device",
+        "Surface",
+        "Queue",
+    ]
 
     full_handle_names = [ f"WGPU{h.name}" for h in api.handles ]
 
@@ -485,20 +510,24 @@ def produceBinding(args, api):
 
     section = []
     for class_api in api.classes:
+        if class_api.name in excluded_structs_serialize:
+            continue
         section.append(f"DECLARE_REFLECTION_STRUCT(WGPU{class_api.name});")
-    binding["webgpu_serialiser.h"]["descriptors"] = "\n".join(section)
+    binding["webgpu_serialiser_gen.h"]["descriptors"] = "\n".join(section)
 
     section = []
     for enum_api in api.enumerations:
         if enum_api.is_flags:
             continue
         section.append(f"DECLARE_STRINGISE_TYPE(WGPU{enum_api.name});")
-    binding["webgpu_serialiser.h"]["enumerations"] = "\n".join(section)
+    binding["webgpu_serialiser_gen.h"]["enumerations"] = "\n".join(section)
 
     # Implem
 
     section = []
     for class_api in api.classes:
+        if class_api.name in excluded_structs_serialize:
+            continue
         section.extend([
             f"template <typename SerialiserType>",
             f"void DoSerialise(SerialiserType &ser, WGPU{class_api.name} &el)",
@@ -521,7 +550,7 @@ def produceBinding(args, api):
             f"INSTANTIATE_SERIALISE_TYPE(WGPU{class_api.name});",
             f"",
         ])
-    binding["webgpu_serialiser.cpp"]["descriptors"] = "\n".join(section)
+    binding["webgpu_serialiser_gen.cpp"]["descriptors"] = "\n".join(section)
 
     section = []
     for enum_api in api.enumerations:
@@ -544,7 +573,7 @@ def produceBinding(args, api):
             f"}}",
             f"",
         ])
-    binding["webgpu_serialiser.cpp"]["enumerations"] = "\n".join(section)
+    binding["webgpu_serialiser_gen.cpp"]["enumerations"] = "\n".join(section)
 
     section = []
     for proc_api in api.procedures:
@@ -554,26 +583,105 @@ def produceBinding(args, api):
         arguments = [ f"{x.type} {x.name}" for x in proc_api.arguments ]
         argument_names = [ x.name for x in proc_api.arguments ]
         maybe_return = "" if proc_api.return_type == "void" else "return "
+
+        is_resource_creation = (
+            proc_api.parent == "Device" and proc_api.name.startswith("Create") and not proc_api.name.startswith("CreateError")
+        )
+        is_resource_release = proc_api.name == "Release"
+
+        if proc_api.name.endswith("Async"):
+            # TODO: Handle the Future resource in these cases
+            is_resource_creation = False
+
+        call_and_post_process = []
+        if is_resource_creation:
+            assert(maybe_return == "return ")
+            res_type = proc_api.return_type[4:]
+            var_name = res_type.lower()
+            descriptor_arg = proc_api.arguments[-1]
+            assert("descriptor" in descriptor_arg.type.lower())
+            call_and_post_process = [
+                f"WGPU{res_type} {var_name} = webgpuHooks.procs.wgpu{fullname}({', '.join(argument_names)});"
+                f"",
+                f"// Register resource",
+                f"ResourceId resourceId = ResourceIDGen::GetNewUniqueID();",
+                f"auto* res = webgpuHooks.capturer.GetResourceManager();",
+                f"auto* record = res->AddResourceRecord(resourceId);",
+                f"res->SetResourceHandle(resourceId, {var_name});",
+                f"{{",
+                f"  WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();",
+                f"  SCOPED_SERIALISE_CHUNK(WebGPUChunk::Res{res_type});",
+                f"  SERIALISE_ELEMENT(resourceId);",
+                f"  SERIALISE_ELEMENT(*{descriptor_arg.name});",
+                f"  record->AddChunk(scope.Get());",
+                f"}}",
+                f"",
+                f"if (RenderDoc::Inst().IsFrameCapturing())",
+                f"{{",
+                f"  res->MarkResourceFrameReferenced(resourceId, eFrameRef_CompleteWrite);",
+                f"}}",
+                f"",
+                f"return {var_name};"
+            ]
+        elif is_resource_release:
+            assert(maybe_return == "")
+            assert(len(proc_api.arguments) == 1)
+            handle_name = proc_api.arguments[0].name;
+            call_and_post_process = [
+                f"auto* res = webgpuHooks.capturer.GetResourceManager();",
+                f"res->ReleaseResource({handle_name});",
+                f"",
+                f"{maybe_return}webgpuHooks.procs.wgpu{fullname}({', '.join(argument_names)});"
+            ]
+        else:
+            call_and_post_process = [
+                f"{maybe_return}webgpuHooks.procs.wgpu{fullname}({', '.join(argument_names)});"
+            ]
+
+        fill_event_info = []
+        for arg in proc_api.arguments:
+            if arg.type in full_handle_names:
+                usage = "ResourceUsage::All_RWResource" # TODO
+                ref_type = "eFrameRef_CompleteWrite" # TODO
+                fill_event_info.extend([
+                    f"if ({arg.name}) {{"
+                    f"  auto* res = webgpuHooks.capturer.GetResourceManager();",
+                    f"  ResourceId resourceId = res->GetResourceId({arg.name});",
+                    f"  WebGPUResourceUsage usage;",
+                    f"  usage.usage = {usage};",
+                    f"  usage.view = resourceId;",
+                    f"  if (usage.view != ResourceId::Null()) {{" # happens for instance when the texture comes from the surface
+                    f"    eventInfo.resourceUsages.push_back(usage);",
+                    f"    if (RenderDoc::Inst().IsFrameCapturing())",
+                    f"    {{",
+                    f"      res->MarkResourceFrameReferenced(resourceId, {ref_type});",
+                    f"    }}",
+                    f"  }}",
+                    f"}}",
+                ])
+
         section.extend([
             f"static {proc_api.return_type} wgpu{fullname}_hook({', '.join(arguments)}) {{",
             f"  if(RenderDoc::Inst().IsFrameCapturing())",
             f"  {{",
             f"    WriteSerialiser &ser = webgpuHooks.capturer.GetScratchSerialiser();",
-            f"    ser.SetActionChunk();", # Is this useful?
             f"    SCOPED_SERIALISE_CHUNK(WebGPUChunk::Proc{fullname});",
+            f"    WebGPUEventInfo eventInfo;",
+            *[ "    " + x for x in fill_event_info ],
+            f"    SERIALISE_ELEMENT(eventInfo);",
             f"    webgpuHooks.capturer.AddChunk(scope.Get());",
             f"  }}",
-            f"  {maybe_return}webgpuHooks.procs.wgpu{fullname}({', '.join(argument_names)});",
+            *[ "  " + x for x in call_and_post_process ],
             f"}}",
         ])
-    binding["webgpu_hooks.inc.cpp"]["hooks"] = "\n".join(section)
+    binding["webgpu_hooks_gen.inc.cpp"]["hooks"] = "\n".join(section)
 
     section = []
     section.append("#define FOREACH_WEBGPU_PROC(MACRO)")
     for proc_api in api.procedures:
         fullname = (proc_api.parent if proc_api.parent is not None else "") + proc_api.name
         section.append(f"  MACRO({fullname})")
-    binding["webgpu_macros.h"]["foreach-macro"] = " \\\n".join(section)
+    binding["webgpu_macros_gen.h"]["foreach-proc"] = " \\\n".join(section)
 
     section = []
     section.append("#define FOREACH_WEBGPU_PROC_WITH_DEFAULT_REPLAY_BEHAVIOR(MACRO)")
@@ -582,7 +690,21 @@ def produceBinding(args, api):
         if fullname in excluded_procs_replay:
             continue
         section.append(f"  MACRO({fullname})")
-    binding["webgpu_macros.h"]["foreach-macro-default"] = " \\\n".join(section)
+    binding["webgpu_macros_gen.h"]["foreach-proc-default"] = " \\\n".join(section)
+
+    section = []
+    section.append("#define FOREACH_WEBGPU_RESOURCE_TYPE(MACRO)")
+    for handle in api.handles:
+        section.append(f"  MACRO({handle.name})")
+    binding["webgpu_macros_gen.h"]["foreach-resource-type"] = " \\\n".join(section)
+
+    section = []
+    section.append("#define FOREACH_WEBGPU_RESOURCE_TYPE_WITH_DEFAULT_REPLAY_BEHAVIOR(MACRO)")
+    for handle in api.handles:
+        if handle.name in excluded_resource_type_replay:
+            continue
+        section.append(f"  MACRO({handle.name})")
+    binding["webgpu_macros_gen.h"]["foreach-resource-type-default"] = " \\\n".join(section)
 
     return binding
 

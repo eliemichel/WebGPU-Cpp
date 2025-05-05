@@ -803,14 +803,6 @@ void DoSerialise(SerialiserType &ser, WGPUStorageTextureBindingLayout &el)
 INSTANTIATE_SERIALISE_TYPE(WGPUStorageTextureBindingLayout);
 
 template <typename SerialiserType>
-void DoSerialise(SerialiserType &ser, WGPUStringView &el)
-{
-  SERIALISE_MEMBER(length);
-}
-
-INSTANTIATE_SERIALISE_TYPE(WGPUStringView);
-
-template <typename SerialiserType>
 void DoSerialise(SerialiserType &ser, WGPUSubgroupMatrixConfig &el)
 {
   SERIALISE_MEMBER(componentType);
