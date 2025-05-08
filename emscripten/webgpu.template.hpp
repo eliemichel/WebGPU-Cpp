@@ -42,6 +42,7 @@
 #include <cassert>
 #include <cmath>
 #include <memory>
+#include <string_view>
 
 #if __EMSCRIPTEN__
 #include <emscripten.h>

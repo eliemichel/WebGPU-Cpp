@@ -42,6 +42,7 @@
 #include <cassert>
 #include <cmath>
 #include <memory>
+#include <string_view>
 
 #if __EMSCRIPTEN__
 #include <emscripten.h>
@@ -882,7 +883,7 @@ ENUM(VertexFormat)
 	ENUM_ENTRY(Sint32x2, WGPUVertexFormat_Sint32x2)
 	ENUM_ENTRY(Sint32x3, WGPUVertexFormat_Sint32x3)
 	ENUM_ENTRY(Sint32x4, WGPUVertexFormat_Sint32x4)
-	ENUM_ENTRY(_2, WGPUVertexFormat_Unorm10_10_10_2)
+	ENUM_ENTRY(Unorm10_10_10_2, WGPUVertexFormat_Unorm10_10_10_2)
 	ENUM_ENTRY(Unorm8x4BGRA, WGPUVertexFormat_Unorm8x4BGRA)
 	ENUM_ENTRY(Force32, WGPUVertexFormat_Force32)
 END
