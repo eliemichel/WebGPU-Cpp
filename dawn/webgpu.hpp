@@ -66,29 +66,6 @@
 #  endif
 #endif
 
-// Fix erroneous initializers from Dawn
-
-#undef WGPU_DAWN_TOGGLES_DESCRIPTOR_INIT
-#define WGPU_DAWN_TOGGLES_DESCRIPTOR_INIT _wgpu_MAKE_INIT_STRUCT(WGPUDawnTogglesDescriptor, { \
-    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
-        /*.next=*/NULL _wgpu_COMMA \
-        /*.sType=*/WGPUSType_DawnTogglesDescriptor _wgpu_COMMA \
-    }) _wgpu_COMMA \
-    /*.enabledToggleCount=*/0 _wgpu_COMMA \
-    /*.enabledToggles=*/NULL _wgpu_COMMA \
-    /*.disabledToggleCount=*/0 _wgpu_COMMA \
-    /*.disabledToggles=*/NULL _wgpu_COMMA \
-})
-#undef WGPU_DAWN_WGSL_BLOCKLIST_INIT
-#define WGPU_DAWN_WGSL_BLOCKLIST_INIT _wgpu_MAKE_INIT_STRUCT(WGPUDawnWGSLBlocklist, { \
-    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
-        /*.next=*/NULL _wgpu_COMMA \
-        /*.sType=*/WGPUSType_DawnWGSLBlocklist _wgpu_COMMA \
-    }) _wgpu_COMMA \
-    /*.blocklistedFeatureCount=*/0 _wgpu_COMMA \
-    /*.blocklistedFeatures=*/NULL _wgpu_COMMA \
-})
-
 /**
  * A namespace providing a more C++ idiomatic API to WebGPU.
  */

@@ -66,8 +66,6 @@
 #  endif
 #endif
 
-{{init_macro_fixes}}
-
 /**
  * A namespace providing a more C++ idiomatic API to WebGPU.
  */

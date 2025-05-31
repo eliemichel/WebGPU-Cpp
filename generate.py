@@ -4,7 +4,7 @@
 #   https://github.com/eliemichel/LearnWebGPU
 #
 # MIT License
-# Copyright (c) 2022-2024 Elie Michel
+# Copyright (c) 2022-2025 Elie Michel
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -49,6 +49,9 @@ def makeArgParser():
     before including this header.
     """)
 
+    parser.add_argument("-v", "--version", action='store_true',
+                        help="Display version information")
+
     parser.add_argument("-t", "--template", type=str,
                         default="webgpu.template.hpp",
                         help="Template used for generating the output binding file")
@@ -70,10 +73,7 @@ def makeArgParser():
 
     parser.add_argument("-d", "--defaults", action='append',
                         default=[],
-                        help="""
-                        File listing default values for descriptor fields. This argument can
-                        be provided multiple times, the last ones override the previous values.
-                        """)
+                        help="""This argument has been removed, use --use-init-macros instead.""")
 
     parser.add_argument("--ext-suffix",
                         default="",
@@ -109,18 +109,30 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 
 def main(args):
     applyDefaultArgs(args)
+
+    if args.version:
+        print("WebGPU-C++ generator v2.0.0")
+        return
+
     template, meta = loadTemplate(args.template)
     api = WebGpuApi()
     for url in args.header_url:
         header = downloadHeader(url)
         parseHeader(api, header)
-    loadDefaults(args, api)
 
     binding = produceBinding(args, api, meta)
     
     generateOutput(args.output, template, binding)
 
 def applyDefaultArgs(args):
+    if not args.use_init_macros or args.defaults != []:
+        raise Exception(
+            "The option --use-init-macros is now mandatory (because INIT macros are " +
+            "now part of the standard API) and as a consequence the option --defaults " +
+            "must no longer be used to provide default values. Use older versions of " +
+            "this generator to run it on headers that do not provide such macros. Using " +
+            "init macros will become the default in future version of this generator."
+        )
     if not args.header_url:
         args.header_url = [DEFAULT_HEADER_URL]
     if not args.defaults:
@@ -169,7 +181,6 @@ class PropertyApi:
     name: str
     type: str
     counter: str|None = None  # list properties have an associated counter property
-    default_value: str|None = None
 
 @dataclass
 class HandleApi:
@@ -449,39 +460,11 @@ def produceBinding(args, api, meta):
         "procedures": [],
         "type_aliases": [],
         "ext_suffix": args.ext_suffix,
-        "init_macro_fixes": [],
     }
 
     for url in args.header_url:
         filename = os.path.split(url)[1]
         binding["webgpu_includes"].append(f"#include <webgpu/{filename}>")
-
-
-    if args.use_init_macros:
-        binding["init_macro_fixes"].append(r"""
-// Fix erroneous initializers from Dawn
-
-#undef WGPU_DAWN_TOGGLES_DESCRIPTOR_INIT
-#define WGPU_DAWN_TOGGLES_DESCRIPTOR_INIT _wgpu_MAKE_INIT_STRUCT(WGPUDawnTogglesDescriptor, { \
-    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
-        /*.next=*/NULL _wgpu_COMMA \
-        /*.sType=*/WGPUSType_DawnTogglesDescriptor _wgpu_COMMA \
-    }) _wgpu_COMMA \
-    /*.enabledToggleCount=*/0 _wgpu_COMMA \
-    /*.enabledToggles=*/NULL _wgpu_COMMA \
-    /*.disabledToggleCount=*/0 _wgpu_COMMA \
-    /*.disabledToggles=*/NULL _wgpu_COMMA \
-})
-#undef WGPU_DAWN_WGSL_BLOCKLIST_INIT
-#define WGPU_DAWN_WGSL_BLOCKLIST_INIT _wgpu_MAKE_INIT_STRUCT(WGPUDawnWGSLBlocklist, { \
-    /*.chain=*/_wgpu_MAKE_INIT_STRUCT(WGPUChainedStruct, { \
-        /*.next=*/NULL _wgpu_COMMA \
-        /*.sType=*/WGPUSType_DawnWGSLBlocklist _wgpu_COMMA \
-    }) _wgpu_COMMA \
-    /*.blocklistedFeatureCount=*/0 _wgpu_COMMA \
-    /*.blocklistedFeatures=*/NULL _wgpu_COMMA \
-})
-        """.strip())
 
     # Cached variables for format_arg
     handle_names = [ h.name for h in api.handles ]
@@ -574,27 +557,13 @@ def produceBinding(args, api, meta):
             cls_api = handle_or_class
             prop_names = [f"{p.name}" for p in cls_api.properties]
 
-            if args.use_init_macros:
-                init_macro = f"WGPU_{to_constant_case(entry_name)}_INIT"
-                if init_macro not in api.init_macros:
-                    logging.warning(f"Initialization macro '{init_macro}' was not found, falling back to empty initializer '{{}}'.")
-                    init_macro = "{}"
-                prop_defaults = [
-                    f"\t*this = WGPU{entry_name} {init_macro};\n",
-                ]
-            else:
-                prop_defaults = [
-                    f"\t{prop.name} = {prop.default_value};\n"
-                    for prop in cls_api.properties
-                    if prop.default_value is not None
-                ] + [
-                    f"\t(({prop.type[4:]}*)&{prop.name})->setDefault();\n"
-                    for prop in cls_api.properties
-                    if prop.type in class_names
-                ] + [
-                    f"\t{subprop} = {default_value};\n"
-                    for subprop, default_value in cls_api.default_overrides
-                ]
+            init_macro = f"WGPU_{toConstantCase(entry_name)}_INIT"
+            if init_macro not in api.init_macros:
+                logging.warning(f"Initialization macro '{init_macro}' was not found, falling back to empty initializer '{{}}'.")
+                init_macro = "{}"
+            prop_defaults = [
+                f"\t*this = WGPU{entry_name} {init_macro};\n",
+            ]
             if "chain" in prop_names:
                 if entry_name in api.stypes:
                     prop_defaults.extend([
@@ -773,13 +742,13 @@ def produceBinding(args, api, meta):
             if args.use_fake_scoped_enums:
                 enum = (
                     f"ENUM({enum.name})\n"
-                    + "".join([ f"\tENUM_ENTRY({format_enum_value(e.key)}, {e.value})\n" for e in enum.entries ])
+                    + "".join([ f"\tENUM_ENTRY({formatEnumValue(e.key)}, {e.value})\n" for e in enum.entries ])
                     + "END"
                 )
             else:
                 enum = (
                     f"enum class {enum.name}: int {{\n"
-                    + "".join([ f"\t{format_enum_value(e.key)} = {e.value},\n" for e in enum.entries ])
+                    + "".join([ f"\t{formatEnumValue(e.key)} = {e.value},\n" for e in enum.entries ])
                     + "};"
                 )
         else:
@@ -801,96 +770,6 @@ def produceBinding(args, api, meta):
         binding[k] = "\n".join(v)
 
     return binding
-
-# -----------------------------------------------------------------------------
-# Default values
-
-def loadDefaults(args, api):
-    for default_file in args.defaults:
-        loadDefaultFile(api, default_file)
-    postProcessDefaults(api)
-
-def loadDefaultFile(api, filename):
-    resolved = resolveFilepath(filename)
-    logging.info(f"Loading default values from {resolved}...")
-
-    entry_re = re.compile(r"^WGPU(\w+)::([\w\.]+) = (.+);$")
-    comment_re = re.compile(r"^\s*(//.*)?$")
-
-    name_to_class_idx = { c.name: i for i, c in enumerate(api.classes) }
-
-    with openVfs(resolved, encoding="utf-8") as f:
-        for lineno, line in enumerate(f):
-            if (match := entry_re.search(line)):
-                class_name = match.group(1)
-                prop_name = match.group(2)
-                default_value = match.group(3)
-
-                if class_name not in name_to_class_idx:
-                    logging.warning(f"Unknown class {class_name} (in file {resolved}, line {lineno + 1})")
-                    continue
-
-                c = api.classes[name_to_class_idx[class_name]]
-
-                # Special case of sub-struct override
-                if "." in prop_name:
-                    c.default_overrides.append((prop_name, default_value))
-                    continue
-
-                name_to_prop_idx = { p.name: i for i, p in enumerate(c.properties) }
-                if prop_name not in name_to_prop_idx:
-                    logging.warning(f"Unknown property {class_name}::{prop_name} (in file {resolved}, line {lineno + 1})")
-                    continue
-
-                prop = c.properties[name_to_prop_idx[prop_name]]
-                prop.default_value = default_value
-            elif (match := comment_re.search(line)):
-                pass
-            else:
-                logging.warning(f"Syntax error '{line.strip()}' (in file {resolved}, line {lineno + 1})")
-
-def postProcessDefaults(api):
-    """Transform string into enum values in default values"""
-    name_to_enum = { f"WGPU{e.name}": e for e in api.enumerations }
-    name_to_class = { f"WGPU{c.name}": c for c in api.classes }
-
-    def fixDefaultValue(prop_type, default_value):
-        enum = name_to_enum.get(prop_type)
-        if enum is None:
-            return default_value
-        name_to_entry = {
-            re.sub(r"([a-z])([A-Z])", r"\1-\2", e.key).lower(): e for e in enum.entries
-        }
-        if default_value is None:
-            entry = name_to_entry.get("undefined")
-            if entry is not None:
-                return f"{enum.name}::{format_enum_value(entry.key)}"
-        else:
-            entry = name_to_entry.get(default_value.strip('"'))
-            if entry is None:
-                logging.warning(f"Unknown value {default_value} for enum {prop_type}")
-                return None
-            else:
-                return f"{enum.name}::{format_enum_value(entry.key)}"
-
-    def getType(path, cls_api):
-        name_to_prop = { p.name: p for p in cls_api.properties }
-        if path[0] not in name_to_prop:
-            return None
-        prop = name_to_prop[path[0]]
-        if len(path) == 1:
-            return prop.type
-        else:
-            sub_cls_api = name_to_class[prop.type]
-            return getType(path[1:], sub_cls_api)
-
-    for c in api.classes:
-        for prop in c.properties:
-            prop.default_value = fixDefaultValue(prop.type, prop.default_value)
-        for i, (subprop, default_value) in enumerate(c.default_overrides):
-            prop_type = getType(subprop.split('.'), c)
-            if prop_type is not None:
-                c.default_overrides[i] = (subprop, fixDefaultValue(prop_type, default_value))
 
 # -----------------------------------------------------------------------------
 # Utility functions
@@ -997,13 +876,13 @@ def resolveFilepath(path):
     logging.error(f"Invalid template path: {path}")
     raise ValueError("Invalid template path")
 
-def format_enum_value(value):
+def formatEnumValue(value):
     if value[0] in '0123456789':
         return '_' + value
     else:
         return value
 
-def to_constant_case(caml_case):
+def toConstantCase(caml_case):
     naive = ''.join(['_'+c if c.isupper() or c.isnumeric() else c for c in caml_case]).lstrip('_').upper()
     # We then regroup isolated characters together (because they correspond to acronyms):
     current_acronym = None
