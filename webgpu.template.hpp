@@ -3,7 +3,7 @@
  *   https://github.com/eliemichel/LearnWebGPU
  *
  * MIT License
- * Copyright (c) 2022-2024 Elie Michel
+ * Copyright (c) 2022-2025 Elie Michel
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -239,7 +239,7 @@ Adapter Instance::requestAdapter(const RequestAdapterOptions& options) {
 		context.requestEnded = true;
 	};
 	callbackInfo.mode = CallbackMode::AllowSpontaneous;
-	requestAdapter{{ext_suffix}}(options, callbackInfo);
+	wgpuInstanceRequestAdapter(*this, &options, callbackInfo);
 
 #if __EMSCRIPTEN__
 	while (!context.requestEnded) {
@@ -278,7 +278,7 @@ Device Adapter::requestDevice(const DeviceDescriptor& descriptor) {
 		context.requestEnded = true;
 	};
 	callbackInfo.mode = CallbackMode::AllowSpontaneous;
-	requestDevice{{ext_suffix}}(descriptor, callbackInfo);
+	wgpuAdapterRequestDevice(*this, &descriptor, callbackInfo);
 
 #if __EMSCRIPTEN__
 	while (!context.requestEnded) {

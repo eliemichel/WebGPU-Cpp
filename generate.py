@@ -597,9 +597,10 @@ def produceBinding(args, api, meta):
                 argument_names.append(name)
 
             return_type = proc.return_type
+            template_args = None
 
-            # Wrap callback into std::function&&
-            if "userdata" == proc.arguments[-1].name:
+            # Wrap callback into std::function/Lambda
+            if "userdata" == proc.arguments[-1].name: # OLD callback mechanism
                 cb = callbacks[proc.arguments[-2].type[4:]]
                 cb_name = proc.arguments[-2].name
                 cb_arg_names = map(lambda a: format_arg(a)[2], cb.arguments[:-1])
@@ -615,7 +616,38 @@ def produceBinding(args, api, meta):
                 argument_names.append(f"reinterpret_cast<void*>(handle.get())")
                 return_type = f"std::unique_ptr<{cb.name}Callback>"
                 maybe_no_discard = "NO_DISCARD "
+            elif proc.arguments[-1].type.endswith("CallbackInfo"): # NEW callback mechanism
+                cb_type = proc.arguments[-1].type[4:-len("Info")]
+                cb = callbacks[cb_type]
+                cb_arg_names = [ format_arg(a)[2] for a in cb.arguments[:-2] ]
+                cb_args = [ f"{a.type} {a.name}" for a in cb.arguments[:-2] ]
+
+                # Remove callbackInfo arg and add CallbackMode and Lambda
+                arguments.pop()
+                arguments.extend([ "CallbackMode callbackMode", "const Lambda& callback" ])
+
+                template_args = [ "typename Lambda" ]
+
+                body = "\n".join([
+                    f"\tauto* lambda = new Lambda(callback);",
+                    f"\tauto cCallback = []({', '.join(cb_args)}, void* userdata1, void*) -> void {{",
+                    f"\t\tstd::unique_ptr<Lambda> lambda(reinterpret_cast<Lambda*>(userdata1));",
+                    f"\t\t(*lambda)({', '.join(cb_arg_names)});",
+                    "\t};",
+                    f"\t{cb_type}CallbackInfo callbackInfo = {{",
+                    "\t\t/* nextInChain = */ nullptr,",
+                    "\t\t/* mode = */ callbackMode,",
+                    "\t\t/* callback = */ cCallback,",
+                    "\t\t/* userdata1 = */ (void*)lambda,",
+                    "\t\t/* userdata2 = */ nullptr,",
+                    "\t};",
+                    "\treturn {wrapped_call};",
+                    ""
+                ])
+                maybe_no_discard = ""
             else:
+                if proc.arguments[-1].type.endswith("CallbackInfo"):
+                    print(f"- {entry_name}.{proc.name}: {proc.arguments[-1].name}")
                 body = "\treturn {wrapped_call};\n"
                 maybe_no_discard = ""
 
@@ -634,12 +666,20 @@ def produceBinding(args, api, meta):
             wrapped_call = f"{begin_cast}wgpu{entry_name}{proc.name}({argument_names_str}){end_cast}"
             maybe_const = " const" if use_const else ""
             name_and_args = f"{method_name}({', '.join(arguments)}){maybe_const}"
-            decls.append(f"\t{maybe_inline}{maybe_no_discard}{return_type} {name_and_args};\n")
-            implems.append(
-                f"{maybe_inline}{return_type} {entry_name}::{name_and_args} {{\n"
-                + body.replace("{wrapped_call}", wrapped_call)
-                + "}\n"
-            )
+            if template_args is None:
+                decls.append(f"\t{maybe_inline}{maybe_no_discard}{return_type} {name_and_args};\n")
+                implems.append(
+                    f"{maybe_inline}{return_type} {entry_name}::{name_and_args} {{\n"
+                    + body.replace("{wrapped_call}", wrapped_call)
+                    + "}\n"
+                )
+            else:
+                decls.append(
+                    "\ttemplate<" + ", ".join(template_args) + ">\n"
+                    + f"\t{maybe_inline}{return_type} {name_and_args} {{\n"
+                    + "\t" + body.replace("{wrapped_call}", wrapped_call).replace("\n", "\n\t")
+                    + "}\n"
+                )
 
             # Add utility overload for arguments of the form 'uint32_t xxCount, Xx const * xx'
             for i in range(len(proc.arguments) - 1):
