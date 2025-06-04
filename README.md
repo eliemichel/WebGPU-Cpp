@@ -322,6 +322,9 @@ python generate.py -u dawn/webgpu.h -t webgpu.template.hpp -o dawn/webgpu.hpp --
 
 # emscripten
 python generate.py -u emscripten/webgpu.h -t emscripten/webgpu.template.hpp -o emscripten/webgpu.hpp -d defaults.txt -d extra-defaults.txt
+
+# emdawn
+python generate.py -u emdawn/webgpu.h -t webgpu.template.hpp -o emdawn/webgpu.hpp --use-init-macros
 ```
 
 And the RAII wrappers were generated with the following commands:
@@ -331,10 +334,13 @@ And the RAII wrappers were generated with the following commands:
 python generate.py -u wgpu-native/webgpu.h -u wgpu-native/wgpu.h -t webgpu-raii.template.hpp -o wgpu-native/webgpu-raii.hpp
 
 # Dawn
-python generate.py -u dawn/webgpu.h -t webgpu-raii.template.hpp -o dawn/webgpu-raii.hpp
+python generate.py -u dawn/webgpu.h -t webgpu-raii.template.hpp -o dawn/webgpu-raii.hpp --use-init-macros
 
 # emscripten
 python generate.py -u emscripten/webgpu.h -t webgpu-raii.template.hpp -o emscripten/webgpu-raii.hpp
+
+# emdawn
+python generate.py -u emdawn/webgpu.h -t webgpu-raii.template.hpp -o emdawn/webgpu-raii.hpp --use-init-macros
 ```
 
 ### See also

@@ -634,7 +634,7 @@ def produceBinding(args, api, meta):
                     f"\t\tstd::unique_ptr<Lambda> lambda(reinterpret_cast<Lambda*>(userdata1));",
                     f"\t\t(*lambda)({', '.join(cb_arg_names)});",
                     "\t};",
-                    f"\t{cb_type}CallbackInfo callbackInfo = {{",
+                    f"\t{cb_type}Info callbackInfo = {{",
                     "\t\t/* nextInChain = */ nullptr,",
                     "\t\t/* mode = */ callbackMode,",
                     "\t\t/* callback = */ cCallback,",
