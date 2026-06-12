@@ -103,6 +103,17 @@ def makeArgParser():
     parser.add_argument("--use-inline", action='store_true', dest="use_inline",
                         help="Make all methods inlined (seems to have an effect with clang, but MSVC fails at linking in that case).")
 
+    parser.add_argument("--available-symbols", type=str, default=None,
+                        help="""
+                        Path to a file listing the wgpu* C symbols actually provided by the
+                        library that will be linked (one symbol per line, with or without a
+                        leading underscore). Procedures whose underlying C function is not
+                        listed are skipped, so the generated wrapper only references symbols
+                        that can be resolved at link time. This is useful when the WebGPU
+                        header declares more of the spec surface than the backend (e.g.
+                        wgpu-native) implements. An empty or missing file disables filtering.
+                        """)
+
     return parser
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
@@ -462,6 +473,19 @@ def produceBinding(args, api, meta):
         "ext_suffix": args.ext_suffix,
     }
 
+    # Optional allow-list of C symbols actually provided by the linked library.
+    # When set, procedures whose underlying wgpu* C function is absent are not
+    # wrapped, so the generated implementation does not emit unresolvable
+    # references. An empty/missing file means "no filtering" (None).
+    available_symbols = None
+    if args.available_symbols and os.path.isfile(args.available_symbols):
+        with open(args.available_symbols, "r") as f:
+            available_symbols = {
+                line.strip().lstrip("_") for line in f if line.strip()
+            }
+        if not available_symbols:
+            available_symbols = None
+
     for url in args.header_url:
         filename = os.path.split(url)[1]
         binding["webgpu_includes"].append(f"#include <webgpu/{filename}>")
@@ -583,6 +607,9 @@ def produceBinding(args, api, meta):
                 continue
             if "wgpu" + entry_name + proc.name + "\n" in meta["blacklist"]:
                 logging.debug(f"Skipping wgpu{entry_name}{proc.name} (blacklisted)...")
+                continue
+            if available_symbols is not None and ("wgpu" + entry_name + proc.name) not in available_symbols:
+                logging.debug(f"Skipping wgpu{entry_name}{proc.name} (not provided by the linked library)...")
                 continue
             method_name = proc.name[0].lower() + proc.name[1:]
 
