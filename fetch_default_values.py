@@ -75,7 +75,7 @@ def configureLogging(args):
 
 def parseAllDefinitions(spec):
     root = html.fromstring(spec)
-    defs = root.xpath("//pre[@class='idl highlight def']")
+    defs = root.xpath("//pre[@class='def highlight idl']")
 
     api = WebGpuApi()
 
